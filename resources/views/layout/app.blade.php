@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Star Admin2 </title>
+  <title>Woka . Task</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href={{ asset('assets/vendors/feather/feather.css') }}>
   <link rel="stylesheet" href={{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}>
@@ -202,6 +202,13 @@
           </li>
           <li class="nav-item nav-category">UI Elements</li>
           <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('admin.PM.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('admin.PM.index') }}">
+              <i class="mdi mdi-account-tie menu-icon"></i>
+              <span class="menu-title">PM</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.dashboard') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
@@ -294,8 +301,18 @@
               <span class="menu-title">Documentation</span>
             </a>
           </li>
+          <li class="nav-item"><br>
+            <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="nav-link d-flex align-items-center logout-link">
+                <i class="menu-icon mdi mdi-logout"></i>
+                <span class="menu-title ms-2">Logout</span>
+              </button>
+            </form>
+          </li>
         </ul>
       </nav>
+
       <!-- partial -->
       @yield('content')
       <!-- main-panel ends -->
