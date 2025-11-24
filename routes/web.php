@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\pmController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 //prefik untuk admin
 Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group(function() {
     Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
-    //tambah PM
+    //CRUD PM
     Route::resource('PM', pmController::class);
+    //CRUD Project
+    Route::resource('project', ProjectController::class);
 });

@@ -41,8 +41,9 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Proyek</th>
-                            <th>PM</th>
-                            <th>Deadline</th>
+                            <th>Description</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
                             <th>Status</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -55,9 +56,10 @@
                             <td class="fw-semibold text-dark">{{ $project->nama_proyek }}</td>
                             <td>{{ $project->pm->name ?? '-' }}</td>
                             <td class="text-danger fw-semibold">
-                                {{ \Carbon\Carbon::parse($project->deadline)->format('d M Y') }}
+                                {{ \Carbon\Carbon::parse($project->pm->start_date)->format('d M Y') }}
                             </td>
-
+                            <td class="text-danger fw-semibold">
+                                {{ \Carbon\Carbon::parse($project->pm->end_date)->format('d M Y') }}
                             <td>
                                 @php
                                     $statusClass = match($project->status) {
