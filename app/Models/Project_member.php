@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Project_member extends Model
+{
+    protected $fillable = [
+        'project_id',
+        'user_id',
+    ];
+
+    /**
+     * Relasi:
+     * Anggota terhubung dengan 1 project
+     */
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * Relasi:
+     * Anggota merupakan 1 user
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
