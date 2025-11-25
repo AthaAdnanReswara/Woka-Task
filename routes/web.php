@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\pmController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +25,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
     Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
     //CRUD PM
     Route::resource('PM', pmController::class);
+    //CURD developer
+    Route::resource('developer', DeveloperController::class);
     //CRUD Project
     Route::resource('project', ProjectController::class);
+    //CRUD Task
+    Route::resource('task', TaskController::class);
 });

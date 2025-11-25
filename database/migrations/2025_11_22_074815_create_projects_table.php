@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->enum('status', ['draft','ongoing','hold','done','cancelled']);
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

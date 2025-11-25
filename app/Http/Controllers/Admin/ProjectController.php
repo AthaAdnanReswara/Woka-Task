@@ -48,8 +48,9 @@ class ProjectController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'status' => $request->status,
+            'created_by' => Auth::user()->id,
         ]);
-        return redirect()->route('admin.project.index')->with('success','selamat berhasil menambah project');
+        return redirect()->route('admin.project.index')->with('success', 'selamat berhasil menambah project');
     }
 
     /**
@@ -66,7 +67,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $user = Auth::user();
-        return view('admin.project.edit', compact('user','project'));
+        return view('admin.project.edit', compact('user', 'project'));
     }
 
     /**
@@ -87,8 +88,9 @@ class ProjectController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'status' => $request->status,
+            'updated_by' => Auth::user()->id,
         ]);
-        return redirect()->route('admin.project.index')->with('success','selamat anda berhasil mengedit project');
+        return redirect()->route('admin.project.index')->with('success', 'selamat anda berhasil mengedit project');
     }
 
     /**
@@ -97,6 +99,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route('admin.project.index')->with('success','selamat anda berhasil menghapus project');
+        return redirect()->route('admin.project.index')->with('success', 'selamat anda berhasil menghapus project');
     }
 }

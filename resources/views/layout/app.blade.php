@@ -209,19 +209,27 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.project') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link" {{ request()->routeIs('admin.developer.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('admin.developer.index') }}">
+              <i class="mdi mdi-account-cog menu-icon"></i>
+              <span class="menu-title">Developer</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.project.index') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
               <span class="menu-title">Project</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.project') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.project.index') }}">
-              <i class="mdi mdi-account-cog menu-icon"></i>
-              <span class="menu-title">Developer</span>
+            <a class="nav-link" {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('admin.task.index') }}">
+              <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
+              <span class="menu-title">task</span>
             </a>
           </li>
+          
           @endif
           <li class="nav-item">
             <a class="nav-link" href={{ asset('docs/documentation.html') }}>
