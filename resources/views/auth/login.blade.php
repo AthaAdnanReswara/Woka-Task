@@ -155,8 +155,6 @@
                 </div>
 
                 <button class="btn btn-primary w-100 btn-lg mt-3">Login</button>
-
-                <p class="mt-4" style="font-size:14px;">Belum punya akun? <a href="#">Daftar</a></p>
             </form>
 
         </div>

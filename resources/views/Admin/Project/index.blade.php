@@ -11,7 +11,7 @@
             </h3>
             <small class="text-secondary">Kelola semua proyek dalam sistem</small>
         </div>
-
+    
         <a href="{{ route('admin.project.create') }}" class="btn btn-primary shadow-sm">
             <i class="bi bi-plus-circle"></i> Tambah Project
         </a>

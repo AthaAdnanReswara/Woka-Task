@@ -42,7 +42,7 @@ class Project extends Model
      */
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class, 'project_id');
     }
 
     /**
@@ -53,9 +53,6 @@ class Project extends Model
     public function members()
     {
         return $this->belongsToMany(User::class, 'project_members')
-                    ->withTimestamps()
-                    ->withPivot('role'); // Jika kamu menyimpan role anggota di pivot
+                    ->withTimestamps();
     }
-
-
 }

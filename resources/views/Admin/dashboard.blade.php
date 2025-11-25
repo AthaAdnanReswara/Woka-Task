@@ -10,25 +10,25 @@
         <div class="col-md-3">
             <div class="card shadow-sm p-3 text-center">
                 <h6>Total Users</h6>
-                <h3 class="fw-bold text-primary">15</h3>
+                <h3 class="fw-bold text-primary">{{ $totalUser }}</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card shadow-sm p-3 text-center">
                 <h6>Total Projects</h6>
-                <h3 class="fw-bold text-success">12</h3>
+                <h3 class="fw-bold text-success">{{ $totalProject }}</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card shadow-sm p-3 text-center">
                 <h6>Tasks</h6>
-                <h3 class="fw-bold text-warning">98</h3>
+                <h3 class="fw-bold text-warning">{{ $totalTask }}</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card shadow-sm p-3 text-center">
                 <h6>Developers</h6>
-                <h3 class="fw-bold text-info">5</h3>
+                <h3 class="fw-bold text-info">{{  $totalDeveloper  }}</h3>
             </div>
         </div>
     </div>
@@ -41,6 +41,7 @@
             <table class="table mb-0">
                 <thead class="table-light">
                     <tr>
+                        <th>No</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
@@ -49,12 +50,14 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td>1.</td>
                         <td>Deva</td>
                         <td>deva@example.com</td>
                         <td><span class="badge bg-danger">Admin</span></td>
                         <td>2025-11-20</td>
                     </tr>
                     <tr>
+                        <td>2.</td>
                         <td>Rizky</td>
                         <td>rizky@example.com</td>
                         <td><span class="badge bg-success">PM</span></td>

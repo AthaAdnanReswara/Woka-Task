@@ -25,7 +25,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        return view('admin.project.tambah',compact('user'));
     }
 
     /**

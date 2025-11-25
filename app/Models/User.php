@@ -55,6 +55,12 @@ class User extends Authenticatable
         return $this->hasMany(TaskLampiran::class,'uploaded_by');
     }
 
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_members')
+                    ->withTimestamps();
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
