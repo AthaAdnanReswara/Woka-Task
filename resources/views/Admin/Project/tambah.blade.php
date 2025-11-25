@@ -27,7 +27,7 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Nama Proyek</label>
-                    <input type="text" name="nama_proyek" class="form-control" placeholder="Masukkan nama proyek...">
+                    <input type="text" name="name" class="form-control" placeholder="Masukkan nama proyek...">
                 </div>
                 @error('name')
                 <div class="text-danger">{{ $message }}</div>

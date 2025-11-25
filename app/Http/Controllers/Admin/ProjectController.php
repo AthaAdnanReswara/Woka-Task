@@ -16,8 +16,8 @@ class ProjectController extends Controller
     {
         //
         $user = Auth::user();
-        $projects = Project::orderBy("created_at","desc")->paginate(10);
-        return view('admin.project.index', compact('user','projects'));
+        $projects = Project::orderBy("created_at", "desc")->paginate(10);
+        return view('admin.project.index', compact('user', 'projects'));
     }
 
     /**
@@ -26,7 +26,7 @@ class ProjectController extends Controller
     public function create()
     {
         $user = Auth::user();
-        return view('admin.project.tambah',compact('user'));
+        return view('admin.project.tambah', compact('user'));
     }
 
     /**
@@ -34,7 +34,22 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'required|in:draft,ongoing,hold,done,cancelled',
+        ]);
+
+        Project::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'status' => $request->status,
+        ]);
+        return redirect()->route('admin.project.index')->with('success','selamat berhasil menambah project');
     }
 
     /**
@@ -48,24 +63,40 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Project $project)
     {
-        //
+        $user = Auth::user();
+        return view('admin.project.edit', compact('user','project'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'required|in:draft,ongoing,hold,done,cancelled',
+        ]);
+        $project->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'status' => $request->status,
+        ]);
+        return redirect()->route('admin.project.index')->with('success','selamat anda berhasil mengedit project');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return redirect()->route('admin.project.index')->with('success','selamat anda berhasil menghapus project');
     }
 }

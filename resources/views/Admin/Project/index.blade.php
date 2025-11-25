@@ -11,7 +11,7 @@
             </h3>
             <small class="text-secondary">Kelola semua proyek dalam sistem</small>
         </div>
-    
+
         <a href="{{ route('admin.project.create') }}" class="btn btn-primary shadow-sm">
             <i class="bi bi-plus-circle"></i> Tambah Project
         </a>
@@ -19,15 +19,15 @@
 
     <!-- Alert -->
     @if (session('success'))
-        <div class="alert alert-success small shadow-sm">
-            <i class="bi bi-check-circle"></i> {{ session('success') }}
-        </div>
+    <div class="alert alert-success small shadow-sm">
+        <i class="bi bi-check-circle"></i> {{ session('success') }}
+    </div>
     @elseif (session('error'))
-        <div class="alert alert-danger small shadow-sm">
-            <i class="bi bi-exclamation-triangle"></i> {{ session('error') }}
-        </div>
+    <div class="alert alert-danger small shadow-sm">
+        <i class="bi bi-exclamation-triangle"></i> {{ session('error') }}
+    </div>
     @endif
-    
+
 
     <!-- Table -->
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
@@ -53,47 +53,49 @@
                         @foreach ($projects as $project)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td class="fw-semibold text-dark">{{ $project->nama_proyek }}</td>
-                            <td>{{ $project->pm->name ?? '-' }}</td>
-                            <td class="text-danger fw-semibold">
-                                {{ \Carbon\Carbon::parse($project->pm->start_date)->format('d M Y') }}
+                            <td class="fw-semibold text-dark">{{ $project->name ?? '-'}}</td>
+                            <td>{{ $project->description ?? '-' }}</td>
+                            <td class="text-success fw-semibold">
+                                {{ \Carbon\Carbon::parse($project->start_date)->format('d M Y') }}
                             </td>
                             <td class="text-danger fw-semibold">
-                                {{ \Carbon\Carbon::parse($project->pm->end_date)->format('d M Y') }}
+                                {{ \Carbon\Carbon::parse($project->end_date)->format('d M Y') }}
                             <td>
                                 @php
-                                    $statusClass = match($project->status) {
-                                        'On Progress' => 'warning',
-                                        'Completed' => 'success',
-                                        'Pending' => 'secondary',
-                                        default => 'dark'
-                                    };
+                                $statusClass = match($project->status ?? '-') {
+                                'On Progress' => 'warning',
+                                'Completed' => 'success',
+                                'Pending' => 'secondary',
+                                default => 'dark'
+                                };
                                 @endphp
                                 <span class="badge bg-{{ $statusClass }}">{{ $project->status }}</span>
                             </td>
 
                             <td class="text-center">
 
-                                <a href="{{ route('admin.project.show', $project->id) }}" 
-                                   class="btn btn-sm btn-info text-white me-1">
-                                   <i class="bi bi-eye"></i>
+                                <a href="{{ route('admin.project.show', $project->id) }}"
+                                    class="btn btn-sm btn-outline-info rounded-pill px-3 me-1">
+                                    <i class="bi bi-eye-fill"></i> Detail
                                 </a>
 
-                                <a href="{{ route('admin.project.edit', $project->id) }}" 
-                                   class="btn btn-sm btn-warning text-white me-1">
-                                   <i class="bi bi-pencil-square"></i>
+                                <a href="{{ route('admin.project.edit', $project->id) }}"
+                                    class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1 text-dark">
+                                    <i class="bi bi-pencil-fill"></i> Edit
                                 </a>
 
-                                <form action="{{ route('admin.project.destroy', $project->id) }}" 
-                                      method="POST" class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Yakin ingin menghapus project ini?')">
-                                        <i class="bi bi-trash"></i>
+                                <form action="{{ route('admin.project.destroy', $project->id) }}" method="POST" class="d-inline">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                        onclick="return confirm('Yakin ingin menghapus project ini?')">
+                                        <i class="bi bi-trash-fill"></i> Hapus
                                     </button>
                                 </form>
 
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -107,21 +109,21 @@
 
 {{-- DataTable Script --}}
 <script>
-$(document).ready(function() {
-    $('#projectTable').DataTable({
-        "ordering": true,
-        "language": {
-            "search": "Cari:",
-            "lengthMenu": "Tampilkan _MENU_ data",
-            "zeroRecords": "Data proyek tidak ditemukan",
-            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ proyek",
-            "paginate": {
-                "next": "›",
-                "previous": "‹"
+    $(document).ready(function() {
+        $('#projectTable').DataTable({
+            "ordering": true,
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "zeroRecords": "Data proyek tidak ditemukan",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ proyek",
+                "paginate": {
+                    "next": "›",
+                    "previous": "‹"
+                }
             }
-        }
+        });
     });
-});
 </script>
 
 @endsection
