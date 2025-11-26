@@ -22,7 +22,7 @@ class RedirectIfAuthenticated
             if($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }elseif($user->role === 'PM'){
-                return redirect()->route('pm.dashboard');
+                return redirect()->route('PM.dashboard');
             }elseif($user->role === 'developer'){
                 return redirect()->route('developer.dashboard');
             }

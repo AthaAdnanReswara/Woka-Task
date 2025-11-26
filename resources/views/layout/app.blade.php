@@ -223,21 +223,30 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('admin.project.index') }}">
+              <i class="mdi mdi-account-group menu-icon"></i>
+              <span class="menu-title">Project Members</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.task.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">task</span>
             </a>
           </li>
-          
           @endif
+          @if (auth()->user()->role == 'PM')
           <li class="nav-item">
-            <a class="nav-link" href={{ asset('docs/documentation.html') }}>
-              <i class="menu-icon mdi mdi-file-document"></i>
-              <span class="menu-title">Documentation</span>
+            <a class="nav-link" {{ request()->routeIs('PM.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.dashboard') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item"><br>
+          @endif
+          <br>
             <form action="{{ route('logout') }}" method="POST">
               @csrf
               <button type="submit" class="nav-link d-flex align-items-center logout-link">

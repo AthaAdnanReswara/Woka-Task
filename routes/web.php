@@ -22,6 +22,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 //prefik untuk admin
 Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group(function() {
+    //tampilan dashboard
     Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
     //CRUD PM
     Route::resource('PM', pmController::class);
@@ -31,4 +32,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
     Route::resource('project', ProjectController::class);
     //CRUD Task
     Route::resource('task', TaskController::class);
+});
+//Prefik untuk PM
+Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function() {
+    //tampilan dashboard
+    Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
+    
 });

@@ -34,15 +34,16 @@
         <div class="card-header bg-primary text-white fw-bold">
             <i class="bi bi-table"></i> Daftar Task
         </div>
+
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table align-middle table-hover mb-0" id="taskTable">
                     <thead class="bg-light text-primary text-uppercase small">
                         <tr>
                             <th>No</th>
-                            <th>Nama Task</th>
+                            <th>Judul Task</th>
                             <th>Project</th>
-                            <th>Developer</th>
+                            <th>Dikerjakan Oleh</th>
                             <th>Deadline</th>
                             <th>Status</th>
                             <th class="text-center">Aksi</th>
@@ -53,45 +54,40 @@
                         @foreach ($tasks as $task)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td class="fw-semibold text-dark">{{ $task->title }}</td>
-                            <td>{{ $task->project->name ?? '-' }}</td>
-                            <td>{{ $task->developer->name ?? '-' }}</td>
-
-                            <td class="fw-semibold text-danger">
-                                {{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}
+                            <td class="fw-semibold text-dark">
+                                {{ $task->judul_task }}
                             </td>
-
+                            <td>{{ $task->project->name ?? '-' }}</td>
+                            <td>{{ $task->assignedUser->name ?? '-' }}</td>
+                            <td class="fw-semibold text-danger">
+                                {{ $task->tanggal_tenggat ? \Carbon\Carbon::parse($task->tanggal_tenggat)->format('d M Y') : '-' }}
+                            </td>
+                            <!-- STATUS BADGE -->
                             <td>
                                 @php
                                 $statusColor = match($task->status) {
-                                    'todo' => 'secondary',
-                                    'in-progress' => 'warning',
-                                    'review' => 'info',
-                                    'completed' => 'success',
-                                    'cancelled' => 'danger',
-                                    default => 'dark'
+                                'rencana' => 'secondary',
+                                'sedang_dikerjakan' => 'warning',
+                                'tinjauan' => 'info',
+                                'selesai' => 'success',
+                                'dibatalkan' => 'danger',
+                                default => 'dark'
                                 };
                                 @endphp
-
                                 <span class="badge bg-{{ $statusColor }}">
-                                    {{ ucfirst($task->status) }}
+                                    {{ ucfirst(str_replace('_',' ', $task->status)) }}
                                 </span>
                             </td>
 
+                            <!-- ACTION BUTTON -->
                             <td class="text-center">
-
-                                <a href="{{ route('admin.task.show', $task->id) }}"
-                                    class="btn btn-sm btn-outline-info rounded-pill px-3 me-1">
-                                    <i class="bi bi-eye-fill"></i> Detail
-                                </a>
-
                                 <a href="{{ route('admin.task.edit', $task->id) }}"
                                     class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1 text-dark">
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </a>
 
                                 <form action="{{ route('admin.task.destroy', $task->id) }}"
-                                      method="POST" class="d-inline">
+                                    method="POST" class="d-inline">
                                     @csrf @method('DELETE')
                                     <button type="submit"
                                         class="btn btn-sm btn-outline-danger rounded-pill px-3"
@@ -99,7 +95,6 @@
                                         <i class="bi bi-trash-fill"></i> Hapus
                                     </button>
                                 </form>
-
                             </td>
                         </tr>
                         @endforeach
@@ -110,6 +105,7 @@
         </div>
     </div>
 </div>
+
 
 {{-- DataTable --}}
 <script>

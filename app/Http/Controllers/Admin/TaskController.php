@@ -17,15 +17,16 @@ class TaskController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $tasks = Task::orderBy("created_at","desc")->paginate(10);
-        return view('admin.task.index', compact('user','tasks'));
+        $project = Project::all();
+        $tasks = Task::orderBy("created_at","desc")->get();
+        return view('admin.task.index', compact('user','tasks','project'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
+    {   
         $user = Auth::user();
         $projects = Project::all();
         $developers = User::where('role', 'developer')->get(); // sesuaikan role
@@ -38,8 +39,33 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            ''
+            'project_id' => 'required|exists:projects,id',
+            'assigned_to' => 'required|exists:users,id',
+            'judul_task' => 'required|string|max:255',
+            'deskripsi' => 'nullable',
+            'kesulitan' => 'nullable|in:low,medium,high,critical',
+            'status' => 'required|in:rencana,sedang_dikerjakan,tinjauan,selesai,dibatalkan',
+            'tanggal_mulai' => 'nullable|date',
+            'tanggal_tenggat' => 'nullable|date|after_or_equal:tanggal_mulai',
+            'estimasi' => 'nullable|numeric',
+            'progress' => 'required|integer|min:0|max:100',
         ]);
+
+        Task::create([
+            'project_id' => $request->project_id,
+            'assigned_to' => $request->assigned_to,
+            'judul_task' => $request->judul_task,
+            'deskripsi' => $request->deskripsi,
+            'kesulitan' => $request->kesulitan,
+            'status' => $request->status,
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_tenggat' => $request->tanggal_tenggat,
+            'estimasi' => $request->estimasi,
+            'progress' => $request->progress ?? 0,
+            'created_by' => Auth::id(),
+        ]);
+
+        return redirect()->route('admin.task.index')->with('success', 'Task berhasil ditambahkan.');
     }
 
     /**
@@ -53,9 +79,10 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Task $task)
     {
-        //
+        $user = Auth::user();
+        return view('admin.task.edit', compact('user'));
     }
 
     /**

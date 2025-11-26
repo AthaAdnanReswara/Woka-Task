@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-   protected $fillable = [
+    protected $fillable = [
         'project_id',
         'assigned_to',
         'judul_task',
@@ -66,4 +66,13 @@ class Task extends Model
         return $this->hasMany(TaskLampiran::class, 'task_id');
     }
 
+    /**
+     * Relasi:
+     * Task memiliki banyak kolaborator (user)
+     */
+    public function collaborators()
+    {
+        return $this->belongsToMany(User::class, 'task_collaborators', 'task_id', 'user_id')
+            ->withTimestamps();
+    }
 }
