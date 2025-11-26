@@ -28,24 +28,6 @@
 
 <body class="with-welcome-text">
   <div class="container-scroller">
-    <div class="row p-0 m-0 proBanner" id="proBanner">
-      <div class="col-md-12 p-0 m-0">
-        <div class="card-body card-body-padding px-3 d-flex align-items-center justify-content-between">
-          <div class="ps-lg-3">
-            <div class="d-flex align-items-center justify-content-between">
-              <p class="mb-0 fw-medium me-3 buy-now-text">Free 24/7 customer support, updates, and more with this template!</p>
-              <a href="https://www.bootstrapdash.com/product/star-admin-pro/" target="_blank" class="btn me-2 buy-now-btn border-0">Buy Now</a>
-            </div>
-          </div>
-          <div class="d-flex align-items-center justify-content-between">
-            <a href="https://www.bootstrapdash.com/product/star-admin-pro/"><i class="ti-home me-3 text-white"></i></a>
-            <button id="bannerClose" class="btn border-0 p-0">
-              <i class="ti-close text-white"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
@@ -223,8 +205,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.project.index') }}">
+            <a class="nav-link" {{ request()->routeIs('admin.projectMember.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('admin.projectMember.index') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Project Members</span>
             </a>
@@ -247,13 +229,13 @@
           </li>
           @endif
           <br>
-            <form action="{{ route('logout') }}" method="POST">
-              @csrf
-              <button type="submit" class="nav-link d-flex align-items-center logout-link">
-                <i class="menu-icon mdi mdi-logout"></i>
-                <span class="menu-title ms-2">Logout</span>
-              </button>
-            </form>
+          <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="nav-link d-flex align-items-center logout-link">
+              <i class="menu-icon mdi mdi-logout"></i>
+              <span class="menu-title ms-2">Logout</span>
+            </button>
+          </form>
           </li>
         </ul>
       </nav>

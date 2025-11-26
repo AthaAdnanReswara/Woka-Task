@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\pmController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\projectMemberController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
@@ -30,8 +31,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
     Route::resource('developer', DeveloperController::class);
     //CRUD Project
     Route::resource('project', ProjectController::class);
+    //CRUD Project Member
+    Route::resource('projectMember', projectMemberController::class);
     //CRUD Task
     Route::resource('task', TaskController::class);
+
 });
 //Prefik untuk PM
 Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function() {
