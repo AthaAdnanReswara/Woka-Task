@@ -177,7 +177,7 @@
           @if(auth()->user()->role == 'admin')
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.dashboard') }}">
+                 href=" {{ route( 'admin.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -205,8 +205,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.projectMember.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.projectMember.index') }}">
+            <a class="nav-link" {{ request()->routeIs('admin.member.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('admin.member.index') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Project Members</span>
             </a>
@@ -216,6 +216,13 @@
                  href=" {{ route('admin.task.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('admin.collaborator.index') }}">
+              <i class="mdi mdi-briefcase-check-outline menu-icon me-2"></i>
+              <span class="menu-title">Task Collaborators</span>
             </a>
           </li>
           @endif
@@ -228,14 +235,14 @@
             </a>
           </li>
           @endif
-          <br>
-          <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="nav-link d-flex align-items-center logout-link">
-              <i class="menu-icon mdi mdi-logout"></i>
-              <span class="menu-title ms-2">Logout</span>
-            </button>
-          </form>
+          <li class="nav-item mt-4">
+            <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="nav-link logout-link d-flex align-items-center text-dark w-100">
+                <i class="mdi mdi-logout menu-icon"></i>
+                <span class="menu-title ms-2">Logout</span>
+              </button>
+            </form>
           </li>
         </ul>
       </nav>

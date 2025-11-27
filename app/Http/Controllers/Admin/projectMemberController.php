@@ -19,9 +19,9 @@ class projectMemberController extends Controller
         $user = Auth::user();
         $users = User::all();
         $projects = Project::all();
-        $projectMembers = Project_member::all();
+        $members = Project_member::all();
 
-        return view('Admin.projectMember.index', compact('user', 'users', 'projects', 'projectMembers'));
+        return view('Admin.member.index', compact('user', 'users', 'projects', 'members'));
     }
 
 
@@ -34,7 +34,7 @@ class projectMemberController extends Controller
         $user = Auth::user();
         $users = User::all();
 
-        return view('admin.projectMember.tambah', compact('projects', 'user', 'users'));
+        return view('admin.member.tambah', compact('projects', 'user', 'users'));
     }
 
 
@@ -64,7 +64,7 @@ class projectMemberController extends Controller
             'user_id' => $request->user_id
         ]);
 
-        return redirect()->route('admin.projectMember.index')->with('success', 'Member berhasil ditambahkan');
+        return redirect()->route('admin.member.index')->with('success', 'Member berhasil ditambahkan');
     }
 
     /**
@@ -79,31 +79,28 @@ class projectMemberController extends Controller
      * Show the form for editing the specified resource.
      */
 // ================== EDIT ==================
-    public function edit(Project_member $project_member)
+    public function edit($id)
     {
         $user = Auth::user();
-
-        $projectMember  = Project_member::findOrFail($project_member->id);
+        $member  = Project_member::findOrFail($id);
         $users   = User::all();
         $projects = Project::all();
 
-        return view('admin.projectMember.edit', compact('user','projectMember','users','projects'));
+        return view('admin.member.edit', compact('user','member','users','projects'));
     }
 
-
     // ================== UPDATE ==================
-    public function update(Request $request,Project_member $project_member)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'project_id' => 'required|integer|exists:projects,id',
             'user_id'    => 'required|exists:users,id',
         ]);
 
-        $project_member = Project_member::findOrFail($project_member->id);
+        $project_member = Project_member::findOrFail($id);
 
         // Cek duplicate saat update (berbeda ID)
-        $exists = Project_member::where('project_id',$request->project_id)
-                                ->where('user_id',$request->user_id)
+        $exists = Project_member::
+                                where('user_id',$request->user_id)
                                 ->where('id','!=',$project_member->id)
                                 ->exists();
 
@@ -112,18 +109,17 @@ class projectMemberController extends Controller
         }
 
         $project_member->update([
-            'project_id' => $request->project_id,
             'user_id'    => $request->user_id
         ]);
 
-        return redirect()->route('admin.projectMember.index')->with('success','Member berhasil diupdate');
+        return redirect()->route('admin.member.index')->with('success','Member berhasil diupdate');
     }
 
 
     // ================== DELETE ==================
-    public function destroy(Project_member $project_member)
+    public function destroy($id)
     {
-        $project_member = Project_member::findOrFail($project_member->id);
+        $project_member = Project_member::findOrFail($id);
         $project_member->delete();
 
         return redirect()->back()->with('success','Member berhasil dihapus');

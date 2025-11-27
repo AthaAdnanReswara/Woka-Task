@@ -18,16 +18,18 @@
         <div class="card-header bg-secondary text-white fw-bold">
             <i class="bi bi-people"></i> Form Edit Member
         </div>
-
+        @if (session('error'))
+        <h3 class="text-danger">{{ session('error') }}</h3>
+        @endif
         <div class="card-body">
-            <form action="{{ route('admin.projectMember.update', $projectMember->id) }}" method="POST">
+            <form action="{{ route('admin.member.update', $member->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
                 <!-- Project Name (Readonly) -->
                 <div class="mb-3">
                     <label class="fw-semibold">Nama Project</label>
-                    <input type="text" class="form-control" value="{{ $projectMember->project->name }}" readonly>
+                    <input type="text" class="form-control" value="{{ $member->project->name }}" readonly>
                 </div>
 
                 <!-- Select User -->
@@ -36,10 +38,10 @@
                     <select name="user_id" id="userSelect" class="form-select text-black" required>
                         <option value="">-- Pilih User --</option>
                         @foreach($users as $u)
-                            <option value="{{ $u->id }}" 
-                                {{ $u->id == $member->user_id ? 'selected' : '' }}>
-                                {{ $u->name }} ({{ $u->email }})
-                            </option>
+                        <option value="{{ $u->id }}"
+                            {{ $u->id == $member->user_id ? 'selected' : '' }}>
+                            {{ $u->name }} ({{ $u->email }})
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -47,8 +49,8 @@
                 <!-- Button -->
                 <div class="text-end mt-4">
 
-                    <a href="{{ route('admin.projectMember.index') }}" 
-                       class="btn btn-outline-secondary rounded-pill px-3 shadow-sm">
+                    <a href="{{ route('admin.member.index') }}"
+                        class="btn btn-outline-secondary rounded-pill px-3 shadow-sm">
                         <i class="bi bi-arrow-left"></i> Kembali
                     </a>
 
@@ -63,16 +65,5 @@
 </div>
 
 
-{{-- SELECT2 JS --}}
-@push('scripts')
-<script>
-    $(document).ready(function(){
-        $('#userSelect').select2({
-            placeholder:"-- Pilih User --",
-            allowClear:true
-        });
-    });
-</script>
-@endpush
 
 @endsection

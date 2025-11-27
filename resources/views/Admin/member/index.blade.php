@@ -12,7 +12,7 @@
             <small class="text-secondary">Kelola anggota dari semua proyek</small>
         </div>
 
-        <a href="{{ route('admin.projectMember.create') }}" class="btn btn-primary shadow-sm">
+        <a href="{{ route('admin.member.create') }}" class="btn btn-primary shadow-sm">
             <i class="bi bi-person-plus-fill"></i> Tambah Member
         </a>
     </div>
@@ -48,7 +48,7 @@
                     </thead>
 
                     <tbody class="small">
-                        @forelse($projectMembers as $m)
+                        @forelse($members as $m)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td class="fw-semibold text-dark">{{ $m->project->name }}</td>
@@ -56,12 +56,12 @@
                             <td>{{ $m->user->email }}</td>
 
                             <td class="text-center">
-                                <a href="{{ route('admin.projectMember.edit',$m->id) }}"
+                                <a href="{{ route('admin.member.edit',$m->id) }}"
                                     class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1 text-dark">
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </a>
 
-                                <form action="{{ route('admin.projectMember.destroy',$m->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('admin.member.destroy',$m->id) }}" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
                                         onclick="return confirm('Hapus member ini?')">

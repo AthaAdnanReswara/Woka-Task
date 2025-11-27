@@ -4,9 +4,11 @@ use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\pmController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\projectMemberController;
+use App\Http\Controllers\Admin\taskCollaboratorController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
+use App\Models\taskCollaborator;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,9 +34,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
     //CRUD Project
     Route::resource('project', ProjectController::class);
     //CRUD Project Member
-    Route::resource('projectMember', projectMemberController::class);
+    Route::resource('member', projectMemberController::class);
     //CRUD Task
     Route::resource('task', TaskController::class);
+    //CRUD TaskColaborator
+    Route::resource('collaborator', taskCollaboratorController::class);
 
 });
 //Prefik untuk PM

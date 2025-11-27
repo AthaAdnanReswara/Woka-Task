@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid py-4">
 
-    <!-- Header Title -->
+    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="fw-bold text-dark mb-0">
@@ -17,112 +17,132 @@
         </a>
     </div>
 
-    <!-- Alert -->
+    <!-- ALERT -->
     @if (session('success'))
-    <div class="alert alert-success small shadow-sm">
-        <i class="bi bi-check-circle"></i> {{ session('success') }}
-    </div>
-    @elseif (session('error'))
-    <div class="alert alert-danger small shadow-sm">
-        <i class="bi bi-exclamation-triangle"></i> {{ session('error') }}
-    </div>
+    <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-
-    <!-- Table -->
-    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+    <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white fw-bold">
             <i class="bi bi-table"></i> Daftar Task
         </div>
-
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table align-middle table-hover mb-0" id="taskTable">
-                    <thead class="bg-light text-primary text-uppercase small">
-                        <tr>
-                            <th>No</th>
-                            <th>Judul Task</th>
-                            <th>Project</th>
-                            <th>Dikerjakan Oleh</th>
-                            <th>Deadline</th>
-                            <th>Status</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
 
-                    <tbody class="small">
-                        @foreach ($tasks as $task)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td class="fw-semibold text-dark">
-                                {{ $task->judul_task }}
-                            </td>
-                            <td>{{ $task->project->name ?? '-' }}</td>
-                            <td>{{ $task->assignedUser->name ?? '-' }}</td>
-                            <td class="fw-semibold text-danger">
-                                {{ $task->tanggal_tenggat ? \Carbon\Carbon::parse($task->tanggal_tenggat)->format('d M Y') : '-' }}
-                            </td>
-                            <!-- STATUS BADGE -->
-                            <td>
-                                @php
-                                $statusColor = match($task->status) {
-                                'rencana' => 'secondary',
-                                'sedang_dikerjakan' => 'warning',
-                                'tinjauan' => 'info',
-                                'selesai' => 'success',
-                                'dibatalkan' => 'danger',
-                                default => 'dark'
-                                };
-                                @endphp
-                                <span class="badge bg-{{ $statusColor }}">
-                                    {{ ucfirst(str_replace('_',' ', $task->status)) }}
-                                </span>
-                            </td>
+<table id="taskTable" class="table table-hover align-middle mb-0">
+    <thead class="bg-light text-uppercase small text-primary">
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>Judul</th>
+            <th>Project</th>
+            <th>PIC</th>
+            <th>Deadline</th>
+            <th>Status</th>
+        </tr>
+    </thead>
 
-                            <!-- ACTION BUTTON -->
-                            <td class="text-center">
-                                <a href="{{ route('admin.task.edit', $task->id) }}"
-                                    class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1 text-dark">
-                                    <i class="bi bi-pencil-fill"></i> Edit
-                                </a>
+    <tbody>
+        @foreach($tasks as $t)
+        @php
+        $encode = base64_encode(json_encode($t)); // untuk kirim data detail
+        @endphp
+        <tr 
+            data-info="{{ $encode }}"
+            data-id="{{ $t->id }}"
+            class="cursor-pointer">
 
-                                <form action="{{ route('admin.task.destroy', $task->id) }}"
-                                    method="POST" class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                        class="btn btn-sm btn-outline-danger rounded-pill px-3"
-                                        onclick="return confirm('Hapus task ini?')">
-                                        <i class="bi bi-trash-fill"></i> Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+            <td class="details-control">▶</td>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $t->judul_task }}</td>
+            <td>{{ $t->project->name ?? '-' }}</td>
+            <td>{{ $t->user->name ?? '-' }}</td>
+            <td><span class="text-danger fw-bold">{{ $t->tanggal_tenggat }}</span></td>
 
-                </table>
-            </div>
+            <td>
+                @php
+                $color = [
+                    'rencana'=>'secondary','sedang_dikerjakan'=>'warning',
+                    'tinjauan'=>'info','selesai'=>'success','dibatalkan'=>'danger'
+                ][$t->status] ?? 'dark';
+                @endphp
+                <span class="badge bg-{{ $color }}">{{ ucfirst(str_replace('_',' ',$t->status)) }}</span>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
         </div>
     </div>
 </div>
 
+{{-- STYLE --}}
+<style>
+    td.details-control {
+        cursor:pointer;
+        font-size:18px;
+        width:35px;
+        text-align:center;
+        font-weight:bold;
+        color:#0d6efd;
+    }
+    tr.shown { background:#f0f9ff !important; }
+</style>
 
-{{-- DataTable --}}
+{{-- SCRIPT DROPDOWN --}}
 <script>
-    $(document).ready(function() {
-        $('#taskTable').DataTable({
-            "language": {
-                "search": "Cari:",
-                "lengthMenu": "Tampilkan _MENU_ data",
-                "zeroRecords": "Data task tidak ditemukan",
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ task",
-                "paginate": {
-                    "next": "›",
-                    "previous": "‹"
-                }
-            }
-        });
+function decode(row){ return JSON.parse(atob(row)); }
+
+function format(d){
+    return `
+    <div class="p-3 bg-light border">
+        <table class="table table-sm mb-0">
+            <tr><th width="180px">Judul</th><td>${d.judul_task}</td></tr>
+            <tr><th>Deskripsi</th><td>${d.deskripsi ?? '-'}</td></tr>
+            <tr><th>Project</th><td>${d.project?.name ?? '-'}</td></tr>
+            <tr><th>PIC / User</th><td>${d.user?.name ?? '-'}</td></tr>
+            <tr><th>Deadline</th><td>${d.tanggal_tenggat ?? '-'}</td></tr>
+            <tr><th>Status</th><td>${d.status}</td></tr>
+            <tr>
+                <th>Aksi</th>
+                <td>
+                    <a href="/admin/task/${d.id}/edit" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i> Edit</a>
+                    <form action="/admin/task/${d.id}" method="POST" class="d-inline">
+                        @csrf @method('DELETE')
+                        <button onclick="return confirm('Yakin hapus?')" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i> Hapus
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>`;
+}
+
+$(document).ready(function(){
+
+    let table = $('#taskTable').DataTable(); 
+    let open = new Set();
+
+    $('#taskTable tbody').on('click','td.details-control',function(){
+        let tr = $(this).closest('tr');
+        let row = table.row(tr);
+        let id = tr.data('id');
+
+        if(row.child.isShown()){
+            row.child.hide();
+            tr.removeClass('shown');
+            $(this).text('▶');
+            open.delete(id);
+        } else {
+            let d = decode(tr.attr('data-info'));
+            row.child(format(d)).show();
+            tr.addClass('shown');
+            $(this).text('▼');
+            open.add(id);
+        }
     });
+});
 </script>
 
 @endsection

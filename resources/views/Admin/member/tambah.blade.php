@@ -38,7 +38,7 @@
 
         <div class="card-body p-4">
 
-            <form action="{{ route('admin.projectMember.store') }}" method="POST">
+            <form action="{{ route('admin.member.store') }}" method="POST">
                 @csrf
 
                 <!-- Project -->
@@ -67,7 +67,7 @@
                 @error('user_id')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
-                <a href="{{ route('admin.projectMember.index') }}" class="btn btn-secondary shadow-sm">
+                <a href="{{ route('admin.member.index') }}" class="btn btn-secondary shadow-sm">
                     <i class="bi bi-arrow-left"></i> Kembali
                 </a>
                 <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
