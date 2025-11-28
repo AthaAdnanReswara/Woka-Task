@@ -17,10 +17,12 @@ class TaskController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $project = Project::all();
-        $tasks = Task::orderBy("created_at", "desc")->get();
-        
-        return view('admin.task.index', compact('user', 'tasks', 'project'));
+
+        $projects = Project::with(['tasks.user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.task.index', compact('user', 'projects'));
     }
 
     /**
