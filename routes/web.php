@@ -47,3 +47,9 @@ Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function
     Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
     
 });
+//Prefik untuk Developer
+Route::prefix('developer')->name('developer.')->middleware(['auth','role:developer'])->group(function() {
+    //tampilan dashboard
+    Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
+    
+});
