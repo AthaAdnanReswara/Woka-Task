@@ -12,7 +12,7 @@
             <small class="text-secondary">Kelola akun Developer pada sistem proyek</small>
         </div>
 
-        <a href="{{ route('admin.developer.create') }}" class="btn btn-primary shadow-sm">
+        <a href="{{ route('PM.pengembang.create') }}" class="btn btn-primary shadow-sm">
             <i class="bi bi-person-plus">Tambah Developer</i> 
         </a>
     </div>
@@ -43,13 +43,13 @@
                             <th>Nama</th>
                             <th>Email</th>
                             <th class="text-center">Ditambahkan</th>
-                            <th class="text-center">anggal</th>
+                            <th class="text-center">Tanggal</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody class="small">
-                        @foreach ($developer as $data)
+                        @foreach ($pengembang as $data)
                         <tr class="table-row-hover">
                             <td class="fw-semibold">{{ $loop->iteration }}</td>
                             <td class="fw-semibold text-dark">{{ $data->name }}</td>
@@ -61,12 +61,12 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <a href="{{ route('admin.developer.edit', $data->id) }}" 
+                                <a href="{{ route('PM.pengembang.edit', $data->id) }}" 
                                    class="btn btn-sm btn-outline-warning me-1">
                                    <i class="bi bi-pencil-square text-dark">Update</i>
                                 </a>
 
-                                <form action="{{ route('admin.developer.destroy', $data->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('PM.pengembang.destroy', $data->id) }}" method="POST" class="d-inline">
                                     @csrf 
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger shadow-none"

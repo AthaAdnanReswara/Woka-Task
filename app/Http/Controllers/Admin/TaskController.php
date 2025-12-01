@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Project_member;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -55,6 +56,18 @@ class TaskController extends Controller
             'estimasi' => 'nullable|numeric',
             'progress' => 'required|integer|min:0|max:100',
         ]);
+
+        /**
+         * 🔥 Cek apakah user yang login terdaftar di project yg dipilih
+         * Bukan cuma terdaftar di salah satu project, tapi HARUS di project yg dipilih.
+         */
+        $isMember = Project_member::where('project_id', $request->project_id)
+            ->where('user_id', Auth::id())
+            ->exists();
+
+        if (!$isMember) {
+            return back()->with('error', '❌ Anda tidak terdaftar di project ini, tidak bisa menambah task.');
+        }
 
         Task::create([
             'project_id' => $request->project_id,

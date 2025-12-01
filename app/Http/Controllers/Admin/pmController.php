@@ -44,7 +44,7 @@ class pmController extends Controller
             'name' => $request->name,
             'email'=> $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'PM'
+            'role' => 'PM',
         ]);
 
         return redirect()->route('admin.PM.index')->with('success','Selamat berhasil menambah user PM');

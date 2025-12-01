@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\taskCollaboratorController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\PM\pengembangController;
 use App\Models\taskCollaborator;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
 Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function() {
     //tampilan dashboard
     Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
+    //tambah developer di PM
+    Route::resource('pengembang', pengembangController::class);
     
 });
 //Prefik untuk Developer

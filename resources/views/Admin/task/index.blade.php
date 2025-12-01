@@ -32,7 +32,7 @@
                 <thead class="bg-light text-uppercase small text-primary">
                     <tr>
                         <th></th>
-                        <th>#</th>
+                        <th>No</th>
                         <th>Nama Project</th>
                         <th>Total Task</th>
                         <th>Status</th>

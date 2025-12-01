@@ -53,6 +53,12 @@
             <h3 class="welcome-sub-text">Your performance summary this week </h3>
           </li>
           @endif
+          @if (auth()->user()->role == 'PM')
+          <li class="nav-item fw-semibold d-none d-lg-block ms-0">
+            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ $user->name }}</span></h1>
+            <h3 class="welcome-sub-text">Your performance summary this week </h3>
+          </li>
+          @endif
         </ul>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item d-none d-lg-block">
@@ -232,6 +238,14 @@
                  href=" {{ route('PM.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">UI Elements</li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('PM.pengembang.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.pengembang.index') }}">
+              <i class="mdi mdi-account-cog menu-icon"></i>
+              <span class="menu-title">Developer</span>
             </a>
           </li>
           @endif
