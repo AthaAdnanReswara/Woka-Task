@@ -227,7 +227,7 @@
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.collaborator.index') }}">
-              <i class="mdi mdi-briefcase-check-outline menu-icon me-2"></i>
+              <i class="mdi mdi-account-multiple-check menu-icon me-2"></i>
               <span class="menu-title">Task Collaborators</span>
             </a>
           </li>
@@ -246,6 +246,13 @@
                  href=" {{ route('PM.pengembang.index') }}">
               <i class="mdi mdi-account-cog menu-icon"></i>
               <span class="menu-title">Developer</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('PM.proyek.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.proyek.index') }}">
+              <i class="mdi mdi-folder-multiple menu-icon"></i>
+              <span class="menu-title">Project</span>
             </a>
           </li>
           @endif

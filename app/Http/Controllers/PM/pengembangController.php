@@ -16,9 +16,7 @@ class pengembangController extends Controller
         $user = Auth::user();
 
         // Hanya tampilkan developer yang dibuat oleh PM login
-        $pengembang = User::where('role', 'developer')
-                          ->where('created_by', $user->id)
-                          ->get();
+        $pengembang = User::where('role', 'developer')->get();
 
         return view('PM.pengembang.index', compact('user', 'pengembang'));
     }
