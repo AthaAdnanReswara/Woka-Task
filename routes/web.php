@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\developer\PekerjaanController;
 use App\Http\Controllers\PM\AnggotaController;
+use App\Http\Controllers\PM\KelompokController;
 use App\Http\Controllers\PM\pengembangController;
 use App\Http\Controllers\PM\ProyekController;
 use App\Http\Controllers\PM\TugasController;
@@ -58,7 +59,8 @@ Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function
     Route::resource('anggota', AnggotaController::class);
     //CRUD Tugas di PM
     Route::resource('tugas', TugasController::class);
-    
+    //CRUD kelompok di PM
+    Route::resource('kelompok', KelompokController::class);
 });
 //Prefik untuk Developer
 Route::prefix('developer')->name('developer.')->middleware(['auth','role:developer'])->group(function() {
