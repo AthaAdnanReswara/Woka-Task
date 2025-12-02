@@ -67,5 +67,5 @@ Route::prefix('developer')->name('developer.')->middleware(['auth','role:develop
     //tampilan dashboard
     Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
     //Mengerjakan Task
-    Route::resource('pekerjaan', PekerjaanController::class);
+    Route::resource('pekerjaan', PekerjaanController::class)->parameters(['pekerjaan' => 'task']);
 });

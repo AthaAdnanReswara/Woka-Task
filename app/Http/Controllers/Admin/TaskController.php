@@ -94,17 +94,17 @@ class TaskController extends Controller
             'progress' => 'required|integer|min:0|max:100',
         ]);
 
-        /**
-         * 🔥 Cek apakah user yang login terdaftar di project yg dipilih
-         * Bukan cuma terdaftar di salah satu project, tapi HARUS di project yg dipilih.
-         */
-        $isMember = Project_member::where('project_id', $request->project_id)
-            ->where('user_id', Auth::id())
-            ->exists();
+        // /**
+        //  * 🔥 Cek apakah user yang login terdaftar di project yg dipilih
+        //  * Bukan cuma terdaftar di salah satu project, tapi HARUS di project yg dipilih.
+        //  */
+        // $isMember = Project_member::where('project_id', $request->project_id)
+        //     ->where('user_id', Auth::id())
+        //     ->exists();
 
-        if (!$isMember) {
-            return back()->with('error', '❌ Anda tidak terdaftar di project ini, tidak bisa menambah task.');
-        }
+        // if (!$isMember) {
+        //     return back()->with('error', '❌ Anda tidak terdaftar di project ini, tidak bisa menambah task.');
+        // }
 
         Task::create([
             'project_id' => $request->project_id,
