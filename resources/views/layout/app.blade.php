@@ -49,13 +49,13 @@
         <ul class="navbar-nav">
           @if (auth()->user()->role == 'admin')
           <li class="nav-item fw-semibold d-none d-lg-block ms-0">
-            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ $user->name }}</span></h1>
+            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ Auth::user()->name }}</span></h1>
             <h3 class="welcome-sub-text">Your performance summary this week </h3>
           </li>
           @endif
           @if (auth()->user()->role == 'PM')
           <li class="nav-item fw-semibold d-none d-lg-block ms-0">
-            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ $user->name }}</span></h1>
+            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ Auth::user()->name }}</span></h1>
             <h3 class="welcome-sub-text">Your performance summary this week </h3>
           </li>
           @endif
@@ -253,6 +253,20 @@
                  href=" {{ route('PM.proyek.index') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
               <span class="menu-title">Project</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('PM.anggota.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.anggota.index') }}">
+              <i class="mdi mdi-account-group menu-icon"></i>
+              <span class="menu-title">Project Members</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('PM.tugas.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.tugas.index') }}">
+              <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
+              <span class="menu-title">Task</span>
             </a>
           </li>
           @endif
