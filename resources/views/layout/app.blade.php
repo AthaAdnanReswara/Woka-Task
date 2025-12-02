@@ -59,6 +59,12 @@
             <h3 class="welcome-sub-text">Your performance summary this week </h3>
           </li>
           @endif
+          @if (auth()->user()->role == 'developer')
+          <li class="nav-item fw-semibold d-none d-lg-block ms-0">
+            <h1 class="welcome-text">Selamat Datang, <span class="text-black fw-bold">{{ Auth::user()->name }}</span></h1>
+            <h3 class="welcome-sub-text">Your performance summary this week </h3>
+          </li>
+          @endif
         </ul>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item d-none d-lg-block">
@@ -240,7 +246,7 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item nav-category">UI Elements</li>
+          <li class="nav-item nav-category">Menu </li>
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('PM.pengembang.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.pengembang.index') }}">
@@ -265,6 +271,23 @@
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('PM.tugas.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.tugas.index') }}">
+              <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
+              <span class="menu-title">Task</span>
+            </a>
+          </li>
+          @endif
+          @if (auth()->user()->role == 'developer')
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('developer.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('developer.dashboard') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">Menu </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('developer.pekerjaan.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('developer.pekerjaan.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>

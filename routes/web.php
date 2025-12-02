@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\taskCollaboratorController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\developer\PekerjaanController;
 use App\Http\Controllers\PM\AnggotaController;
 use App\Http\Controllers\PM\pengembangController;
 use App\Http\Controllers\PM\ProyekController;
@@ -63,5 +64,6 @@ Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function
 Route::prefix('developer')->name('developer.')->middleware(['auth','role:developer'])->group(function() {
     //tampilan dashboard
     Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
-    //
+    //Mengerjakan Task
+    Route::resource('pekerjaan', PekerjaanController::class);
 });

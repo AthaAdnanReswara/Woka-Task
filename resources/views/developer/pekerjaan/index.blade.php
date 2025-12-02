@@ -200,7 +200,7 @@
 
         table.on('draw', function() {
             $('#taskTable tbody tr').each(function() {
-                let tr = $(this);       
+                let tr = $(this);
                 let id = tr.data('id');
                 if (expandedRows.has(id)) {
                     toggleRow(tr, table.row(tr));
