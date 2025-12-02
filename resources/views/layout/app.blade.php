@@ -248,6 +248,13 @@
               <span class="menu-title">Developer</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('PM.proyek.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.proyek.index') }}">
+              <i class="mdi mdi-folder-multiple menu-icon"></i>
+              <span class="menu-title">Project</span>
+            </a>
+          </li>
           @endif
           <li class="nav-item mt-4">
             <form action="{{ route('logout') }}" method="POST">
