@@ -7,14 +7,10 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="fw-bold text-dark mb-0">
-                <i class="bi bi-list-check text-primary"></i> Task Management
+                <i class="bi bi-list-check text-primary"></i> Task Saya
             </h3>
-            <small class="text-secondary">Kelola semua task dalam sebuah project</small>
+            <small class="text-secondary">Kelola task yang menjadi tanggung jawab Anda</small>
         </div>
-
-        <a href="{{ route('PM.tugas.create') }}" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-circle"></i> Tambah Task
-        </a>
     </div>
 
     <!-- ALERT -->
@@ -45,15 +41,12 @@
                         <th>Jumlah Task</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     @foreach ($data as $index => $item)
                     @php
                     $riwayatBase64 = base64_encode(json_encode($item['riwayat']));
                     @endphp
-                    <tr
-                        data-id="{{ $item['id'] }}"
-                        data-riwayat="{{ $riwayatBase64 }}">
+                    <tr data-id="{{ $item['id'] }}" data-riwayat="{{ $riwayatBase64 }}">
                         <td class="details-control">▶️</td>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item["name"] }}</td>
@@ -69,7 +62,6 @@
             </table>
         </div>
     </div>
-
 </div>
 
 <style>
@@ -131,9 +123,9 @@
     `;
 
         riwayat.forEach(r => {
-            let editUrl = `/PM/tugas/${r.id}/edit`;
-            let printUrl = `/tugas/${r.id}/print`;
-            let deleteUrl = `/tugas/${r.id}/delete`; // pastikan route delete pakai form/JS
+            let editUrl = `/developer/pekerjaan/${r.id}/edit`;
+            let printUrl = `/developer/pekerjaan/${r.id}/print`;
+            let deleteUrl = `/developer/pekerjaan/${r.id}/delete`; 
 
             html += `
             <tr>
