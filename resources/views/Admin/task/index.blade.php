@@ -28,35 +28,42 @@
         </div>
 
         <div class="card-body p-0">
+            <div class="mb-3">
+                <button id="collapseAll" class="btn btn-sm btn-secondary">Tutup Semua</button>
+            </div>
             <table id="taskTable" class="table table-hover align-middle mb-0">
                 <thead class="bg-light text-uppercase small text-primary">
                     <tr>
                         <th></th>
                         <th>No</th>
                         <th>Nama Project</th>
-                        <th>Total Task</th>
+                        <th>Deskripsi</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
                         <th>Status</th>
+                        <th>Pembuat</th>
+                        <th>Jumlah Task</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach($projects as $p)
+                    @foreach ($data as $index => $item)
                     @php
-                    $encode = base64_encode(json_encode($p->toArray()));
+                    $riwayatBase64 = base64_encode(json_encode($item['riwayat']));
                     @endphp
-
                     <tr
-                        data-info="{{ $encode }}"
-                        data-id="{{ $p->id }}"
-                        class="cursor-pointer">
-
-                        <td class="details-control">▶</td>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $p->name }}</td>
-                        <td>{{ $p->tasks->count() }} Task</td>
-                        <td><span class="badge bg-info">Project</span></td>
+                        data-id="{{ $item['id'] }}"
+                        data-riwayat="{{ $riwayatBase64 }}">
+                        <td class="details-control">▶️</td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $item["name"] }}</td>
+                        <td>{{ $item["description"] }}</td>
+                        <td>{{ $item["start_date"] }}</td>
+                        <td>{{ $item["end_date"] }}</td>
+                        <td>{{ $item["status"] }}</td>
+                        <td>{{ $item["created_by"] }}</td>
+                        <td>{{ $item["jumlah_task"] }}</td>
                     </tr>
-
                     @endforeach
                 </tbody>
             </table>
@@ -65,128 +72,147 @@
 
 </div>
 
-{{-- STYLE --}}
 <style>
-    td.details-control {
-        cursor: pointer;
-        font-size: 18px;
-        width: 35px;
-        text-align: center;
-        font-weight: bold;
-        color: #0d6efd;
+    /* Membuat konten kolom tidak terpotong dan melebar sesuai isi */
+    table.dataTable td {
+        white-space: nowrap;
     }
 
-    tr.shown {
-        background: #f0f9ff !important;
-    }
-
-    .btn-edit {
-        background: #D4A017 !important;
-        border: 0 !important;
-        color: white !important;
-    }
-
-    .btn-delete {
-        background: #E74C3C !important;
-        border: 0 !important;
-        color: white !important;
+    /* Memastikan scroll horizontal aktif */
+    div.dataTables_wrapper {
+        width: 100%;
+        overflow-x: auto;
     }
 </style>
 
-{{-- SCRIPT --}}
-<script>
-    function decode(row) {
-        return JSON.parse(atob(row));
+<style>
+    tr.shown {
+        background-color: #f0f9ff !important;
     }
 
-    function format(d) {
-        let tasks = d.tasks ?? [];
-        let tableId = "tbl_child_" + d.id;
+    td.details-control {
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+        color: #0d6efd;
+        font-size: 18px;
+        width: 40px;
+    }
+</style>
 
-        if (tasks.length === 0) {
-            return `<div class="p-3 bg-light"><em>Belum ada task pada project ini.</em></div>`;
+<script>
+    function base64ToJson(base64) {
+        try {
+            return JSON.parse(atob(base64));
+        } catch (e) {
+            console.error("JSON Parse Error:", e);
+            return [];
         }
+    }
 
-        let rows = "";
-        tasks.forEach((t, i) => {
-            rows += `
-        <tr>
-            <td>${i+1}</td>
-            <td>${t.judul_task}</td>
-            <td>${t.user?.name ?? '-'}</td>
-            <td>${t.tanggal_tenggat ?? '-'}</td>
-            <td>${t.status}</td>
-            <td>
-                <a href="/admin/task/${t.id}/edit" class="btn btn-sm btn-edit me-1">
-                    <i class="bi bi-pencil"></i>
-                </a>
+    function formatRiwayat(riwayat) {
+        let html = '<div style="overflow-x:auto"><table class="table table-sm table-bordered mb-0">';
+        html += `
+        <thead class="table-light">
+            <tr>
+                <th>Penanggung Jawab</th>
+                <th>Judul</th>
+                <th>Deskripsi</th>
+                <th>Kesulitan</th>
+                <th>Status</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Selesai</th>
+                <th>Estimasi</th>
+                <th>Progres</th>
+                <th>Pembuat</th>
+                <th>Aksi</th>
+            </tr>
+        </thead><tbody>
+    `;
 
-                <form action="/admin/task/${t.id}" method="POST" class="d-inline">
-                    @csrf @method('DELETE')
-                    <button onclick="return confirm('Yakin hapus?')" class="btn btn-sm btn-delete">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>
-            </td>
-        </tr>`;
+        riwayat.forEach(r => {
+            let editUrl = `/pemeriksaan/${r.id}/edit`;
+            let printUrl = `/pemeriksaan/${r.id}/print`;
+            let deleteUrl = `/pemeriksaan/${r.id}/delete`; // pastikan route delete pakai form/JS
+
+            html += `
+            <tr>
+                <td>${r.penanggung_jawab ?? '-'}</td>
+                <td>${r.judul ?? '-'}</td>
+                <td>${r.deskripsi ?? '-'}</td>
+                <td>${r.kesulitan ?? '-'}</td>
+                <td>${r.status ?? '-'}</td>
+                <td>${r.tanggal_mulai ?? '-'}</td>
+                <td>${r.tanggal_selesai ?? '-'}</td>
+                <td>${r.estimasi ?? '-'}</td>
+                <td>${r.progres ?? '-'}</td>
+                <td>${r.pembuat ?? '-'}</td>
+                <td class="text-center">
+                    <a href="${editUrl}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                    <a href="${printUrl}" class="btn btn-sm btn-secondary" target="_blank"><i class="bi bi-printer"></i></a>
+                    <a href="${deleteUrl}" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        `;
         });
 
-        return `
-    <div class="p-3 bg-light border">
-        <h6 class="fw-bold mb-3">Task Pada Project: ${d.name}</h6>
-
-        <table id="${tableId}" class="table table-bordered table-striped table-sm">
-            <thead class="table-light">
-                <tr>
-                    <th>#</th>
-                    <th>Judul Task</th>
-                    <th>PIC</th>
-                    <th>Deadline</th>
-                    <th>Status</th>
-                    <th width="130px">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${rows}
-            </tbody>
-        </table>
-    </div>`;
+        html += '</tbody></table></div>';
+        return html;
     }
 
     $(document).ready(function() {
-
-        let table = $('#taskTable').DataTable();
-
-        $('#taskTable tbody').on('click', 'td.details-control', function() {
-
-            let tr = $(this).closest('tr');
-            let row = table.row(tr);
-
-            if (row.child.isShown()) {
-                row.child.hide();
-                tr.removeClass('shown');
-                $(this).text('▶');
-            } else {
-                let d = decode(tr.attr('data-info'));
-
-                row.child(format(d)).show();
-                tr.addClass('shown');
-                $(this).text('▼');
-
-                let childId = "#tbl_child_" + d.id;
-
-                $(childId).DataTable({
-                    paging: true,
-                    searching: true,
-                    ordering: true,
-                    autoWidth: false,
-                    responsive: true,
-                    pageLength: 5
-                });
-            }
+        let table = $('#taskTable').DataTable({
+            responsive: true,
+            ordering: true,
+            paging: true,
+            searching: true
         });
 
+        let expandedRows = new Set();
+
+        function toggleRow(tr, row) {
+            let td = tr.find('td.details-control');
+            let isShown = row.child.isShown();
+            let id = tr.data('id');
+
+            if (isShown) {
+                $('div.slider', row.child()).slideUp(300, function() {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    td.text('▶️');
+                    expandedRows.delete(id);
+                });
+            } else {
+                let riwayat = base64ToJson(tr.attr('data-riwayat'));
+                row.child('<div class="slider">' + formatRiwayat(riwayat) + '</div>', 'p-0').show();
+                tr.addClass('shown');
+                td.text('▼');
+                $('div.slider', row.child()).slideDown(300);
+                expandedRows.add(id);
+            }
+        }
+
+        $('#taskTable tbody').on('click', 'td.details-control', function() {
+            let tr = $(this).closest('tr');
+            let row = table.row(tr);
+            toggleRow(tr, row);
+        });
+
+        table.on('draw', function() {
+            $('#taskTable tbody tr').each(function() {
+                let tr = $(this);
+                let id = tr.data('id');
+                if (expandedRows.has(id)) {
+                    toggleRow(tr, table.row(tr));
+                }
+            });
+        });
+
+        $('#collapseAll').on('click', function() {
+            $('#taskTable tbody tr.shown').each(function() {
+                toggleRow($(this), table.row(this));
+            });
+        });
     });
 </script>
-
 @endsection

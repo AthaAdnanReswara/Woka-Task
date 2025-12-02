@@ -21,6 +21,11 @@ class Task extends Model
         'updated_by',
     ];
 
+    protected $casts = [
+        'tanggal_mulai' => 'date',
+        'tanggal_tenggat' => 'date',
+    ];
+
     /**
      * Relasi:
      * Task milik 1 project

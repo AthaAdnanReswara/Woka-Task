@@ -19,11 +19,48 @@ class TaskController extends Controller
     {
         $user = Auth::user();
 
-        $projects = Project::with(['tasks.user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Ambil data project + tasks + user pembuat task
+        $data = Project::with(['tasks.user', 'creator'])
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function ($project) {
 
-        return view('admin.task.index', compact('user', 'projects'));
+                return [
+                    'id' => $project->id,
+                    'name' => $project->name,
+                    'description' => $project->description,
+
+                    // DATE → Carbon → format
+                    'start_date' => optional($project->start_date)->format('d M Y'),
+                    'end_date' => optional($project->end_date)->format('d M Y'),
+
+                    'status' => $project->status,
+                    'created_by' => $project->creator?->name ?? '-',
+                    'jumlah_task' => $project->tasks->count(),
+
+                    // === RIWAYAT TASK ===
+                    'riwayat' => $project->tasks->map(function ($t) {
+                        return [
+                            'id' => $t->id,
+                            'penanggung_jawab' => $t->user?->name ?? '-',
+                            'judul' => $t->title,
+                            'deskripsi' => $t->description,
+                            'kesulitan' => $t->kesulitan ?? '-',
+                            'status' => $t->status ?? '-',
+
+                            // DATE → Carbon → format
+                            'tanggal_mulai' => optional($t->tanggal_mulai)->format('d M Y'),
+                            'tanggal_selesai' => optional($t->tanggal_tenggat)->format('d M Y'),
+
+                            'estimasi' => $t->estimasi ?? '-',
+                            'progres' => ($t->progress ?? 0) . '%',
+                            'pembuat' => $t->creator?->name ?? '-',
+                        ];
+                    })->values(),
+                ];
+            });
+
+        return view('admin.task.index', compact('data', 'user'));
     }
 
     /**

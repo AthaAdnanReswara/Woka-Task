@@ -221,13 +221,13 @@
             <a class="nav-link" {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.task.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
-              <span class="menu-title">task</span>
+              <span class="menu-title">Task</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.collaborator.index') }}">
-              <i class="mdi mdi-account-multiple-check menu-icon me-2"></i>
+              <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
             </a>
           </li>

@@ -16,6 +16,11 @@ class Project extends Model
         'updated_by',
     ];
 
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
     /**
      * Relasi:
      * Setiap project dibuat oleh 1 user (Admin atau PM)
@@ -53,6 +58,6 @@ class Project extends Model
     public function members()
     {
         return $this->belongsToMany(User::class, 'project_members')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 }
