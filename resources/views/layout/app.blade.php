@@ -277,7 +277,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('PM.kelompok.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.Kelompok.index') }}">
+                 href=" {{ route('PM.kelompok.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
             </a>
