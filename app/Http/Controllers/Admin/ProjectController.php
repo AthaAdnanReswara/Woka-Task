@@ -73,7 +73,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    c
+    
 
     /**
      * Remove the specified resource from storage.
