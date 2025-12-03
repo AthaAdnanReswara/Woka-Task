@@ -275,6 +275,13 @@
               <span class="menu-title">Task</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('PM.kelompok.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.kelompok.index') }}">
+              <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
+              <span class="menu-title">Task Collaborators</span>
+            </a>
+          </li>
           @endif
           @if (auth()->user()->role == 'developer')
           <li class="nav-item">
@@ -293,6 +300,8 @@
             </a>
           </li>
           @endif
+
+
           <li class="nav-item mt-4">
             <form action="{{ route('logout') }}" method="POST">
               @csrf
