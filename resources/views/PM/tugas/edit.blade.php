@@ -3,6 +3,10 @@
 @section('content')
 <div class="container-fluid py-4">
 
+    @php
+    use Carbon\Carbon;
+    @endphp
+
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -19,20 +23,23 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('PM.tugas.update',$tugas->id) }}" method="POST">
+            <form action="{{ route('PM.tugas.update',$task->id) }}" method="POST">
                 @csrf
                 @method("PUT")
 
                 <!-- PROJECT -->
                 <div class="mb-3">
                     <label class="fw-semibold">Project</label>
-                    <select name="project_id" class="form-select" required>
+                    <select class="form-select" disabled>
                         @foreach($projects as $p)
-                            <option value="{{ $p->id }}" {{ $task->project_id == $p->id ? 'selected' : '' }}>
-                                {{ $p->name }}
-                            </option>
+                        <option value="{{ $p->id }}" {{ $task->project_id == $p->id ? 'selected' : '' }}>
+                            {{ $p->name }}
+                        </option>
                         @endforeach
                     </select>
+
+                    <!-- Hidden untuk dikirim -->
+                    <input type="hidden" name="project_id" value="{{ $task->project_id }}">
                 </div>
 
                 <!-- DEVELOPER -->
@@ -40,9 +47,9 @@
                     <label class="fw-semibold">Assign Ke</label>
                     <select name="assigned_to" id="selectUser" class="form-select" required>
                         @foreach($developers as $d)
-                            <option value="{{ $d->id }}" {{ $task->assigned_to == $d->id ? 'selected' : '' }}>
-                                {{ $d->name }} - {{ $d->email }}
-                            </option>
+                        <option value="{{ $d->id }}" {{ $task->assigned_to == $d->id ? 'selected' : '' }}>
+                            {{ $d->name }} - {{ $d->email }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -51,7 +58,7 @@
                 <div class="mb-3">
                     <label class="fw-semibold">Judul Task</label>
                     <input type="text" class="form-control" name="judul_task"
-                           value="{{ old('judul_task',$task->judul_task) }}" required>
+                        value="{{ old('judul_task',$task->judul_task) }}" required>
                 </div>
 
                 <!-- DESKRIPSI -->
@@ -65,9 +72,9 @@
                     <label class="fw-semibold">Tingkat Kesulitan</label>
                     <select name="kesulitan" class="form-select">
                         @foreach (['low'=>'Low','medium'=>'Medium','high'=>'High','critical'=>'Critical'] as $key=>$label)
-                            <option value="{{ $key }}" {{ $key == $task->kesulitan ? 'selected':'' }}>
-                                {{ $label }}
-                            </option>
+                        <option value="{{ $key }}" {{ $key == $task->kesulitan ? 'selected':'' }}>
+                            {{ $label }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -77,12 +84,12 @@
                     <label class="fw-semibold">Status</label>
                     <select name="status" class="form-select">
                         @foreach ([
-                            'rencana'=>'Rencana','sedang_dikerjakan'=>'Sedang Dikerjakan',
-                            'tinjauan'=>'Tinjauan','selesai'=>'Selesai','dibatalkan'=>'Dibatalkan'
+                        'rencana'=>'Rencana','sedang_dikerjakan'=>'Sedang Dikerjakan',
+                        'tinjauan'=>'Tinjauan','selesai'=>'Selesai','dibatalkan'=>'Dibatalkan'
                         ] as $key=>$label)
-                            <option value="{{ $key }}" {{ $key == $task->status ? 'selected':'' }}>
-                                {{ $label }}
-                            </option>
+                        <option value="{{ $key }}" {{ $key == $task->status ? 'selected':'' }}>
+                            {{ $label }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -91,12 +98,13 @@
                     <div class="col-md-6 mb-3">
                         <label class="fw-semibold">Tanggal Mulai</label>
                         <input type="date" class="form-control" name="tanggal_mulai"
-                               value="{{ $task->tanggal_mulai }}">
+                            value="{{ $task->tanggal_mulai ? Carbon::parse($task->tanggal_mulai)->format('Y-m-d') : '' }}">
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label class="fw-semibold">Tanggal Tenggat</label>
                         <input type="date" class="form-control" name="tanggal_tenggat"
-                               value="{{ $task->tanggal_tenggat }}">
+                            value="{{ $task->tanggal_tenggat ? Carbon::parse($task->tanggal_tenggat)->format('Y-m-d') : '' }}">
                     </div>
                 </div>
 
@@ -104,13 +112,13 @@
                     <div class="col-md-6 mb-3">
                         <label class="fw-semibold">Estimasi (Jam)</label>
                         <input type="number" name="estimasi" class="form-control"
-                               value="{{ $task->estimasi }}">
+                            value="{{ $task->estimasi }}">
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="fw-semibold">Progress (%)</label>
                         <input type="number" name="progress" min="0" max="100" class="form-control"
-                               value="{{ $task->progress }}">
+                            value="{{ $task->progress }}">
                     </div>
                 </div>
 
@@ -131,7 +139,7 @@
 {{-- SELECT2 --}}
 @push('scripts')
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         $('#selectUser').select2();
     });
 </script>

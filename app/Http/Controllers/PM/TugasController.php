@@ -43,8 +43,8 @@ class TugasController extends Controller
                         return [
                             'id' => $t->id,
                             'penanggung_jawab' => $t->user?->name ?? '-',
-                            'judul' => $t->title,
-                            'deskripsi' => $t->description,
+                            'judul' => $t->judul_task,
+                            'deskripsi' => $t->deskripsi,
                             'kesulitan' => $t->kesulitan ?? '-',
                             'status' => $t->status ?? '-',
 
@@ -123,7 +123,7 @@ class TugasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $tugas)
+    public function edit(Task $task)
     {
         $projects = Project::all();
         // ambil user yang berperan developer & terdaftar dalam project
@@ -131,7 +131,7 @@ class TugasController extends Controller
             ->whereHas('projects')
             ->get();
 
-        return view('PM.tugas.edit', compact('tugas',  'projects', 'developers'));
+        return view('PM.tugas.edit', compact('task',  'projects', 'developers'));
     }
 
     /**
@@ -139,6 +139,7 @@ class TugasController extends Controller
      */
     public function update(Request $request, Task $task)
     {
+
         $request->validate([
             'project_id' => 'required|exists:projects,id',
             'assigned_to' => 'required|exists:users,id',

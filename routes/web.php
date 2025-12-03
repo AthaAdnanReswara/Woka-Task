@@ -58,7 +58,7 @@ Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function
     // CRUD anggota di PM
     Route::resource('anggota', AnggotaController::class);
     //CRUD Tugas di PM
-    Route::resource('tugas', TugasController::class);
+    Route::resource('tugas', TugasController::class)->parameters(['tugas' => 'task']);
     //CRUD kelompok di PM
     Route::resource('kelompok', KelompokController::class);
 });
