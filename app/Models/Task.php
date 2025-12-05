@@ -66,7 +66,7 @@ class Task extends Model
      * Relasi:
      * Task memiliki banyak lampiran file
      */
-    public function attachments()
+    public function lampirans()
     {
         return $this->hasMany(TaskLampiran::class, 'task_id');
     }

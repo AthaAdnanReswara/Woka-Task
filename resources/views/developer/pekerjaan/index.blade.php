@@ -24,9 +24,10 @@
         </div>
 
         <div class="card-body p-0">
-            <div class="mb-3 mt-3">
+            <div class="mb-3 mt-3 px-3">
                 <button id="collapseAll" class="btn btn-sm btn-secondary">Tutup Semua</button>
             </div>
+
             <table id="taskTable" class="table table-hover align-middle mb-0">
                 <thead class="bg-light text-uppercase small text-primary">
                     <tr>
@@ -51,8 +52,8 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item["name"] }}</td>
                         <td>{{ $item["description"] }}</td>
-                        <td>{{ $item["start_date"] }}</td>
-                        <td>{{ $item["end_date"] }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item["start_date"])->format('d M Y')}}</td>
+                        <td>{{ \Carbon\Carbon::parse($item["end_date"])->format('d M Y')}}</td>
                         <td>{{ $item["status"] }}</td>
                         <td>{{ $item["created_by"] }}</td>
                         <td>{{ $item["jumlah_task"] }}</td>
@@ -65,19 +66,15 @@
 </div>
 
 <style>
-    /* Membuat konten kolom tidak terpotong dan melebar sesuai isi */
     table.dataTable td {
         white-space: nowrap;
     }
 
-    /* Memastikan scroll horizontal aktif */
     div.dataTables_wrapper {
         width: 100%;
         overflow-x: auto;
     }
-</style>
 
-<style>
     tr.shown {
         background-color: #f0f9ff !important;
     }
@@ -102,50 +99,62 @@
         }
     }
 
+    function formatTanggal(dateString) {
+        if (!dateString) return "-";
+        const d = new Date(dateString);
+
+        return d.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+    }
+
+
     function formatRiwayat(riwayat) {
         let html = '<div style="overflow-x:auto"><table class="table table-sm table-bordered mb-0">';
         html += `
-        <thead class="table-light">
-            <tr>
-                <th>Penanggung Jawab</th>
-                <th>Judul</th>
-                <th>Deskripsi</th>
-                <th>Kesulitan</th>
-                <th>Status</th>
-                <th>Tanggal Mulai</th>
-                <th>Tanggal Selesai</th>
-                <th>Estimasi</th>
-                <th>Progres</th>
-                <th>Pembuat</th>
-                <th>Aksi</th>
-            </tr>
-        </thead><tbody>
-    `;
+            <thead class="table-light">
+                <tr>
+                    <th>Penanggung Jawab</th>
+                    <th>Judul</th>
+                    <th>Kesulitan</th>
+                    <th>Status</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                    <th>Estimasi</th>
+                    <th>Progres</th>
+                    <th>Pembuat</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead><tbody>
+        `;
 
         riwayat.forEach(r => {
             let editUrl = `/developer/pekerjaan/${r.id}/edit`;
-            let printUrl = `/developer/pekerjaan/${r.id}/print`;
-            let deleteUrl = `/developer/pekerjaan/${r.id}/delete`; 
+            let detailUrl = `/developer/pekerjaan/${r.id}show`;
 
             html += `
             <tr>
                 <td>${r.penanggung_jawab ?? '-'}</td>
                 <td>${r.judul ?? '-'}</td>
-                <td>${r.deskripsi ?? '-'}</td>
                 <td>${r.kesulitan ?? '-'}</td>
                 <td>${r.status ?? '-'}</td>
-                <td>${r.tanggal_mulai ?? '-'}</td>
-                <td>${r.tanggal_selesai ?? '-'}</td>
+                <td>${formatTanggal(r.tanggal_mulai)}</td>
+                <td>${formatTanggal(r.tanggal_selesai)}</td>
                 <td>${r.estimasi ?? '-'}</td>
                 <td>${r.progres ?? '-'}</td>
                 <td>${r.pembuat ?? '-'}</td>
+
                 <td class="text-center">
                     <a href="${editUrl}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                    <a href="${printUrl}" class="btn btn-sm btn-secondary" target="_blank"><i class="bi bi-printer"></i></a>
-                    <a href="${deleteUrl}" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')"><i class="bi bi-trash"></i></a>
+
+                    <a href="${detailUrl}" class="btn btn-sm btn-secondary" target="_blank">
+                        <i class="bi bi-printer"></i>
+                    </a>
                 </td>
             </tr>
-        `;
+            `;
         });
 
         html += '</tbody></table></div>';

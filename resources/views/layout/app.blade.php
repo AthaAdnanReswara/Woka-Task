@@ -23,7 +23,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+  <link rel="shortcut icon" href="{{ asset('assets/images/logo-woka.png') }}" />
 </head>
 
 <body class="with-welcome-text">
