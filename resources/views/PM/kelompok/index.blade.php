@@ -75,7 +75,6 @@
                             </td>
 
                             <td class="text-center">
-
                                 <a href="{{ route('PM.kelompok.edit', $c->id) }}" 
                                    class="btn btn-sm btn-warning shadow-sm me-1">
                                     <i class="bi bi-pencil-square"></i>
@@ -91,7 +90,6 @@
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
-
                             </td>
                         </tr>
                         @empty
@@ -119,16 +117,20 @@
 }
 </style>
 
-<!-- DATATABLE -->
+<!-- DATATABLE TANPA PENCARIAN & LENGTH -->
 <script>
 $(document).ready(function() {
     $('#collaboratorTable').DataTable({
-        "language": {
-            "search": "Cari:",
-            "lengthMenu": "Tampilkan _MENU_ data",
-            "zeroRecords": "Tidak ditemukan data",
-            "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-            "paginate": { "next": "›", "previous": "‹" }
+        pageLength: 10,
+        ordering: true,
+        dom: 't<"d-flex justify-content-between mt-3"ip>',
+        language: {
+            zeroRecords: "Tidak ditemukan data",
+            info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+            paginate: {
+                next: "›",
+                previous: "‹"
+            }
         }
     });
 });

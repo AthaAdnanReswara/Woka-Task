@@ -3,21 +3,24 @@
 @section('content')
 <div class="container-fluid py-4">
 
-    <!-- Header Title -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- HEADER + BUTTON -->
+    <div class="d-flex justify-content-between align-items-center mb-4" 
+         style="background: linear-gradient(90deg,#ff7eb9,#7ac1ff);
+                border-radius:12px; padding:20px; color:white;">
         <div>
-            <h3 class="fw-bold text-dark mb-0">
-                <i class="bi bi-kanban text-primary"></i> Project Management
+            <h3 class="fw-bold mb-1">
+                <i class="bi bi-kanban"></i> Project Management
             </h3>
-            <small class="text-secondary">Kelola semua proyek dalam sistem</small>
+            <small>Kelola semua proyek dalam sistem</small>
         </div>
 
-        <a href="{{ route('PM.proyek.create') }}" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-circle me-1"></i> Tambah Project
+        <a href="{{ route('PM.proyek.create') }}" 
+           class="btn btn-light fw-semibold shadow-sm">
+            <i class="bi bi-plus-circle"></i> Tambah Project
         </a>
     </div>
 
-    <!-- Alert -->
+    <!-- ALERT -->
     @if (session('success'))
         <div class="alert alert-success small shadow-sm">
             <i class="bi bi-check-circle"></i> {{ session('success') }}
@@ -28,9 +31,10 @@
         </div>
     @endif
 
-    <!-- Table -->
-    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-        <div class="card-header bg-primary text-white fw-bold">
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card-header fw-bold" 
+             style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
             <i class="bi bi-table"></i> Daftar Project
         </div>
 
@@ -38,7 +42,7 @@
             <div class="table-responsive">
                 <table class="table align-middle table-hover mb-0" id="projectTable">
 
-                    <thead class="bg-light text-primary text-uppercase small">
+                    <thead class="bg-light text-primary small text-uppercase">
                         <tr>
                             <th>No</th>
                             <th>Nama Proyek</th>
@@ -52,8 +56,8 @@
                     </thead>
 
                     <tbody class="small">
-                        @foreach ($proyek as $project)
-                        <tr>
+                        @forelse ($proyek as $project)
+                        <tr class="table-row-hover">
                             <td>{{ $loop->iteration }}</td>
 
                             <td class="fw-semibold text-dark">
@@ -105,23 +109,46 @@
 
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                Tidak ada Project.
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
 
                 </table>
             </div>
         </div>
     </div>
+
 </div>
 
-{{-- DataTable Script --}}
+<!-- HOVER EFFECT -->
+<style>
+.table-row-hover:hover {
+    background: rgba(0,0,0,0.05);
+    transform: scale(1.005);
+    transition: 0.15s;
+}
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: white;
+}
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+</style>
+
+<!-- DATATABLE (Tanpa Search & Tanpa Length Menu) -->
 <script>
 $(document).ready(function() {
     $('#projectTable').DataTable({
         ordering: true,
+        dom: 't<"d-flex justify-content-between mt-3"ip>', // Hapus search & length menu
         language: {
-            search: "Cari:",
-            lengthMenu: "Tampilkan _MENU_ data",
             zeroRecords: "Data proyek tidak ditemukan",
             info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ proyek",
             paginate: {
@@ -132,4 +159,5 @@ $(document).ready(function() {
     });
 });
 </script>
+
 @endsection

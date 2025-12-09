@@ -41,7 +41,10 @@
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" id="memberTable">
-                    <thead class="bg-light text-primary small text-uppercase">
+
+                    <!-- HEADER TABEL -->
+                    <thead class="text-white small text-uppercase" 
+                           style="background: linear-gradient(135deg,#1e3c72,#7ac1ff);">
                         <tr>
                             <th>No</th>
                             <th>Project</th>
@@ -60,14 +63,11 @@
                             <td>{{ $m->user->email }}</td>
 
                             <td class="text-center">
-
-                                <!-- Edit -->
                                 <a href="{{ route('PM.anggota.edit',$m->id) }}"
                                    class="btn btn-sm btn-outline-warning me-1">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
 
-                                <!-- Delete -->
                                 <form action="{{ route('PM.anggota.destroy',$m->id) }}"
                                       method="POST" class="d-inline">
                                     @csrf @method('DELETE')
@@ -76,7 +76,6 @@
                                         <i class="bi bi-trash"></i> Delete
                                     </button>
                                 </form>
-
                             </td>
                         </tr>
                         @empty
@@ -97,9 +96,10 @@
 <!-- STYLE -->
 <style>
 .table-row-hover:hover {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0,0,0,0.04);
     transform: scale(1.005);
-    transition: 0.15s;
+    transition: .15s;
+    cursor: pointer;
 }
 .btn-outline-warning:hover {
     background-color: #ffc107;
@@ -111,17 +111,17 @@
 }
 </style>
 
-{{-- DATATABLE --}}
+<!-- DATATABLE -->
 <script>
 $(document).ready(function() {
     $('#memberTable').DataTable({
         ordering: true,
+        paging: false,          // hilangkan pagination
+        searching: false,       // hilangkan search bar
+        info: false,            // hilangkan info jumlah data
+        lengthChange: false,    // hilangkan "Tampilkan _MENU_"
         language: {
-            search: "Cari:",
-            lengthMenu: "Tampilkan _MENU_ data",
-            zeroRecords: "Tidak ada data member ditemukan",
-            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ member",
-            paginate: { next: "›", previous: "‹" }
+            zeroRecords: "Tidak ada data member ditemukan"
         }
     });
 });
