@@ -21,10 +21,12 @@ class dashboardController extends Controller
             $totalTask = Task::count();
             $totalDeveloper = User::where('role', 'developer')->count();
 
+            // Kirim data developer
+            $developers = User::where('role', 'developer')->with('profile')->get();
             // Ambil recent users (5 terakhir)
             $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
 
-            return view('admin.dashboard', compact('user', 'totalUser', 'totalProject', 'totalTask', 'totalDeveloper', 'recentUsers'));
+            return view('admin.dashboard', compact('user', 'totalUser','developers', 'totalProject', 'totalTask', 'totalDeveloper', 'recentUsers'));
         } elseif ($user->role === 'PM') {
             $pmId = $user->id;
             // Ambil project yang dibuat oleh PM login
