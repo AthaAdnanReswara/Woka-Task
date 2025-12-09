@@ -32,25 +32,35 @@ class ProyekController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:draft,ongoing,hold,done,cancelled',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'start_date' => 'nullable|date',
+        'end_date' => 'nullable|date|after_or_equal:start_date',
+        'status' => 'required|in:draft,ongoing,hold,done,cancelled',
+    ]);
 
-        Project::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'status' => $request->status,
-            'created_by' => Auth::user()->id,
-        ]);
-        return redirect()->route('PM.proyek.index')->with('success', 'selamat berhasil menambah project');
-    }
+    // SIMPAN PROJECT DAN TARUH DI VARIABLE
+    $project = Project::create([
+        'name' => $request->name,
+        'description' => $request->description,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'status' => $request->status,
+        'created_by' => Auth::user()->id,
+    ]);
+
+    // === KIRIM NOTIF PROJECT BARU ===
+    sendNotif(
+        null, 
+        "Project Baru", 
+        "PM telah menambahkan project baru: $project->name"
+    );
+
+    return redirect()->route('PM.proyek.index')
+        ->with('success', 'Selamat berhasil menambah project');
+}
 
     /**
      * Display the specified resource.

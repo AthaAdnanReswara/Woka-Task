@@ -94,6 +94,7 @@ class PekerjaanController extends Controller
             'lampiran.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov,avi,doc,docx,pdf,zip|max:20480',
         ]);
 
+        // === UPDATE TASK ===
         $task->update([
             'deskripsi' => $request->deskripsi,
             'kesulitan' => $request->kesulitan,
@@ -116,6 +117,10 @@ class PekerjaanController extends Controller
                 ]);
             }
         }
+
+        // === KIRIM NOTIF KE PM ===
+        $pmId = $task->project->created_by;
+        sendNotif($pmId, "Progress Update", "Task '$task->judul_task' telah diupdate.");
 
         return redirect()->route('developer.pekerjaan.index')
             ->with('success', 'Task berhasil diperbarui');

@@ -1,140 +1,167 @@
 @extends('layout.app')
-
 @section('content')
 <div class="container-fluid py-4">
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- HEADER + BUTTON -->
+    <div class="d-flex justify-content-between align-items-center mb-4"
+         style="background: linear-gradient(90deg,#ff7eb9,#7ac1ff);
+                border-radius:12px; padding:20px; color:white;">
         <div>
-            <h3 class="fw-bold text-dark mb-0">
-                <i class="bi bi-list-check text-primary"></i> Task Management
+            <h3 class="fw-bold mb-1">
+                <i class="bi bi-list-check"></i> Task Management
             </h3>
-            <small class="text-secondary">Kelola semua task dalam sebuah project</small>
+            <small>Kelola semua task dalam sebuah project</small>
         </div>
-
-        <a href="{{ route('admin.task.create') }}" class="btn btn-primary shadow-sm">
+        <a href="{{ route('admin.task.create') }}"
+           class="btn btn-light fw-semibold shadow-sm">
             <i class="bi bi-plus-circle"></i> Tambah Task
         </a>
     </div>
 
     <!-- ALERT -->
     @if (session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success small shadow-sm">
+            <i class="bi bi-check-circle"></i> {{ session('success') }}
+        </div>
     @endif
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
 
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white fw-bold">
-            <i class="bi bi-folder2-open"></i> Daftar Project
+        <!-- TOP HEADER + BUTTON TUTUP SEMUA -->
+        <div class="card-header fw-bold d-flex justify-content-between align-items-center"
+             style="background:#1e3c72; color:white;">
+            <span><i class="bi bi-folder2-open"></i> Daftar Project</span>
+
+            <button id="collapseAll" class="btn btn-sm btn-light text-primary fw-bold">
+                Tutup Semua
+            </button>
         </div>
 
         <div class="card-body p-0">
-            <div class="mb-3">
-                <button id="collapseAll" class="btn btn-sm btn-secondary">Tutup Semua</button>
-            </div>
-            <table id="taskTable" class="table table-hover align-middle mb-0">
-                <thead class="bg-light text-uppercase small text-primary">
-                    <tr>
-                        <th></th>
-                        <th>No</th>
-                        <th>Nama Project</th>
-                        <th>Deskripsi</th>
-                        <th>Tanggal Mulai</th>
-                        <th>Tanggal Selesai</th>
-                        <th>Status</th>
-                        <th>Pembuat</th>
-                        <th>Jumlah Task</th>
-                    </tr>
-                </thead>
+            <div class="table-responsive">
 
-                <tbody>
-                    @foreach ($data as $index => $item)
-                    @php
-                    $riwayatBase64 = base64_encode(json_encode($item['riwayat']));
-                    @endphp
-                    <tr
-                        data-id="{{ $item['id'] }}"
-                        data-riwayat="{{ $riwayatBase64 }}">
-                        <td class="details-control">▶️</td>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $item["name"] }}</td>
-                        <td>{{ $item["description"] }}</td>
-                        <td>{{ $item["start_date"] }}</td>
-                        <td>{{ $item["end_date"] }}</td>
-                        <td>{{ $item["status"] }}</td>
-                        <td>{{ $item["created_by"] }}</td>
-                        <td>{{ $item["jumlah_task"] }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                <table id="taskTable" class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-primary small text-uppercase">
+                        <tr>
+                            <th></th>
+                            <th>No</th>
+                            <th>Nama Project</th>
+                            <th>Deskripsi</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Status</th>
+                            <th>Pembuat</th>
+                            <th>Jumlah Task</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="small">
+                        @foreach ($data as $index => $item)
+                        @php
+                            $riwayatBase64 = base64_encode(json_encode($item['riwayat']));
+                        @endphp
+                        <tr class="table-row-hover"
+                            data-id="{{ $item['id'] }}"
+                            data-riwayat="{{ $riwayatBase64 }}">
+
+                            <td class="details-control">▶️</td>
+                            <td>{{ $index + 1 }}</td>
+                            <td class="fw-semibold text-dark">{{ $item["name"] }}</td>
+                            <td>{{ $item["description"] }}</td>
+                            <td class="text-success fw-semibold">{{ $item["start_date"] }}</td>
+                            <td class="text-danger fw-semibold">{{ $item["end_date"] }}</td>
+
+                            <td>
+                                @php
+                                    $statusClass = match($item["status"] ?? '-') {
+                                        'On Progress' => 'warning',
+                                        'Completed'   => 'success',
+                                        'Pending'     => 'secondary',
+                                        default       => 'dark'
+                                    };
+                                @endphp
+                                <span class="badge bg-{{ $statusClass }}">
+                                    {{ $item["status"] }}
+                                </span>
+                            </td>
+
+                            <td>{{ $item["created_by"] }}</td>
+                            <td>{{ $item["jumlah_task"] }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     </div>
 
 </div>
 
+<!-- CUSTOM STYLE -->
 <style>
-    /* Membuat konten kolom tidak terpotong dan melebar sesuai isi */
-    table.dataTable td {
-        white-space: nowrap;
-    }
+.table-row-hover:hover {
+    background: rgba(0,0,0,0.05);
+    transform: scale(1.005);
+    transition: 0.15s;
+}
 
-    /* Memastikan scroll horizontal aktif */
-    div.dataTables_wrapper {
-        width: 100%;
-        overflow-x: auto;
-    }
+td.details-control {
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    color: #0d6efd;
+    font-size: 18px;
+    width: 40px;
+}
+
+tr.shown {
+    background-color: #f0f9ff !important;
+}
+
+table.dataTable td {
+    white-space: nowrap;
+}
+
+div.dataTables_wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
 </style>
 
-<style>
-    tr.shown {
-        background-color: #f0f9ff !important;
-    }
-
-    td.details-control {
-        cursor: pointer;
-        text-align: center;
-        font-weight: bold;
-        color: #0d6efd;
-        font-size: 18px;
-        width: 40px;
-    }
-</style>
-
+<!-- SCRIPT COLLAPSE -->
 <script>
     function base64ToJson(base64) {
         try {
             return JSON.parse(atob(base64));
         } catch (e) {
-            console.error("JSON Parse Error:", e);
             return [];
         }
     }
 
     function formatRiwayat(riwayat) {
-        let html = '<div style="overflow-x:auto"><table class="table table-sm table-bordered mb-0">';
-        html += `
-        <thead class="table-light">
-            <tr>
-                <th>Penanggung Jawab</th>
-                <th>Judul</th>
-                <th>Deskripsi</th>
-                <th>Kesulitan</th>
-                <th>Status</th>
-                <th>Tanggal Mulai</th>
-                <th>Tanggal Selesai</th>
-                <th>Estimasi</th>
-                <th>Progres</th>
-                <th>Pembuat</th>
-                <th>Aksi</th>
-            </tr>
-        </thead><tbody>
-    `;
+        let html = `
+        <div style="overflow-x:auto">
+            <table class="table table-sm table-bordered mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Penanggung Jawab</th>
+                        <th>Judul</th>
+                        <th>Deskripsi</th>
+                        <th>Kesulitan</th>
+                        <th>Status</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
+                        <th>Estimasi</th>
+                        <th>Progres</th>
+                        <th>Pembuat</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
 
         riwayat.forEach(r => {
-            let editUrl = `/pemeriksaan/${r.id}/edit`;
-            let printUrl = `/pemeriksaan/${r.id}/print`;
-            let deleteUrl = `/pemeriksaan/${r.id}/delete`; // pastikan route delete pakai form/JS
-
             html += `
             <tr>
                 <td>${r.penanggung_jawab ?? '-'}</td>
@@ -148,47 +175,44 @@
                 <td>${r.progres ?? '-'}</td>
                 <td>${r.pembuat ?? '-'}</td>
                 <td class="text-center">
-                    <a href="${editUrl}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                    <a href="${printUrl}" class="btn btn-sm btn-secondary" target="_blank"><i class="bi bi-printer"></i></a>
-                    <a href="${deleteUrl}" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')"><i class="bi bi-trash"></i></a>
+                    <a href="/pemeriksaan/${r.id}/edit" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                    <a href="/pemeriksaan/${r.id}/print" class="btn btn-sm btn-secondary" target="_blank"><i class="bi bi-printer"></i></a>
+                    <a href="/pemeriksaan/${r.id}/delete" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Yakin ingin menghapus?')"><i class="bi bi-trash"></i></a>
                 </td>
             </tr>
         `;
         });
 
-        html += '</tbody></table></div>';
+        html += "</tbody></table></div>";
         return html;
     }
 
     $(document).ready(function() {
         let table = $('#taskTable').DataTable({
             responsive: true,
-            ordering: true,
             paging: true,
-            searching: true
+            ordering: true,
+            searching: false,
+            lengthChange: false
         });
-
-        let expandedRows = new Set();
 
         function toggleRow(tr, row) {
             let td = tr.find('td.details-control');
             let isShown = row.child.isShown();
-            let id = tr.data('id');
+            let riwayat = base64ToJson(tr.attr('data-riwayat'));
 
             if (isShown) {
                 $('div.slider', row.child()).slideUp(300, function() {
                     row.child.hide();
-                    tr.removeClass('shown');
-                    td.text('▶️');
-                    expandedRows.delete(id);
                 });
+                tr.removeClass('shown');
+                td.text('▶️');
             } else {
-                let riwayat = base64ToJson(tr.attr('data-riwayat'));
-                row.child('<div class="slider">' + formatRiwayat(riwayat) + '</div>', 'p-0').show();
+                row.child('<div class="slider">'+formatRiwayat(riwayat)+'</div>', 'p-0').show();
                 tr.addClass('shown');
                 td.text('▼');
                 $('div.slider', row.child()).slideDown(300);
-                expandedRows.add(id);
             }
         }
 
@@ -196,16 +220,6 @@
             let tr = $(this).closest('tr');
             let row = table.row(tr);
             toggleRow(tr, row);
-        });
-
-        table.on('draw', function() {
-            $('#taskTable tbody tr').each(function() {
-                let tr = $(this);
-                let id = tr.data('id');
-                if (expandedRows.has(id)) {
-                    toggleRow(tr, table.row(tr));
-                }
-            });
         });
 
         $('#collapseAll').on('click', function() {

@@ -3,21 +3,24 @@
 @section('content')
 <div class="container-fluid py-4">
 
-    <!-- Header Title -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- HEADER + BUTTON -->
+    <div class="d-flex justify-content-between align-items-center mb-4" 
+         style="background: linear-gradient(90deg,#ff7eb9,#7ac1ff); 
+                border-radius:12px; padding:20px; color:white;">
         <div>
-            <h3 class="fw-bold text-dark mb-0">
-                <i class="bi bi-people-fill text-primary"></i> Project Members
+            <h3 class="fw-bold mb-1">
+                <i class="bi bi-people-fill"></i> Project Members
             </h3>
-            <small class="text-secondary">Kelola anggota dari semua proyek</small>
+            <small>Kelola anggota dari setiap project</small>
         </div>
 
-        <a href="{{ route('PM.anggota.create') }}" class="btn btn-primary shadow-sm">
+        <a href="{{ route('PM.anggota.create') }}" 
+           class="btn btn-light fw-semibold shadow-sm">
             <i class="bi bi-person-plus-fill"></i> Tambah Member
         </a>
     </div>
 
-    <!-- Alert -->
+    <!-- ALERT -->
     @if (session('success'))
         <div class="alert alert-success small shadow-sm">
             <i class="bi bi-check-circle"></i> {{ session('success') }}
@@ -28,49 +31,54 @@
         </div>
     @endif
 
-    <!-- Table -->
-    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-        <div class="card-header bg-primary text-white fw-bold">
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card-header fw-bold" 
+             style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
             <i class="bi bi-table"></i> Daftar Project Members
         </div>
 
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table align-middle table-hover mb-0" id="memberTable">
-                    <thead class="bg-light text-primary text-uppercase small">
+                <table class="table table-hover align-middle mb-0" id="memberTable">
+                    <thead class="bg-light text-primary small text-uppercase">
                         <tr>
                             <th>No</th>
                             <th>Project</th>
                             <th>Nama Member</th>
                             <th>Email</th>
-                            <th class="text-center" width="200">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody class="small">
                         @forelse($members as $m)
-                        <tr>
+                        <tr class="table-row-hover">
                             <td>{{ $loop->iteration }}</td>
                             <td class="fw-semibold text-dark">{{ $m->project->name }}</td>
                             <td>{{ $m->user->name }}</td>
                             <td>{{ $m->user->email }}</td>
 
                             <td class="text-center">
+
+                                <!-- Edit -->
                                 <a href="{{ route('PM.anggota.edit',$m->id) }}"
-                                    class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1 text-dark">
-                                    <i class="bi bi-pencil-fill"></i> Edit
+                                   class="btn btn-sm btn-outline-warning me-1">
+                                    <i class="bi bi-pencil-square"></i> Edit
                                 </a>
 
-                                <form action="{{ route('PM.anggota.destroy',$m->id) }}" method="POST" class="d-inline">
+                                <!-- Delete -->
+                                <form action="{{ route('PM.anggota.destroy',$m->id) }}"
+                                      method="POST" class="d-inline">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
-                                        onclick="return confirm('Hapus member ini?')">
-                                        <i class="bi bi-trash-fill"></i> Hapus
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Hapus member ini?')">
+                                        <i class="bi bi-trash"></i> Delete
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
-
                         @empty
                         <tr>
                             <td colspan="5" class="text-center text-muted py-3 fw-semibold">
@@ -86,24 +94,37 @@
     </div>
 </div>
 
+<!-- STYLE -->
+<style>
+.table-row-hover:hover {
+    background: rgba(0,0,0,0.05);
+    transform: scale(1.005);
+    transition: 0.15s;
+}
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: white;
+}
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+</style>
 
-{{-- DataTable Script --}}
+{{-- DATATABLE --}}
 <script>
-    $(document).ready(function() {
-        $('#memberTable').DataTable({
-            "ordering": true,
-            "language": {
-                "search": "Cari:",
-                "lengthMenu": "Tampilkan _MENU_ data",
-                "zeroRecords": "Tidak ada data member ditemukan",
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ member",
-                "paginate": {
-                    "next": "›",
-                    "previous": "‹"
-                }
-            }
-        });
+$(document).ready(function() {
+    $('#memberTable').DataTable({
+        ordering: true,
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            zeroRecords: "Tidak ada data member ditemukan",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ member",
+            paginate: { next: "›", previous: "‹" }
+        }
     });
+});
 </script>
 
 @endsection

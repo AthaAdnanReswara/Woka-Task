@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Developer;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
@@ -10,16 +11,20 @@ use Illuminate\Support\Facades\Auth;
 
 class dashboardController extends Controller
 {
+
     public function login()
     {
         $user = Auth::user();
-
         if ($user->role === 'admin') {
             $totalUser = User::whereIn('role', ['admin', 'PM'])->count();
             $totalProject = Project::count();
             $totalTask = Task::count();
             $totalDeveloper = User::where('role', 'developer')->count();
-            return view('admin.dashboard', compact('user', 'totalUser', 'totalProject', 'totalTask', 'totalDeveloper'));
+
+            // Ambil recent users (5 terakhir)
+            $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
+
+            return view('admin.dashboard', compact('user', 'totalUser', 'totalProject', 'totalTask', 'totalDeveloper', 'recentUsers'));
         } elseif ($user->role === 'PM') {
             $pmId = $user->id;
             // Ambil project yang dibuat oleh PM login
@@ -33,9 +38,14 @@ class dashboardController extends Controller
             $totalTasks = $tasks->count();
             $totalDevelopers = $developers->count();
             $totalUser = User::where('role', 'PM')->count();
-            return view('PM.dashboard', compact('user', 'totalUser','totalProjects','totalTasks','totalDevelopers'));
+            return view('PM.dashboard', compact('user', 'totalUser', 'totalProjects', 'totalTasks', 'totalDevelopers'));
         } elseif ($user->role === 'developer') {
-            return view('developer.dashboard', compact('user'));
+            $totalUsers = User::count();
+            $totalDevelopers = User::where('role', 'developer')->count();
+            $totalProjects = Project::count();
+            $totalTasks = Task::count();
+            $tasks = Task::all();
+            return view('developer.dashboard', compact('user', 'totalUsers', 'totalDevelopers', 'totalProjects', 'totalTasks', 'tasks'));
         } else {
             abort(403, 'Role tidak dikenali.');
         }

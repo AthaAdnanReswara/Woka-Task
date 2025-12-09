@@ -95,7 +95,8 @@ class TugasController extends Controller
             'progress' => 'required|integer|min:0|max:100',
         ]);
 
-        Task::create([
+        // BUAT TASK BARU DAN SIMPAN
+        $task = Task::create([
             'project_id' => $request->project_id,
             'assigned_to' => $request->assigned_to,
             'judul_task' => $request->judul_task,
@@ -109,8 +110,17 @@ class TugasController extends Controller
             'created_by' => Auth::id(),
         ]);
 
-        return redirect()->route('PM.tugas.index')->with('success', 'Task berhasil ditambahkan.');
+        // === KIRIM NOTIF SETELAH TASK DIBUAT ===
+        sendNotif(
+            $request->assigned_to,
+            "Task Baru",
+            "Kamu mendapat task baru: $task->judul_task"
+        );
+
+        return redirect()->route('PM.tugas.index')
+            ->with('success', 'Task berhasil ditambahkan.');
     }
+
 
     /**
      * Display the specified resource.

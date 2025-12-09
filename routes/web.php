@@ -63,9 +63,13 @@ Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function
     Route::resource('kelompok', KelompokController::class);
 });
 //Prefik untuk Developer
-Route::prefix('developer')->name('developer.')->middleware(['auth','role:developer'])->group(function() {
-    //tampilan dashboard
-    Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
-    //Mengerjakan Task
+Route::prefix('developer')->name('developer.')->middleware(['auth','role:developer'])->group(function () {
+    Route::get('dashboard', [dashboardController::class, 'login'])->name('dashboard');
     Route::resource('pekerjaan', PekerjaanController::class)->parameters(['pekerjaan' => 'task']);
+    });
+
+Route::get('/notifications', function () {
+    $notifications = \App\Models\Notification::latest()->take(10)->get();
+    return response()->json($notifications);
 });
+

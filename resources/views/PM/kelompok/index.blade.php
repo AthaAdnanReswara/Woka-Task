@@ -3,21 +3,24 @@
 @section('content')
 <div class="container-fluid py-4">
 
-    <!-- Header Title -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- HEADER + BUTTON -->
+    <div class="d-flex justify-content-between align-items-center mb-4"
+         style="background: linear-gradient(90deg,#7ac1ff,#ff7eb9);
+                border-radius:12px; padding:20px; color:white;">
         <div>
-            <h3 class="fw-bold text-dark mb-0">
-                <i class="bi bi-people-fill text-primary"></i> Task Collaborators
+            <h3 class="fw-bold mb-1">
+                <i class="bi bi-people-fill"></i> Task Collaborators
             </h3>
-            <small class="text-secondary">Kelola user yang berkolaborasi dalam setiap task proyek</small>
+            <small>Kelola user yang berkolaborasi dalam setiap task</small>
         </div>
 
-        <a href="{{ route('PM.kelompok.create') }}" class="btn btn-primary shadow-sm">
+        <a href="{{ route('PM.kelompok.create') }}"
+           class="btn btn-light fw-semibold shadow-sm">
             <i class="bi bi-plus-circle"></i> Tambah Collaborator
         </a>
     </div>
 
-    <!-- Notifikasi -->
+    <!-- ALERT -->
     @if (session('success'))
         <div class="alert alert-success small shadow-sm">
             <i class="bi bi-check-circle"></i> {{ session('success') }}
@@ -28,14 +31,17 @@
         </div>
     @endif
 
-    <!-- Card Table -->
+    <!-- CARD TABLE -->
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-        <div class="card-header bg-primary text-white fw-bold">
-            <i class="bi bi-people"></i> Daftar Task Collaborator
+
+        <div class="card-header fw-bold d-flex align-items-center"
+             style="background:#1e3c72; color:white;">
+            <i class="bi bi-people me-2"></i> Daftar Task Collaborator
         </div>
 
         <div class="card-body p-0">
             <div class="table-responsive">
+
                 <table class="table table-hover align-middle mb-0" id="collaboratorTable">
                     <thead class="bg-light text-primary text-uppercase small">
                         <tr>
@@ -51,8 +57,17 @@
                         @forelse ($collabs as $c)
                         <tr class="table-row-hover">
                             <td class="fw-semibold">{{ $loop->iteration }}</td>
-                            <td class="text-dark fw-semibold">{{ $c->task->judul_task ?? '-' }}</td>
-                            <td>{{ $c->user->name ?? '-' }}</td>
+
+                            <td class="fw-semibold text-dark">
+                                <i class="bi bi-list-task text-primary"></i>
+                                {{ $c->task->judul_task ?? '-' }}
+                            </td>
+
+                            <td>
+                                <i class="bi bi-person-circle text-secondary"></i>
+                                {{ $c->user->name ?? '-' }}
+                            </td>
+
                             <td class="text-center">
                                 <span class="badge bg-secondary">
                                     {{ $c->created_at->format('d M Y') }}
@@ -60,9 +75,10 @@
                             </td>
 
                             <td class="text-center">
+
                                 <a href="{{ route('PM.kelompok.edit', $c->id) }}" 
-                                   class="btn btn-sm btn-outline-warning me-1">
-                                   <i class="bi bi-pencil-square"></i> Edit
+                                   class="btn btn-sm btn-warning shadow-sm me-1">
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
 
                                 <form action="{{ route('PM.kelompok.destroy', $c->id) }}" 
@@ -71,16 +87,17 @@
                                     @method('DELETE')
 
                                     <button onclick="return confirm('Hapus collaborator ini?')" 
-                                            class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i> Hapus
+                                            class="btn btn-sm btn-danger shadow-sm">
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-3 text-muted">
-                                Belum ada data collaborator.
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="bi bi-info-circle"></i> Belum ada data collaborator.
                             </td>
                         </tr>
                         @endforelse
@@ -92,17 +109,17 @@
     </div>
 </div>
 
-<!-- Hover & Scale Animasi -->
+<!-- CUSTOM STYLE -->
 <style>
 .table-row-hover:hover {
-    background: rgba(0, 0, 0, 0.05) !important;
+    background: rgba(0,0,0,0.04);
     transform: scale(1.005);
     transition: .15s;
     cursor: pointer;
 }
 </style>
 
-<!-- Javascript DataTable -->
+<!-- DATATABLE -->
 <script>
 $(document).ready(function() {
     $('#collaboratorTable').DataTable({
@@ -111,10 +128,7 @@ $(document).ready(function() {
             "lengthMenu": "Tampilkan _MENU_ data",
             "zeroRecords": "Tidak ditemukan data",
             "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-            "paginate": {
-                "next": "›",
-                "previous": "‹"
-            }
+            "paginate": { "next": "›", "previous": "‹" }
         }
     });
 });
