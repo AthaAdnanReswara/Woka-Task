@@ -251,7 +251,7 @@
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.collaborator.index') }}">
-              <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
+                <i class="mdi mdi-view-list menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
             </a>
           </li>
@@ -289,7 +289,7 @@
           <li class="nav-item">
             <a class="nav-link" {{ request()->routeIs('PM.tugas.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.tugas.index') }}">
-              <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
+              <i class="mdi mdi-view-list menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
@@ -298,6 +298,13 @@
                  href=" {{ route('PM.kelompok.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('PM.profile.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('PM.profile.index') }}">
+              <i class="mdi mdi-account-tie menu-icon"></i>
+              <span class="menu-title">Profile</span>
             </a>
           </li>
           @endif
@@ -315,6 +322,13 @@
                  href=" {{ route('developer.pekerjaan.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" {{ request()->routeIs('developer.biodata.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+                 href=" {{ route('developer.biodata.index') }}">
+              <i class="mdi mdi-account-tie menu-icon"></i>
+              <span class="menu-title">Profile</span>
             </a>
           </li>
           @endif

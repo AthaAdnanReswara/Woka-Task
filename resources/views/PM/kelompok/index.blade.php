@@ -87,7 +87,7 @@
 
                                     <button onclick="return confirm('Hapus collaborator ini?')" 
                                             class="btn btn-sm btn-danger shadow-sm">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="mdi mdi-delete"></i>
                                     </button>
                                 </form>
                             </td>
