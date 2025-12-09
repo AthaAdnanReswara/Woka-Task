@@ -16,7 +16,6 @@ use App\Http\Controllers\PM\pengembangController;
 use App\Http\Controllers\PM\ProfileController;
 use App\Http\Controllers\PM\ProyekController;
 use App\Http\Controllers\PM\TugasController;
-use App\Models\taskCollaborator;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

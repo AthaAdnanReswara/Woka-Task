@@ -26,7 +26,7 @@ class dashboardController extends Controller
             // Ambil recent users (5 terakhir)
             $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
 
-            return view('admin.dashboard', compact('user', 'totalUser','developers', 'totalProject', 'totalTask', 'totalDeveloper', 'recentUsers'));
+            return view('admin.dashboard', compact('user', 'totalUser', 'developers', 'totalProject', 'totalTask', 'totalDeveloper', 'recentUsers'));
         } elseif ($user->role === 'PM') {
             $pmId = $user->id;
             // Ambil project yang dibuat oleh PM login
