@@ -132,33 +132,42 @@
         `;
 
         riwayat.forEach(r => {
+            let editUrl = `/PM/tugas/${r.id}/edit`;
+            let showtUrl = `/PM/tugas/${r.id}`;
+            let deleteUrl = `/PM/tugas/${r.id}`;
+
             html += `
-                <tr>
-                    <td>${r.penanggung_jawab ?? '-'}</td>
-                    <td>${r.judul ?? '-'}</td>
-                    <td>${r.deskripsi ?? '-'}</td>
-                    <td>${r.kesulitan ?? '-'}</td>
-                    <td>${r.status ?? '-'}</td>
-                    <td>${r.tanggal_mulai ?? '-'}</td>
-                    <td>${r.tanggal_selesai ?? '-'}</td>
-                    <td>${r.estimasi ?? '-'}</td>
-                    <td>${r.progres ?? '-'}</td>
-                    <td>${r.pembuat ?? '-'}</td>
-                    <td class="text-center">
-                        <a href="/PM/tugas/${r.id}/edit" class="btn btn-sm btn-warning me-1">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        <a href="/tugas/${r.id}/print" class="btn btn-sm btn-secondary me-1" target="_blank">
-                            <i class="bi bi-printer"></i>
-                        </a>
-                        <a href="/tugas/${r.id}/delete"
-                            onclick="return confirm('Yakin ingin menghapus?')"
-                            class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-            `;
+            <tr>
+                <td>${r.penanggung_jawab ?? '-'}</td>
+                <td>${r.judul ?? '-'}</td>
+                <td>${r.deskripsi ?? '-'}</td>
+                <td>${r.kesulitan ?? '-'}</td>
+                <td>${r.status ?? '-'}</td>
+                <td>${r.tanggal_mulai ?? '-'}</td>
+                <td>${r.tanggal_selesai ?? '-'}</td>
+                <td>${r.estimasi ?? '-'}</td>
+                <td>${r.progres ?? '-'}</td>
+                <td>${r.pembuat ?? '-'}</td>
+                <td class="text-center">
+                    <a href="${editUrl}" class="btn btn-sm btn-warning">
+                        <i class="mdi mdi-pencil"></i>
+                    </a>
+
+                    <a href="${showtUrl}" class="btn btn-sm btn-secondary" target="_blank">
+                        <i class="mdi mdi-eye"></i>
+                    </a>
+
+                    <form action="/PM/tugas/${r.id}" method="POST" style="display:inline;" 
+                        onsubmit="return confirm('Yakin ingin menghapus?')" >
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="mdi mdi-trash-can-outline"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        `;
         });
 
         return html + `</tbody></table></div></div>`;

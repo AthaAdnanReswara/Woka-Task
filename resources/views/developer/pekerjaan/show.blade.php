@@ -102,42 +102,50 @@
 
                 <div class="card-body p-0">
                     @if ($task->lampirans->count() > 0)
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama File</th>
-                                        <th>Ukuran</th>
-                                        <th>Uploader</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </thead>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama File</th>
+                                    <th>Ukuran</th>
+                                    <th>Uploader</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
 
-                                <tbody>
-                                    @foreach ($task->lampirans as $file)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $file->file_name }}</td>
-                                            <td>{{ number_format($file->file_size / 1024, 2) }} KB</td>
-                                            <td>{{ $file->uploader->name }}</td>
-                                            <td class="text-center">
-                                                <a href="{{ asset('storage/' . $file->file_path) }}"
-                                                    class="btn btn-sm btn-primary"
-                                                    download>
-                                                    <i class="bi bi-download"></i> Download
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                            <tbody>
+                                @foreach ($task->lampirans as $file)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $file->file_name }}</td>
+                                    <td>{{ number_format($file->file_size / 1024, 2) }} KB</td>
+                                    <td>{{ $file->uploader->name }}</td>
+                                    <td class="text-center">
+                                        <!-- PREVIEW -->
+                                        <a href="{{ asset('storage/' . $file->file_path) }}"
+                                            target="_blank"
+                                            class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye"></i> Lihat
+                                        </a>
 
-                            </table>
-                        </div>
+                                        <!-- DOWNLOAD -->
+                                        <a href="{{ asset('storage/' . $file->file_path) }}"
+                                            class="btn btn-sm btn-primary"
+                                            download>
+                                            <i class="bi bi-download"></i> Download
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+
+                        </table>
+                    </div>
                     @else
-                        <div class="p-3 text-center text-muted">
-                            <i class="bi bi-folder-x"></i> Tidak ada lampiran
-                        </div>
+                    <div class="p-3 text-center text-muted">
+                        <i class="bi bi-folder-x"></i> Tidak ada lampiran
+                    </div>
                     @endif
 
                 </div>

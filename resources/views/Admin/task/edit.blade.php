@@ -3,6 +3,10 @@
 @section('content')
 <div class="container-fluid py-4">
 
+    @php
+    use Carbon\Carbon;
+    @endphp
+
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -91,12 +95,13 @@
                     <div class="col-md-6 mb-3">
                         <label class="fw-semibold">Tanggal Mulai</label>
                         <input type="date" class="form-control" name="tanggal_mulai"
-                               value="{{ $task->tanggal_mulai }}">
+                            value="{{ $task->tanggal_mulai ? Carbon::parse($task->tanggal_mulai)->format('Y-m-d') : '' }}">
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label class="fw-semibold">Tanggal Tenggat</label>
                         <input type="date" class="form-control" name="tanggal_tenggat"
-                               value="{{ $task->tanggal_tenggat }}">
+                            value="{{ $task->tanggal_tenggat ? Carbon::parse($task->tanggal_tenggat)->format('Y-m-d') : '' }}">
                     </div>
                 </div>
 

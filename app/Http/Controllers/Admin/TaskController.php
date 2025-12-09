@@ -43,8 +43,8 @@ class TaskController extends Controller
                         return [
                             'id' => $t->id,
                             'penanggung_jawab' => $t->user?->name ?? '-',
-                            'judul' => $t->title,
-                            'deskripsi' => $t->description,
+                            'judul' => $t->judul_task,
+                            'deskripsi' => $t->	deskripsi,
                             'kesulitan' => $t->kesulitan ?? '-',
                             'status' => $t->status ?? '-',
 
@@ -126,10 +126,14 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $task = Task::with(['project', 'user', 'creator', 'lampirans'])
+            ->findOrFail($id);
+
+        return view('admin.task.show', compact('task'));
     }
+
 
     // TAMPILKAN FORM EDIT
     public function edit(Task $task)

@@ -20,7 +20,7 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.PM.store') }}" method="POST" class="p-4">
+        <form action="{{ route('admin.PM.store') }}" method="POST" class="p-4" enctype="multipart/form-data">
             @csrf
 
             <!-- Nama -->
@@ -45,7 +45,22 @@
             <div class="mb-3">
                 <label class="form-label fw-semibold">Password</label>
                 <input type="password" name="password" class="form-control" placeholder="Masukkan password...">
-                
+            </div>
+
+            <!-- Foto Profil -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Foto Profil</label>
+
+                <input type="file" name="foto" class="form-control" accept="image/*" onchange="previewImage(event)">
+
+                @error('foto')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+
+                <!-- Preview gambar -->
+                <div class="mt-3">
+                    <img id="preview" src="#" alt="Preview Foto" class="rounded shadow-sm d-none" width="120">
+                </div>
             </div>
 
             <!-- Submit -->
@@ -61,4 +76,18 @@
         </form>
     </div>
 </div>
+
+<!-- Script Preview Foto -->
+<script>
+function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function(){
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+        output.classList.remove('d-none');
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>
+
 @endsection

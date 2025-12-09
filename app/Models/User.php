@@ -79,6 +79,13 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'created_by');
     }
 
+    // foto profile relasi one to one
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id');
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

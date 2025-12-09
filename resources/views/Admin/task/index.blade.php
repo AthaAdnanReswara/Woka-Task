@@ -162,6 +162,10 @@ div.dataTables_wrapper {
         `;
 
         riwayat.forEach(r => {
+            let editUrl = `/admin/task/${r.id}/edit`;
+            let showtUrl = `/admin/task/${r.id}`;
+            let deleteUrl = `/admin/task/${r.id}`;
+
             html += `
             <tr>
                 <td>${r.penanggung_jawab ?? '-'}</td>
@@ -175,10 +179,22 @@ div.dataTables_wrapper {
                 <td>${r.progres ?? '-'}</td>
                 <td>${r.pembuat ?? '-'}</td>
                 <td class="text-center">
-                    <a href="/pemeriksaan/${r.id}/edit" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                    <a href="/pemeriksaan/${r.id}/print" class="btn btn-sm btn-secondary" target="_blank"><i class="bi bi-printer"></i></a>
-                    <a href="/pemeriksaan/${r.id}/delete" class="btn btn-sm btn-danger"
-                       onclick="return confirm('Yakin ingin menghapus?')"><i class="bi bi-trash"></i></a>
+                    <a href="${editUrl}" class="btn btn-sm btn-warning">
+                        <i class="mdi mdi-pencil"></i>
+                    </a>
+
+                    <a href="${showtUrl}" class="btn btn-sm btn-secondary" target="_blank">
+                        <i class="mdi mdi-eye"></i>
+                    </a>
+
+                    <form action="/admin/task/${r.id}" method="POST" style="display:inline;" 
+                        onsubmit="return confirm('Yakin ingin menghapus?')" >
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="mdi mdi-trash-can-outline"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         `;

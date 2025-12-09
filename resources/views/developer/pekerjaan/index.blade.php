@@ -149,10 +149,10 @@
                 <td>${r.pembuat ?? '-'}</td>
 
                 <td class="text-center">
-                    <a href="${editUrl}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                    <a href="${editUrl}" class="btn btn-sm btn-warning"><i class="mdi mdi-pencil"></i></a>
 
                     <a href="${detailUrl}" class="btn btn-sm btn-secondary" target="_blank">
-                        <i class="bi bi-printer"></i>
+                        <i class="mdi mdi-eye"></i>
                     </a>
                 </td>
             </tr>
