@@ -13,41 +13,34 @@
 
     <!-- STAT CARDS -->
     <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="p-4 text-center text-white" style="border-radius:18px; background: linear-gradient(135deg,#1e3c72,#b1bccfff); box-shadow:0 4px 14px rgba(0,0,0,0.15);">
-                <h6>Total Users</h6>
-                <h3 class="fw-bold">{{ $totalUser }}</h3>
+        @php
+            $stats = [
+                ['label' => 'Total Users', 'value' => $totalUser, 'color' => 'linear-gradient(135deg,#1e3c72,#b1bccfff)'],
+                ['label' => 'Total Projects', 'value' => $totalProject, 'color' => 'linear-gradient(135deg,#ff7eb9,#7ac1ff)'],
+                ['label' => 'Total Tasks', 'value' => $totalTask, 'color' => 'linear-gradient(135deg,#7ac1ff,#1e3c72)'],
+                ['label' => 'Developers', 'value' => $totalDeveloper, 'color' => 'linear-gradient(135deg,#ff7eb9,#b1bccfff)'],
+            ];
+        @endphp
+
+        @foreach ($stats as $stat)
+        <div class="col-md-3 mb-3">
+            <div class="p-4 text-center text-white" style="border-radius:18px; background: {{ $stat['color'] }}; box-shadow:0 4px 14px rgba(0,0,0,0.15);">
+                <h6>{{ $stat['label'] }}</h6>
+                <h3 class="fw-bold">{{ $stat['value'] }}</h3>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="p-4 text-center text-white" style="border-radius:18px; background: linear-gradient(135deg,#ff7eb9,#7ac1ff); box-shadow:0 4px 14px rgba(0,0,0,0.15);">
-                <h6>Total Projects</h6>
-                <h3 class="fw-bold">{{ $totalProject }}</h3>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="p-4 text-center text-white" style="border-radius:18px; background: linear-gradient(135deg,#7ac1ff,#1e3c72); box-shadow:0 4px 14px rgba(0,0,0,0.15);">
-                <h6>Total Tasks</h6>
-                <h3 class="fw-bold">{{ $totalTask }}</h3>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="p-4 text-center text-white" style="border-radius:18px; background: linear-gradient(135deg,#ff7eb9,#b1bccfff); box-shadow:0 4px 14px rgba(0,0,0,0.15);">
-                <h6>Developers</h6>
-                <h3 class="fw-bold">{{ $totalDeveloper }}</h3>
-            </div>
-        </div>
+        @endforeach
     </div>
 
-    <!-- USERS TABLE -->
-    <div class="card shadow-sm border-0">
+    <!-- RECENT USERS TABLE -->
+    <div class="card shadow-sm border-0 mb-4">
         <div class="card-header" style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
             <strong>Recent Users</strong>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table mb-0">
-                    <thead class="bg-gradient" style="background: linear-gradient(90deg,#ff7eb9,#7ac1ff); color:white;">
+                    <thead style="background: linear-gradient(90deg,#ff7eb9,#7ac1ff); color:white;">
                         <tr>
                             <th>No</th>
                             <th>Name</th>
@@ -57,288 +50,268 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($recentUsers) && $recentUsers->count() > 0)
-                        @foreach($recentUsers as $index => $user)
+                        @forelse($recentUsers as $index => $user)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
                                 @if($user->role == 'admin')
-                                <span class="badge bg-danger">Admin</span>
+                                    <span class="badge bg-danger">Admin</span>
                                 @elseif($user->role == 'PM')
-                                <span class="badge bg-success">PM</span>
+                                    <span class="badge bg-success">PM</span>
                                 @elseif($user->role == 'developer')
-                                <span class="badge bg-info">Developer</span>
+                                    <span class="badge bg-info">Developer</span>
                                 @else
-                                <span class="badge bg-secondary">{{ $user->role }}</span>
+                                    <span class="badge bg-secondary">{{ $user->role }}</span>
                                 @endif
                             </td>
                             <td>{{ $user->created_at->format('Y-m-d') }}</td>
                         </tr>
-                        @endforeach
-                        @else
+                        @empty
                         <tr>
                             <td colspan="5" class="text-center text-muted">No users found.</td>
                         </tr>
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="home-tab">
-                <div class="tab-content tab-content-basic">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                        <div class="row">
-                            <div class="col-lg-8 d-flex flex-column">
-                                <div class="row flex-grow">
-                                    <div class="col-12 grid-margin stretch-card">
-                                        <div class="card card-rounded">
-                                            <div class="card-body">
-                                                <div class="d-sm-flex justify-content-between align-items-start">
-                                                    <div>
-                                                        <h4 class="card-title card-title-dash">Project </h4>
-                                                        <p class="card-subtitle card-subtitle-dash">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                                                    </div>
-                                                    <div>
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-light dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> This month </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                                <h6 class="dropdown-header">Settings</h6>
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <a class="dropdown-item" href="#">Another action</a>
-                                                                <a class="dropdown-item" href="#">Something else here</a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <a class="dropdown-item" href="#">Separated link</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-sm-flex align-items-center mt-1 justify-content-between">
-                                                    <div class="d-sm-flex align-items-center mt-4 justify-content-between">
-                                                        <h2 class="me-2 fw-bold">$36,2531.00</h2>
-                                                        <h4 class="me-2">USD</h4>
-                                                        <h4 class="text-success">(+1.37%)</h4>
-                                                    </div>
-                                                    <div class="me-3">
-                                                        <div id="marketingOverview-legend"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="chartjs-bar-wrapper mt-3">
-                                                    <canvas id="marketingOverview"></canvas>
-                                                </div>
-                                            </div>
+    <div class="grid-margin stretch-card mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header" style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
+                <h5 class="mb-0">Developer Jobs</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead style="background: linear-gradient(90deg,#ff7eb9,#7ac1ff); color:white;">
+                            <tr>
+                                <th>Developer</th>
+                                <th>Project</th>
+                                <th>Task</th>
+                                <th class="text-center">Progress</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($tasks as $task)
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ $task->user->profile?->foto ? asset('storage/' . $task->user->profile->foto) : '/assets/images/faces/face1.jpg' }}"
+                                            alt="" style="width:40px;height:40px;border-radius:50%;margin-right:10px;">
+                                        <div>
+                                            <h6 class="mb-0">{{ $task->user->name ?? 'No Developer' }}</h6>
+                                            <small>Developer</small>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row flex-grow">
-                                    <div class="col-12 grid-margin stretch-card">
-                                        <div class="card card-rounded">
-                                            <div class="card-body">
-                                                <div class="d-sm-flex justify-content-between align-items-start">
-                                                    <div>
-                                                        <h4 class="card-title card-title-dash">Developer</h4>
-                                                        <p class="card-subtitle card-subtitle-dash">You have 50+ new requests</p>
-                                                    </div>
-                                                    <div>
-                                                        <button class="btn btn-primary btn-lg text-white mb-0 me-0" type="button"><i class="mdi mdi-account-plus"></i>Add new member</button>
-                                                    </div>
-                                                </div>
-                                                <div class="table-responsive  mt-1">
-                                                    <table class="table select-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox" class="form-check-input" aria-checked="false" id="check-all"><i class="input-helper"></i></label>
-                                                                    </div>
-                                                                </th>
-                                                                <th>Developer</th>
-                                                                <th>Company</th>
-                                                                <th>Progress</th>
-                                                                <th>Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ( $developers as $dev )
+                                </td>
+                                <td>
+                                    <h6 class="mb-0">{{ $task->project->name ?? 'No Project' }}</h6>
+                                    <small>Project</small>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0">{{ $task->judul_task }}</h6>
+                                    <small>Task Detail</small>
+                                </td>
+                                <td class="text-center">
+                                    <div class="progress progress-md" style="height:10px; border-radius:10px;">
+                                        <div class="progress-bar" role="progressbar" style="width: {{ $task->progress }}%; background: linear-gradient(90deg,#ff7eb9,#7ac1ff);"></div>
+                                    </div>
+                                    <small>{{ $task->progress }}%</small>
+                                </td>
+                                <td class="text-center">
+                                    @if($task->status == 'pending')
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    @elseif($task->status == 'in_progress')
+                                        <span class="badge bg-info text-white">In Progress</span>
+                                    @elseif($task->status == 'completed')
+                                        <span class="badge bg-success">Completed</span>
+                                    @else
+                                        <span class="badge bg-secondary">{{ $task->status }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">No tasks available.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox" class="form-check-input" aria-checked="false"><i class="input-helper"></i></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex ">
-                                                                        <img src="{{ $dev->profile?->foto ? asset('storage/' . $dev->profile->foto) : '' }}" alt="">
-                                                                        <div>
-                                                                            <h6>{{ $dev->name }}</h6>
-                                                                            <p>{{ $dev->email }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h6>Company name 1</h6>
-                                                                    <p>company type</p>
-                                                                </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                            <p class="text-success">79%</p>
-                                                                            <p>85/162</p>
-                                                                        </div>
-                                                                        <div class="progress progress-md">
-                                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="badge badge-opacity-warning">In progress</div>
-                                                                </td>
-                                                            </tr>
-                                                            @endforeach
+    <!-- PROJECT & TOTAL BY ROLE -->
+    <div class="row mb-4">
+        <!-- PROJECT LIST -->
+<div class="col-lg-8">
+    <div class="card card-rounded mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h4 class="card-title card-title-dash">Projects</h4>
+                    <p class="card-subtitle card-subtitle-dash">Daftar project aktif</p>
+                </div>
+            </div>
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 d-flex flex-column">
-                                <div class="row flex-grow">
-                                    <div class="col-12 grid-margin stretch-card">
-                                        <div class="card card-rounded">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title card-title-dash">Todo list</h4>
-                                                            <div class="add-items d-flex mb-0">
-                                                                <!-- <input type="text" class="form-control todo-list-input" placeholder="What do you need to do today?"> -->
-                                                                <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"><i class="mdi mdi-plus"></i></button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="list-wrapper">
-                                                            <ul class="todo-list todo-list-rounded">
-                                                                <li class="d-block">
-                                                                    <div class="form-check w-100">
-                                                                        <label class="form-check-label">
-                                                                            <input class="checkbox" type="checkbox"> Lorem Ipsum is simply dummy text of the printing <i class="input-helper rounded"></i>
-                                                                        </label>
-                                                                        <div class="d-flex mt-2">
-                                                                            <div class="ps-4 text-small me-3">24 June 2020</div>
-                                                                            <div class="badge badge-opacity-warning me-3">Due tomorrow</div>
-                                                                            <i class="mdi mdi-flag ms-2 flag-color"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="d-block">
-                                                                    <div class="form-check w-100">
-                                                                        <label class="form-check-label">
-                                                                            <input class="checkbox" type="checkbox"> Lorem Ipsum is simply dummy text of the printing <i class="input-helper rounded"></i>
-                                                                        </label>
-                                                                        <div class="d-flex mt-2">
-                                                                            <div class="ps-4 text-small me-3">23 June 2020</div>
-                                                                            <div class="badge badge-opacity-success me-3">Done</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="form-check w-100">
-                                                                        <label class="form-check-label">
-                                                                            <input class="checkbox" type="checkbox"> Lorem Ipsum is simply dummy text of the printing <i class="input-helper rounded"></i>
-                                                                        </label>
-                                                                        <div class="d-flex mt-2">
-                                                                            <div class="ps-4 text-small me-3">24 June 2020</div>
-                                                                            <div class="badge badge-opacity-success me-3">Done</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="border-bottom-0">
-                                                                    <div class="form-check w-100">
-                                                                        <label class="form-check-label">
-                                                                            <input class="checkbox" type="checkbox"> Lorem Ipsum is simply dummy text of the printing <i class="input-helper rounded"></i>
-                                                                        </label>
-                                                                        <div class="d-flex mt-2">
-                                                                            <div class="ps-4 text-small me-3">24 June 2020</div>
-                                                                            <div class="badge badge-opacity-danger me-3">Expired</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row flex-grow">
-                                    <div class="col-12 grid-margin stretch-card">
-                                        <div class="card card-rounded">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                                            <h4 class="card-title card-title-dash">Type By Amount</h4>
-                                                        </div>
-                                                        <div>
-                                                            <canvas class="my-auto" id="doughnutChart"></canvas>
-                                                        </div>
-                                                        <div id="doughnutChart-legend" class="mt-5 text-center"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row flex-grow">
-                                    <div class="col-12 grid-margin stretch-card">
-                                        <div class="card card-rounded">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                                            <div>
-                                                                <h4 class="card-title card-title-dash">Leave Report</h4>
-                                                            </div>
-                                                            <div>
-                                                                <div class="dropdown">
-                                                                    <button class="btn btn-light dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Month Wise </button>
-                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                                                        <h6 class="dropdown-header">week Wise</h6>
-                                                                        <a class="dropdown-item" href="#">Year Wise</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mt-3">
-                                                            <canvas id="leaveReport"></canvas>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row flex-grow">
-                                </div>
-                            </div>
+            <div class="row">
+                @foreach($totalll as $project)
+                <div class="col-md-6 mb-3">
+                    <div class="card p-3 h-100" style="border-radius: 12px; background: rgba(122,193,255,0.1);">
+                        <h6 class="fw-bold mb-2">{{ $project->name }}</h6>
+                        @if($project->description)
+                        <p class="mb-2 text-muted" style="font-size: 0.875rem;">{{ Str::limit($project->description, 60) }}</p>
+                        @endif
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-info text-white">Project</span>
+                            <small class="text-muted">{{ $project->created_at->format('d M Y') }}</small>
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
+
         </div>
     </div>
 </div>
 
 
+        <!-- Total by Role Chart -->
+        <div class="col-lg-4">
+            <div class="card card-rounded mb-4">
+                <div class="card-body">
+                    <h4 class="card-title card-title-dash mb-3">Total by Role & Data</h4>
+                    <canvas id="totalChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- CHART.JS SCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = ['Admin', 'Developer', 'Users', 'Projects', 'Tasks'];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Jumlah',
+                data: [
+                    {{ $totalAdmin ?? 0 }},
+                    {{ $totalDeveloper ?? 0 }},
+                    {{ $totalUser ?? 0 }},
+                    {{ $totalProject ?? 0 }},
+                    {{ $totalTask ?? 0 }}
+                ],
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF'
+                ],
+                hoverOffset: 10
+            }]
+        };
+
+        const config = {
+            type: 'doughnut',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('totalChart'), config);
+    </script>
+
+<!-- TODO MODAL -->
+<!-- TODO LIST DI HALAMAN UTAMA -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header" style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
+        <h5 class="mb-0"><i class="bi bi-check2-square"></i> Todo List</h5>
+    </div>
+    <div class="card-body">
+        <!-- FORM TAMBAH TODO -->
+        <form action="{{ route('admin.todo.store') }}" method="POST" class="mb-3">
+            @csrf
+            <div class="input-group">
+                <input type="text" name="title" class="form-control" placeholder="Tambah ist baru..." required>
+                <div class="col-2">
+                    <input type="date" name="due_date" class="form-control">
+                </div>
+<button class="btn text-white" style="background: linear-gradient(135deg,#7ac1ff,#1e3c72);">
+    <i class="bi bi-plus-circle"></i> +
+</button>
+
+                </button>
+            </div>
+        </form>
+
+        <hr class="border-light">
+
+        <!-- LIST TODO -->
+        <ul class="list-group">
+            @forelse($todos as $todo)
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: rgba(122,193,255,0.1); border-radius:10px; margin-bottom:5px;">
+
+                <div class="d-flex align-items-center">
+                    <!-- TOGGLE STATUS -->
+                    <form action="{{ route('admin.todo.toggle', $todo->id) }}" method="POST" class="me-2">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="btn btn-sm text-white" style="background: rgba(0,0,0,0.15); border-radius:10px;">
+                            @if($todo->is_done)
+                                <i class="bi bi-check-circle-fill"></i>
+                            @else
+                                <i class="bi bi-circle"></i>
+                            @endif
+                        </button>
+                    </form>
+
+                    <!-- TITLE & DUE DATE -->
+                    <div>
+                        <span class="{{ $todo->is_done ? 'text-decoration-line-through opacity-75' : '' }}">
+                            {{ $todo->title }}
+                        </span>
+                        @if($todo->due_date)
+                            <span class="badge bg-light text-dark ms-2">
+                                {{ \Carbon\Carbon::parse($todo->due_date)->format('d M') }}
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- DELETE BUTTON -->
+                <form action="{{ route('admin.todo.delete', $todo->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-sm btn-danger" style="border-radius: 10px;">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </li>
+            @empty
+            <li class="list-group-item text-center text-muted" style="background: rgba(122,193,255,0.05); border-radius:10px;">
+                Belum ada todo
+            </li>
+            @endforelse
+        </ul>
+    </div>
+</div>
 @endsection

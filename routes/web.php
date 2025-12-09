@@ -22,17 +22,17 @@ Route::get('/', function () {
 });
 
 // Auth Login 
-Route::middleware('guest')->group(function() {
-    Route::get('/login', [AuthController::class,'formLogin'])->name('login');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'formLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });
 //Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 //prefik untuk admin
-Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group(function() {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     //tampilan dashboard
-    Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
+    Route::get('dashboard', [dashboardController::class, 'login'])->name('dashboard');
     //CRUD PM
     Route::resource('PM', pmController::class);
     //CURD developer
@@ -45,12 +45,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
     Route::resource('task', TaskController::class);
     //CRUD TaskColaborator
     Route::resource('collaborator', taskCollaboratorController::class);
+    Route::post('/todo/store', [dashboardController::class, 'todoStore'])->name('todo.store');
+Route::patch('/todo/toggle/{id}', [dashboardController::class, 'todoToggle'])->name('todo.toggle');
+Route::delete('/todo/delete/{id}', [dashboardController::class, 'todoDelete'])->name('todo.delete');
 
 });
 //Prefik untuk PM
-Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function() {
+Route::prefix('PM')->name('PM.')->middleware(['auth', 'role:PM'])->group(function () {
     //tampilan dashboard
-    Route::get('dashboard', [dashboardController::class,'login'])->name('dashboard');
+    Route::get('dashboard', [dashboardController::class, 'login'])->name('dashboard');
     //tambah developer di PM
     Route::resource('pengembang', pengembangController::class);
     //CRUD Project di PM
@@ -60,13 +63,12 @@ Route::prefix('PM')->name('PM.')->middleware(['auth','role:PM'])->group(function
     //CRUD Tugas di PM
     Route::resource('tugas', TugasController::class)->parameters(['tugas' => 'task']);
     //CRUD kelompok di PM
-    Route::resource('kelompok', KelompokController::class);
 });
 //Prefik untuk Developer
-Route::prefix('developer')->name('developer.')->middleware(['auth','role:developer'])->group(function () {
+Route::prefix('developer')->name('developer.')->middleware(['auth', 'role:developer'])->group(function () {
     Route::get('dashboard', [dashboardController::class, 'login'])->name('dashboard');
     Route::resource('pekerjaan', PekerjaanController::class)->parameters(['pekerjaan' => 'task']);
-    });
+});
 
 Route::get('/notifications', function () {
     $notifications = \App\Models\Notification::latest()->take(10)->get();
