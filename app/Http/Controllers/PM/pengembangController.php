@@ -4,9 +4,11 @@ namespace App\Http\Controllers\PM;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class pengembangController extends Controller
 {
@@ -15,8 +17,10 @@ class pengembangController extends Controller
     {
         $user = Auth::user();
 
-        // Hanya tampilkan developer yang dibuat oleh PM login
-        $pengembang = User::where('role', 'developer')->get();
+        // Tampilkan developer milik semua PM (bisa ditambah filter created_by bila perlu)
+        $pengembang = User::where('role', 'developer')
+                          ->with('profile')
+                          ->get();
 
         return view('PM.pengembang.index', compact('user', 'pengembang'));
     }
@@ -33,26 +37,45 @@ class pengembangController extends Controller
     {
         $request->validate([
             'name'     => 'required',
-            'email'    => 'required|string|email|unique:users,email',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:3',
+            'foto'     => 'nullable|image|max:2048',
         ]);
 
-        User::create([
+        /** === SIMPAN USER === */
+        $pengembang = User::create([
             'name'       => $request->name,
             'email'      => $request->email,
             'password'   => Hash::make($request->password),
             'role'       => 'developer',
-            'created_by' => Auth::id(), // <===== penting!
+            'created_by' => Auth::id(),
+        ]);
+
+        /** === UPLOAD FOTO === */
+        $fotoPath = null;
+
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('user_photos', 'public');
+        }
+
+        /** === SIMPAN PROFIL === */
+        UserProfile::create([
+            'user_id' => $pengembang->id,
+            'foto'    => $fotoPath,
         ]);
 
         return redirect()->route('PM.pengembang.index')
                          ->with('success', 'Developer berhasil ditambahkan');
     }
 
-    /** ================== EDIT ================== */
+    /** ================== FORM EDIT ================== */
     public function edit(User $pengembang)
     {
         $user = Auth::user();
+
+        // load profile
+        $pengembang->load('profile');
+
         return view('PM.pengembang.edit', compact('user', 'pengembang'));
     }
 
@@ -60,12 +83,14 @@ class pengembangController extends Controller
     public function update(Request $request, User $pengembang)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|unique:users,email,' . $pengembang->id,
+            'name'     => 'required',
+            'email'    => 'required|email|unique:users,email,' . $pengembang->id,
             'password' => 'nullable|min:3',
+            'foto'     => 'nullable|image|max:2048'
         ]);
 
-        $pengembang->name  = $request->name;
+        /** === UPDATE USER === */
+        $pengembang->name = $request->name;
         $pengembang->email = $request->email;
 
         if ($request->filled('password')) {
@@ -74,6 +99,27 @@ class pengembangController extends Controller
 
         $pengembang->save();
 
+        /** === UPDATE PROFIL === */
+        $profile = $pengembang->profile;
+
+        if (!$profile) {
+            $profile = UserProfile::create(['user_id' => $pengembang->id]);
+        }
+
+        // Jika upload foto baru
+        if ($request->hasFile('foto')) {
+
+            // Hapus foto lama jika ada
+            if ($profile->foto) {
+                Storage::disk('public')->delete($profile->foto);
+            }
+
+            // Simpan foto baru
+            $profile->foto = $request->file('foto')->store('user_photos', 'public');
+        }
+
+        $profile->save();
+
         return redirect()->route('PM.pengembang.index')
                          ->with('success','Data developer berhasil diperbarui');
     }
@@ -81,7 +127,14 @@ class pengembangController extends Controller
     /** ================== HAPUS ================== */
     public function destroy(User $pengembang)
     {
+        // hapus foto
+        if ($pengembang->profile && $pengembang->profile->foto) {
+            Storage::disk('public')->delete($pengembang->profile->foto);
+        }
+
         $pengembang->delete();
-        return redirect()->route('PM.pengembang.index')->with('success','Developer berhasil dihapus');
+
+        return redirect()->route('PM.pengembang.index')
+                         ->with('success','Developer berhasil dihapus');
     }
 }

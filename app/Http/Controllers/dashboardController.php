@@ -19,7 +19,11 @@ class dashboardController extends Controller
             $totalProject = Project::count();
             $totalTask = Task::count();
             $totalDeveloper = User::where('role', 'developer')->count();
-            return view('admin.dashboard', compact('user', 'totalUser', 'totalProject', 'totalTask', 'totalDeveloper'));
+
+            // Kirim data developer
+            $developers = User::where('role', 'developer')->with('profile')->get();
+            return view('admin.dashboard', compact('user','totalUser','totalProject','totalTask','totalDeveloper','developers'
+            ));
         } elseif ($user->role === 'PM') {
             $pmId = $user->id;
             // Ambil project yang dibuat oleh PM login
@@ -33,7 +37,7 @@ class dashboardController extends Controller
             $totalTasks = $tasks->count();
             $totalDevelopers = $developers->count();
             $totalUser = User::where('role', 'PM')->count();
-            return view('PM.dashboard', compact('user', 'totalUser','totalProjects','totalTasks','totalDevelopers'));
+            return view('PM.dashboard', compact('user', 'totalUser', 'totalProjects', 'totalTasks', 'totalDevelopers'));
         } elseif ($user->role === 'developer') {
             return view('developer.dashboard', compact('user'));
         } else {

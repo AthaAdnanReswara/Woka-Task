@@ -115,9 +115,12 @@ class TugasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $task = Task::with(['project', 'user', 'creator', 'lampirans'])
+            ->findOrFail($id);
+
+        return view('PM.tugas.show', compact('task'));
     }
 
     /**
@@ -176,6 +179,7 @@ class TugasController extends Controller
     public function destroy(Task $task)
     {
         $task->delete();
+
         return redirect()->route('PM.tugas.index')->with('success', 'Task berhasil dihapus.');
     }
 }

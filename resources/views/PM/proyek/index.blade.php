@@ -76,12 +76,6 @@
                             </td>
 
                             <td class="text-center">
-
-                                <a href="{{ route('PM.proyek.show', $project->id) }}"
-                                    class="btn btn-sm btn-outline-info rounded-pill px-3 me-1">
-                                    <i class="bi bi-eye-fill"></i> Detail
-                                </a>
-
                                 <a href="{{ route('PM.proyek.edit', $project->id) }}"
                                     class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1 text-dark">
                                     <i class="bi bi-pencil-fill"></i> Edit
