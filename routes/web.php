@@ -8,10 +8,12 @@ use App\Http\Controllers\Admin\taskCollaboratorController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\developer\BiodataController;
 use App\Http\Controllers\developer\PekerjaanController;
 use App\Http\Controllers\PM\AnggotaController;
 use App\Http\Controllers\PM\KelompokController;
 use App\Http\Controllers\PM\pengembangController;
+use App\Http\Controllers\PM\ProfileController;
 use App\Http\Controllers\PM\ProyekController;
 use App\Http\Controllers\PM\TugasController;
 use App\Models\taskCollaborator;
@@ -63,15 +65,21 @@ Route::prefix('PM')->name('PM.')->middleware(['auth', 'role:PM'])->group(functio
     //CRUD Tugas di PM
     Route::resource('tugas', TugasController::class)->parameters(['tugas' => 'task']);
     //CRUD kelompok di PM
+    Route::resource('kelompok', KelompokController::class);
+    //profile PM
+    Route::resource('profile', ProfileController::class);
 });
 //Prefik untuk Developer
 Route::prefix('developer')->name('developer.')->middleware(['auth', 'role:developer'])->group(function () {
+    //tampilan dashboard
     Route::get('dashboard', [dashboardController::class, 'login'])->name('dashboard');
+    //CRUD pekerjaan di developer
     Route::resource('pekerjaan', PekerjaanController::class)->parameters(['pekerjaan' => 'task']);
+    //profile developer
+    Route::resource('biodata', BiodataController::class);
 });
 
 Route::get('/notifications', function () {
     $notifications = \App\Models\Notification::latest()->take(10)->get();
     return response()->json($notifications);
 });
-
