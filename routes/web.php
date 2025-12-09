@@ -46,6 +46,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('task', TaskController::class);
     //CRUD TaskColaborator
     Route::resource('collaborator', taskCollaboratorController::class);
+    Route::post('/todo/store', [dashboardController::class, 'todoStore'])->name('todo.store');
+Route::patch('/todo/toggle/{id}', [dashboardController::class, 'todoToggle'])->name('todo.toggle');
+Route::delete('/todo/delete/{id}', [dashboardController::class, 'todoDelete'])->name('todo.delete');
+
 });
 //Prefik untuk PM
 Route::prefix('PM')->name('PM.')->middleware(['auth', 'role:PM'])->group(function () {

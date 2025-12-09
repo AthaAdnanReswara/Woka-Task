@@ -4,19 +4,19 @@
 <div class="container-fluid py-4">
 
     <!-- HEADER + BUTTON -->
-    <div class="d-flex justify-content-between align-items-center mb-4"
-         style="background: linear-gradient(90deg,#7ac1ff,#ff7eb9);
+    <div class="d-flex justify-content-between align-items-center mb-4" 
+         style="background: linear-gradient(90deg,#ff7eb9,#7ac1ff); 
                 border-radius:12px; padding:20px; color:white;">
         <div>
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-person-badge-fill"></i> Developer
+                <i class="bi bi-people-fill"></i> Project Members
             </h3>
-            <small>Kelola akun Developer pada sistem proyek</small>
+            <small>Kelola anggota dari setiap project</small>
         </div>
 
-        <a href="{{ route('PM.pengembang.create') }}"
+        <a href="{{ route('PM.anggota.create') }}" 
            class="btn btn-light fw-semibold shadow-sm">
-            <i class="bi bi-person-plus me-1"></i> Tambah Developer
+            <i class="bi bi-person-plus-fill"></i> Tambah Member
         </a>
     </div>
 
@@ -31,103 +31,97 @@
         </div>
     @endif
 
-    <!-- CARD TABLE -->
-    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-        
-        <div class="card-header fw-bold d-flex align-items-center"
-             style="background:#1e3c72; color:white;">
-            <i class="bi bi-people me-2"></i> Daftar Developer
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card-header fw-bold" 
+             style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
+            <i class="bi bi-table"></i> Daftar Project Members
         </div>
 
         <div class="card-body p-0">
             <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="memberTable">
 
-                <table class="table table-hover align-middle mb-0" id="pembimbing">
-                    <thead class="bg-light text-primary text-uppercase small">
+                    <!-- HEADER TABEL -->
+                    <thead class="text-white small text-uppercase" 
+                           style="background: linear-gradient(135deg,#1e3c72,#7ac1ff);">
                         <tr>
                             <th>No</th>
-                            <th>Nama</th>
+                            <th>Project</th>
+                            <th>Nama Member</th>
                             <th>Email</th>
-                            <th>Ditambahkan Oleh</th>
-                            <th class="text-center">Tanggal</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody class="small">
-                        @foreach ($pengembang as $data)
+                        @forelse($members as $member)
                         <tr class="table-row-hover">
-                            <td class="fw-semibold">{{ $loop->iteration }}</td>
-
-                            <td class="fw-semibold text-dark">
-                                <i class="bi bi-person-circle text-primary me-1"></i>
-                                {{ $data->name }}
-                            </td>
-
-                            <td>{{ $data->email }}</td>
-
-                            <td>
-                                <i class="bi bi-person-badge text-secondary me-1"></i>
-                                {{ $data->creator->name ?? '-' }}
-                            </td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td class="fw-semibold text-dark">{{ $m->project->name }}</td>
+                            <td>{{ $m->user->name }}</td>
+                            <td>{{ $m->user->email }}</td>
 
                             <td class="text-center">
-                                <span class="badge bg-secondary">
-                                    {{ $data->created_at->format('d M Y') }}
-                                </span>
-                            </td>
-
-                            <td class="text-center">
-
-                                <a href="{{ route('PM.pengembang.edit', $data->id) }}" 
-                                   class="btn btn-sm btn-warning shadow-sm me-1">
-                                   <i class="bi bi-pencil-square"></i>
+                                <a href="{{ route('PM.anggota.edit',$m->id) }}"
+                                   class="btn btn-sm btn-outline-warning me-1">
+                                    <i class="bi bi-pencil-square"></i> Edit
                                 </a>
 
-                                <form action="{{ route('PM.pengembang.destroy', $data->id) }}"
+                                <form action="{{ route('PM.anggota.destroy',$m->id) }}"
                                       method="POST" class="d-inline">
-                                    @csrf 
-                                    @method('DELETE')
-
-                                    <button type="submit"
-                                        onclick="return confirm('Yakin hapus developer ini?')"
-                                        class="btn btn-sm btn-danger shadow-sm">
-                                        <i class="bi bi-trash"></i>
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Hapus member ini?')">
+                                        <i class="bi bi-trash"></i> Delete
                                     </button>
                                 </form>
-
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3 fw-semibold">
+                                Belum ada anggota terdaftar
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
 
                 </table>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- HOVER ANIMATION -->
+<!-- STYLE -->
 <style>
 .table-row-hover:hover {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0,0,0,0.04);
     transform: scale(1.005);
     transition: .15s;
     cursor: pointer;
+}
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: white;
+}
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
 }
 </style>
 
 <!-- DATATABLE -->
 <script>
 $(document).ready(function() {
-    $('#pembimbing').DataTable({
-        "language": {
-            "search": "Cari:",
-            "lengthMenu": "Tampilkan _MENU_ data",
-            "zeroRecords": "Data tidak ditemukan",
-            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-            "paginate": { "next": "›", "previous": "‹" }
+    $('#memberTable').DataTable({
+        ordering: true,
+        paging: false,          // hilangkan pagination
+        searching: false,       // hilangkan search bar
+        info: false,            // hilangkan info jumlah data
+        lengthChange: false,    // hilangkan "Tampilkan _MENU_"
+        language: {
+            zeroRecords: "Tidak ada data member ditemukan"
         }
     });
 });
