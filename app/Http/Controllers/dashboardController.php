@@ -60,15 +60,8 @@ class dashboardController extends Controller
                 'tasks',     
                 'totalPM'          
             ));
-        }
-
-        // ============================
-        //              PM
-        // ============================
-        elseif ($user->role === 'PM') {
-
+        }elseif ($user->role === 'PM') {
             $pmId = $user->id;
-
             $projects = Project::where('created_by', $pmId)->get();
             $tasks = Task::whereIn('project_id', $projects->pluck('id'))->get();
 
@@ -83,13 +76,7 @@ class dashboardController extends Controller
                 'totalTasks' => $tasks->count(),
                 'totalDevelopers' => $developers->count(),
             ]);
-        }
-
-        // ============================
-        //           DEVELOPER
-        // ============================
-        elseif ($user->role === 'developer') {
-
+        }elseif ($user->role === 'developer') {
             return view('developer.dashboard', [
                 'user' => $user,
                 'totalUsers' => User::count(),
@@ -103,37 +90,4 @@ class dashboardController extends Controller
         abort(403, 'Role tidak dikenali.');
     }
 
-    // ============================
-    //        TODO CRUD
-    // ============================
-
-    public function todoStore(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|min:3',
-        ]);
-
-        Todo::create([
-            'title' => $request->title,
-            'due_date' => $request->due_date,
-            'is_done' => false
-        ]);
-
-        return back();
-    }
-
-    public function todoToggle($id)
-    {
-        $todo = Todo::findOrFail($id);
-        $todo->is_done = !$todo->is_done;
-        $todo->save();
-
-        return back();
-    }
-
-    public function todoDelete($id)
-    {
-        Todo::findOrFail($id)->delete();
-        return back();
-    }
 }
