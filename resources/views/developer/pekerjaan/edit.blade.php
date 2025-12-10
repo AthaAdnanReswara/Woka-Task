@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Edit Tugas')
+@section('title', 'Edit proyek saya')
 
 @section('content')
 
