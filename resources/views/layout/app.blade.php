@@ -232,73 +232,43 @@
             </a>
           </li>
           <li class="nav-item nav-category">UI Elements</li>
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.PM.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.PM.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route('admin.PM.index') }}">
               <i class="mdi mdi-account-tie menu-icon"></i>
               <span class="menu-title">PM</span>
             </a>
           </li>
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.developer.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.developer.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route('admin.developer.index') }}">
               <i class="mdi mdi-account-cog menu-icon"></i>
               <span class="menu-title">Developer</span>
             </a>
           </li>
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route('admin.project.index') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
               <span class="menu-title">Project</span>
             </a>
           </li>
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.member.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.member.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route('admin.member.index') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Project Members</span>
             </a>
           </li>
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route('admin.task.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route('admin.collaborator.index') }}">
               <i class="mdi mdi-view-list menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
@@ -306,13 +276,8 @@
           </li>
           @endif
           @if (auth()->user()->role == 'PM')
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('PM.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('PM.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route('PM.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
