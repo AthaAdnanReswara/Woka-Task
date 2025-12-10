@@ -25,7 +25,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: url('https://i.ibb.co/WDVjZkM/tech-bg.jpg');
+            /* background: url('https://i.ibb.co/WDVjZkM/tech-bg.jpg'); */
             background-size: cover;
             background-position: center;
             opacity: 0.23;
