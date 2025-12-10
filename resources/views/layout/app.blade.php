@@ -206,7 +206,7 @@
         <ul class="nav">
           @if(auth()->user()->role == 'admin')
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route( 'admin.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
@@ -214,42 +214,42 @@
           </li>
           <li class="nav-item nav-category">UI Elements</li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.PM.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('admin.PM.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.PM.index') }}">
               <i class="mdi mdi-account-tie menu-icon"></i>
               <span class="menu-title">PM</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.developer.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('admin.developer.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.developer.index') }}">
               <i class="mdi mdi-account-cog menu-icon"></i>
               <span class="menu-title">Developer</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.project.index') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
               <span class="menu-title">Project</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.member.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('admin.member.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.member.index') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Project Members</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.task.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('admin.collaborator.index') }}">
                 <i class="mdi mdi-view-list menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
@@ -258,7 +258,7 @@
           @endif
           @if (auth()->user()->role == 'PM')
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('PM.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
@@ -266,42 +266,42 @@
           </li>
           <li class="nav-item nav-category">Menu </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.pengembang.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('PM.pengembang.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.pengembang.index') }}">
               <i class="mdi mdi-account-cog menu-icon"></i>
               <span class="menu-title">Developer</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.proyek.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('PM.proyek.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.proyek.index') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
               <span class="menu-title">Project</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.anggota.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('PM.anggota.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.anggota.index') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Project Members</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.tugas.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('PM.tugas.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.tugas.index') }}">
               <i class="mdi mdi-view-list menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.kelompok.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('PM.kelompok.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.kelompok.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.profile.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('PM.profile.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('PM.profile.index') }}">
               <i class="mdi mdi-account-tie menu-icon"></i>
               <span class="menu-title">Profile</span>
@@ -310,7 +310,7 @@
           @endif
           @if (auth()->user()->role == 'developer')
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('developer.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('developer.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('developer.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
@@ -318,14 +318,14 @@
           </li>
           <li class="nav-item nav-category">Menu </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('developer.pekerjaan.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('developer.pekerjaan.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('developer.pekerjaan.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('developer.biodata.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+            <a class="nav-link {{ request()->routeIs('developer.biodata.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
                  href=" {{ route('developer.biodata.index') }}">
               <i class="mdi mdi-account-tie menu-icon"></i>
               <span class="menu-title">Profile</span>
