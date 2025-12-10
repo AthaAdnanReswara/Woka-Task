@@ -44,7 +44,7 @@ class TaskController extends Controller
                             'id' => $t->id,
                             'penanggung_jawab' => $t->user?->name ?? '-',
                             'judul' => $t->judul_task,
-                            'deskripsi' => $t->	deskripsi,
+                            'deskripsi' => $t->deskripsi,
                             'kesulitan' => $t->kesulitan ?? '-',
                             'status' => $t->status ?? '-',
 
@@ -94,17 +94,8 @@ class TaskController extends Controller
             'progress' => 'required|integer|min:0|max:100',
         ]);
 
-        // /**
-        //  * 🔥 Cek apakah user yang login terdaftar di project yg dipilih
-        //  * Bukan cuma terdaftar di salah satu project, tapi HARUS di project yg dipilih.
-        //  */
-        // $isMember = Project_member::where('project_id', $request->project_id)
-        //     ->where('user_id', Auth::id())
-        //     ->exists();
-
-        // if (!$isMember) {
-        //     return back()->with('error', '❌ Anda tidak terdaftar di project ini, tidak bisa menambah task.');
-        // }
+        // 🔥 Jika progress sudah 100% → status otomatis selesai
+        $status = $request->progress == 100 ? 'selesai' : $request->status;
 
         Task::create([
             'project_id' => $request->project_id,
@@ -112,7 +103,7 @@ class TaskController extends Controller
             'judul_task' => $request->judul_task,
             'deskripsi' => $request->deskripsi,
             'kesulitan' => $request->kesulitan,
-            'status' => $request->status,
+            'status' => $status,
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_tenggat' => $request->tanggal_tenggat,
             'estimasi' => $request->estimasi,
@@ -165,13 +156,16 @@ class TaskController extends Controller
             'progress' => 'required|integer|min:0|max:100',
         ]);
 
+        // 🔥 Jika progress 100 → status otomatis selesai
+        $status = $request->progress == 100 ? 'selesai' : $request->status;
+
         $task->update([
             'project_id' => $request->project_id,
             'assigned_to' => $request->assigned_to,
             'judul_task' => $request->judul_task,
             'deskripsi' => $request->deskripsi,
             'kesulitan' => $request->kesulitan,
-            'status' => $request->status,
+            'status' => $status,
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_tenggat' => $request->tanggal_tenggat,
             'estimasi' => $request->estimasi,
@@ -181,6 +175,7 @@ class TaskController extends Controller
 
         return redirect()->route('admin.task.index')->with('success', 'Task berhasil diperbarui.');
     }
+
 
 
     // HAPUS DATA TASK
