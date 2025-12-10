@@ -40,8 +40,6 @@ class dashboardController extends Controller
             // 5 user terbaru
             $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
 
-            // TODO list
-            $todos = Todo::orderBy('created_at', 'desc')->get();
 
             // Fix variabel untuk list project
             $totalll = Project::all();
@@ -57,7 +55,6 @@ class dashboardController extends Controller
                 'totalTask',
                 'totalDeveloper',
                 'recentUsers',
-                'todos',
                 'totalll',
                 'totalAdmin',     
                 'tasks',     

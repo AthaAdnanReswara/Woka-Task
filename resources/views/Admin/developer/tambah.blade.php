@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title', 'tambah developer')
 
 @section('content')
 <div class="container-fluid py-4">
