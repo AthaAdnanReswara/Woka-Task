@@ -16,7 +16,6 @@ use App\Http\Controllers\PM\pengembangController;
 use App\Http\Controllers\PM\ProfileController;
 use App\Http\Controllers\PM\ProyekController;
 use App\Http\Controllers\PM\TugasController;
-use App\Models\taskCollaborator;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,7 +33,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 //prefik untuk admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     //tampilan dashboard
-    Route::get('dashboard', [dashboardController::class, 'login'])->name('dashboard');
+    Route::get('/dashboard', [dashboardController::class, 'login'])->name('dashboard');
     //CRUD PM
     Route::resource('PM', pmController::class);
     //CURD developer

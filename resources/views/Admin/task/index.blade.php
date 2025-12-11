@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title', 'task management')
 @section('content')
 <div class="container-fluid py-4">
 

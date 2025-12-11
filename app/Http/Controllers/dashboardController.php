@@ -40,8 +40,6 @@ class dashboardController extends Controller
             // 5 user terbaru
             $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
 
-            // TODO list
-            $todos = Todo::orderBy('created_at', 'desc')->get();
 
             // Fix variabel untuk list project
             $totalll = Project::all();
@@ -63,21 +61,13 @@ class dashboardController extends Controller
                 'totalTask',
                 'totalDeveloper',
                 'recentUsers',
-                'todos',
                 'totalll',
                 'totalAdmin',
                 'tasks',
                 'totalPM'
             ));
-        }
-
-        // ============================
-        //              PM
-        // ============================
-        elseif ($user->role === 'PM') {
-
+        }elseif ($user->role === 'PM') {
             $pmId = $user->id;
-
             $projects = Project::where('created_by', $pmId)->get();
             $tasks = Task::whereIn('project_id', $projects->pluck('id'))->get();
 
@@ -92,13 +82,7 @@ class dashboardController extends Controller
                 'totalTasks' => $tasks->count(),
                 'totalDevelopers' => $developers->count(),
             ]);
-        }
-
-        // ============================
-        //           DEVELOPER
-        // ============================
-        elseif ($user->role === 'developer') {
-
+        }elseif ($user->role === 'developer') {
             return view('developer.dashboard', [
                 'user' => $user,
                 'totalUsers' => User::count(),
@@ -111,9 +95,5 @@ class dashboardController extends Controller
 
         abort(403, 'Role tidak dikenali.');
     }
-
-    // ============================
-    //        TODO CRUD
-    // ============================
 
 }

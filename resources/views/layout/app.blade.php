@@ -141,7 +141,7 @@
               </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="assets/images/faces/face12.jpg" alt="image" class="img-sm profile-pic">
+                  <img src="{{ asset('assets/images/faces/face12.jpg') }}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis fw-medium text-dark">David Grey </p>
@@ -150,7 +150,7 @@
               </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="assets/images/faces/face1.jpg" alt="image" class="img-sm profile-pic">
+                  <img src="{{ asset('assets/images/faces/face1.jpg') }}" alt="image" class="img-sm profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow py-2">
                   <p class="preview-subject ellipsis fw-medium text-dark">Travis Jenkins </p>
@@ -182,15 +182,29 @@
                 </p>
 
               </div>
-              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My Profile <span class="badge badge-pill badge-danger">1</span></a>
-              <form action="{{ route('logout') }}" method="POST" class="dropdown-item p-0">
-                @csrf
-                <button type="submit" class="d-flex align-items-center border-0 bg-transparent w-100 py-2 px-3">
-                  <i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>
-                  Sign Out
+              @auth
+              <div class="d-flex flex-column px-3 py-2 gap-2">
+                <!-- Tombol Profile -->
+                <button type="button"
+                  class="btn btn-outline-primary d-flex align-items-center"
+                  style="border-radius: 8px; padding: 8px 12px;"
+                  data-bs-toggle="modal"
+                  data-bs-target="#profileModal">
+                  <i class="mdi mdi-account-outline me-2"></i>
+                  Profile
                 </button>
-              </form>
-
+                <!-- Tombol Logout -->
+                <form action="{{ route('logout') }}" method="POST" class="m-0">
+                  @csrf
+                  <button type="submit"
+                    class="btn btn-outline-danger d-flex align-items-center w-100"
+                    style="border-radius: 8px; padding: 8px 12px;">
+                    <i class="mdi mdi-power me-2"></i>
+                    Logout
+                  </button>
+                </form>
+              </div>
+              @endauth
             </div>
           </li>
         </ul>
@@ -205,128 +219,133 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           @if(auth()->user()->role == 'admin')
+<<<<<<< HEAD
+          <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+=======
           <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route( 'admin.dashboard') }}">
+            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
+>>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
+              href=" {{ route( 'admin.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item nav-category">UI Elements</li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.PM.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.PM.index') }}">
+          <li class="nav-item {{ request()->routeIs('admin.PM.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('admin.PM.index') }}">
               <i class="mdi mdi-account-tie menu-icon"></i>
               <span class="menu-title">PM</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.developer.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.developer.index') }}">
+          <li class="nav-item {{ request()->routeIs('admin.developer.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('admin.developer.index') }}">
               <i class="mdi mdi-account-cog menu-icon"></i>
               <span class="menu-title">Developer</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.project.index') }}">
+          <li class="nav-item {{ request()->routeIs('admin.project.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('admin.project.index') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
               <span class="menu-title">Project</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.member.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.member.index') }}">
+          <li class="nav-item {{ request()->routeIs('admin.member.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('admin.member.index') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Project Members</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.task.index') }}">
+          <li class="nav-item {{ request()->routeIs('admin.task.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('admin.task.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('admin.collaborator.index') }}">
-                <i class="mdi mdi-view-list menu-icon"></i>
+          <li class="nav-item {{ request()->routeIs('admin.collaborator.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('admin.collaborator.index') }}">
+              <i class="mdi mdi-view-list menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
             </a>
           </li>
           @endif
           @if (auth()->user()->role == 'PM')
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.dashboard') }}">
+          <li class="nav-item {{ request()->routeIs('PM.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('PM.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item nav-category">Menu </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.pengembang.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.pengembang.index') }}">
+          <li class="nav-item {{ request()->routeIs('PM.pengembang.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('PM.pengembang.index') }}">
               <i class="mdi mdi-account-cog menu-icon"></i>
               <span class="menu-title">Developer</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.proyek.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.proyek.index') }}">
+          <li class="nav-item {{ request()->routeIs('PM.proyek.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('PM.proyek.index') }}">
               <i class="mdi mdi-folder-multiple menu-icon"></i>
               <span class="menu-title">Project</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.anggota.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.anggota.index') }}">
+          <li class="nav-item {{ request()->routeIs('PM.anggota.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('PM.anggota.index') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Project Members</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.tugas.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.tugas.index') }}">
+          <li class="nav-item {{ request()->routeIs('PM.tugas.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('PM.tugas.index') }}">
               <i class="mdi mdi-view-list menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.kelompok.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.kelompok.index') }}">
+          <li class="nav-item {{ request()->routeIs('PM.kelompok.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('PM.kelompok.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task Collaborators</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('PM.profile.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('PM.profile.index') }}">
+          <li class="nav-item {{ request()->routeIs('PM.profile.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('PM.profile.index') }}">
               <i class="mdi mdi-account-tie menu-icon"></i>
               <span class="menu-title">Profile</span>
             </a>
           </li>
           @endif
           @if (auth()->user()->role == 'developer')
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('developer.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('developer.dashboard') }}">
+          <li class="nav-item {{ request()->routeIs('developer.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('developer.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item nav-category">Menu </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('developer.pekerjaan.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('developer.pekerjaan.index') }}">
+          <li class="nav-item {{ request()->routeIs('developer.pekerjaan.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('developer.pekerjaan.index') }}">
               <i class="mdi mdi-briefcase-check-outline menu-icon"></i>
               <span class="menu-title">Task</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" {{ request()->routeIs('developer.biodata.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
-                 href=" {{ route('developer.biodata.index') }}">
+          <li class="nav-item {{ request()->routeIs('developer.biodata.*') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
+            <a class="nav-link"
+              href=" {{ route('developer.biodata.index') }}">
               <i class="mdi mdi-account-tie menu-icon"></i>
               <span class="menu-title">Profile</span>
             </a>
@@ -349,6 +368,28 @@
       <!-- partial -->
       @yield('content')
       <!-- main-panel ends -->
+      <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="profileLabel">My Profile</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+              <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
+              <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
+            </div>
+
+            <div class="modal-footer">
+              <a href="" class="btn btn-primary">Go to Profile Page</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </div>
     <!-- page-body-wrapper ends -->
   </div>
@@ -358,21 +399,21 @@
   <script src="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
-  <script src="{{ asset('assets/vendors/chart.js/chart.umd.js') }}"></script>
-  <script src="{{ asset('assets/vendors/progressbar.js/progressbar.min.js') }}"></script>
+  <!-- <script src="{{ asset('assets/vendors/chart.js/chart.umd.js') }}"></script> -->
+  <!-- <script src="{{ asset('assets/vendors/progressbar.js/progressbar.min.js') }}"></script> -->
   <!-- End plugin js for this page -->
   <!-- inject:js -->
-  <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
+  <!-- <script src="{{ asset('assets/js/off-canvas.js') }}"></script> -->
   <script src="{{ asset('assets/js/template.js') }}"></script>
-  <script src="{{ asset('assets/js/settings.js') }}"></script>
-  <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
-  <script src="{{ asset('assets/js/todolist.js') }}"></script>
+  <!-- <script src="{{ asset('assets/js/settings.js') }}"></script> -->
+  <!-- <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script> -->
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="{{ asset('assets/js/jquery.cookie.js') }} " type="text/javascript"></script>
+  <!-- <script src="{{ asset('assets/js/jquery.cookie.js') }} " type="text/javascript"></script> -->
   <script src="https://cdn.datatables.net/2.3.1/js/dataTables.js"></script>
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <!-- <script src="assets/js/Chart.roundedBarCharts.js"></script> -->
   <!-- End custom js for this page-->
 </body>
+
 </html>

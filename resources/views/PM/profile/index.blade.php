@@ -1,5 +1,5 @@
 @extends('layout.app')
-
+@section('title', 'profile saya')
 @section('content')
 <div class="container py-4">
 

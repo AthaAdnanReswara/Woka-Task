@@ -78,7 +78,61 @@
             </div>
         </div>
     </div>
-    <div class="grid-margin stretch-card mb-4">
+
+
+   <!-- PROJECT & CHART SIDE BY SIDE -->
+<div class="row mb-4">
+    <!-- PROJECT LIST (LEFT) -->
+    <div class="col-lg-8">
+        <div class="card card-rounded mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h4 class="card-title card-title-dash">Projects</h4>
+                        <p class="card-subtitle card-subtitle-dash">Daftar project aktif</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    @foreach($totalll as $project)
+                    <div class="col-md-6 mb-3">
+                        <div class="card p-3 h-100" style="border-radius: 12px; background: rgba(122,193,255,0.1);">
+                            <h6 class="fw-bold mb-2">{{ $project->name }}</h6>
+                            @if($project->description)
+                            <p class="mb-2 text-muted" style="font-size: 0.875rem;">
+                                {{ Str::limit($project->description, 60) }}
+                            </p>
+                            @endif
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-info text-white">Project</span>
+                                <small class="text-muted">{{ $project->created_at->format('d M Y') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CHART (RIGHT) -->
+    <div class="col-lg-4">
+        <div class="card card-rounded mb-4">
+            <div class="card-body">
+                <h4 class="card-title card-title-dash mb-3">Total by Role & Data</h4>
+                <canvas id="totalChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- DEVELOPER JOBS TABLE (FULL WIDTH BELOW) -->
+<div class="row mb-4">
+    <div class="col-12">
         <div class="card shadow-sm border-0">
             <div class="card-header" style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
                 <h5 class="mb-0">Developer Jobs</h5>
@@ -145,52 +199,8 @@
             </div>
         </div>
     </div>
-
-    <!-- PROJECT & TOTAL BY ROLE -->
-    <div class="row mb-4">
-        <!-- PROJECT LIST -->
-<div class="col-lg-8">
-    <div class="card card-rounded mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <div>
-                    <h4 class="card-title card-title-dash">Projects</h4>
-                    <p class="card-subtitle card-subtitle-dash">Daftar project aktif</p>
-                </div>
-            </div>
-
-            <div class="row">
-                @foreach($totalll as $project)
-                <div class="col-md-6 mb-3">
-                    <div class="card p-3 h-100" style="border-radius: 12px; background: rgba(122,193,255,0.1);">
-                        <h6 class="fw-bold mb-2">{{ $project->name }}</h6>
-                        @if($project->description)
-                        <p class="mb-2 text-muted" style="font-size: 0.875rem;">{{ Str::limit($project->description, 60) }}</p>
-                        @endif
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-info text-white">Project</span>
-                            <small class="text-muted">{{ $project->created_at->format('d M Y') }}</small>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-
-        </div>
-    </div>
 </div>
 
-
-        <!-- Total by Role Chart -->
-        <div class="col-lg-4">
-            <div class="card card-rounded mb-4">
-                <div class="card-body">
-                    <h4 class="card-title card-title-dash mb-3">Total by Role & Data</h4>
-                    <canvas id="totalChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- CHART.JS SCRIPT -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

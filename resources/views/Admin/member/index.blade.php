@@ -1,5 +1,5 @@
 @extends('layout.app')
-
+@section('title', 'member')
 @section('content')
 <div class="container-fluid py-4">
 
