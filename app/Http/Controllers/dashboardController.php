@@ -48,6 +48,12 @@ class dashboardController extends Controller
 
             $tasks = Task::with(['user.profile', 'project'])->get();
 
+            // TASK LIST (ganti todo)
+            $tasks = Task::with([
+                'developer.profile',   // orang yang mengerjakan task
+                'project'              // project task berada
+            ])->orderBy('created_at', 'desc')->get();
+
 
             return view('admin.dashboard', compact(
                 'user',
@@ -59,9 +65,9 @@ class dashboardController extends Controller
                 'recentUsers',
                 'todos',
                 'totalll',
-                'totalAdmin',     
-                'tasks',     
-                'totalPM'          
+                'totalAdmin',
+                'tasks',
+                'totalPM'
             ));
         }
 
@@ -110,33 +116,4 @@ class dashboardController extends Controller
     //        TODO CRUD
     // ============================
 
-    public function todoStore(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|min:3',
-        ]);
-
-        Todo::create([
-            'title' => $request->title,
-            'due_date' => $request->due_date,
-            'is_done' => false
-        ]);
-
-        return back();
-    }
-
-    public function todoToggle($id)
-    {
-        $todo = Todo::findOrFail($id);
-        $todo->is_done = !$todo->is_done;
-        $todo->save();
-
-        return back();
-    }
-
-    public function todoDelete($id)
-    {
-        Todo::findOrFail($id)->delete();
-        return back();
-    }
 }

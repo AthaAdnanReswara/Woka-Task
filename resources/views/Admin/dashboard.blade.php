@@ -239,79 +239,88 @@
 
         new Chart(document.getElementById('totalChart'), config);
     </script>
-
-<!-- TODO MODAL -->
-<!-- TODO LIST DI HALAMAN UTAMA -->
-<div class="card shadow-sm border-0 mb-4">
-    <div class="card-header" style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
-        <h5 class="mb-0"><i class="bi bi-check2-square"></i> Todo List</h5>
+<!-- LIST TASK -->
+<div class="card shadow-sm border-0 rounded-3 overflow-hidden mb-4">
+    <div class="card-header fw-bold" 
+         style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
+        <i class="bi bi-kanban"></i> Daftar Task Developer
     </div>
-    <div class="card-body">
-        <!-- FORM TAMBAH TODO -->
-        <form action="{{ route('admin.todo.store') }}" method="POST" class="mb-3">
-            @csrf
-            <div class="input-group">
-                <input type="text" name="title" class="form-control" placeholder="Tambah ist baru..." required>
-                <div class="col-2">
-                    <input type="date" name="due_date" class="form-control">
-                </div>
-<button class="btn text-white" style="background: linear-gradient(135deg,#7ac1ff,#1e3c72);">
-    <i class="bi bi-plus-circle"></i> +
-</button>
 
-                </button>
-            </div>
-        </form>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-primary small text-uppercase">
+                    <tr>
+                        <th>No</th>
+                        <th>Developer</th>
+                        <th>Project</th>
+                        <th>Task</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Deadline</th>
+                    </tr>
+                </thead>
 
-        <hr class="border-light">
+                <tbody class="small">
+                    @forelse ($tasks as $index => $task)
+                    <tr class="table-row-hover">
 
-        <!-- LIST TODO -->
-        <ul class="list-group">
-            @forelse($todos as $todo)
-            <li class="list-group-item d-flex justify-content-between align-items-center" style="background: rgba(122,193,255,0.1); border-radius:10px; margin-bottom:5px;">
+                        <!-- No -->
+                        <td>{{ $index + 1 }}</td>
 
-                <div class="d-flex align-items-center">
-                    <!-- TOGGLE STATUS -->
-                    <form action="{{ route('admin.todo.toggle', $todo->id) }}" method="POST" class="me-2">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="btn btn-sm text-white" style="background: rgba(0,0,0,0.15); border-radius:10px;">
-                            @if($todo->is_done)
-                                <i class="bi bi-check-circle-fill"></i>
-                            @else
-                                <i class="bi bi-circle"></i>
-                            @endif
-                        </button>
-                    </form>
+                        <!-- Developer -->
+                        <td class="fw-semibold text-dark">
+                            {{ $task->developer->name ?? 'Belum ada developer' }}
+                        </td>
 
-                    <!-- TITLE & DUE DATE -->
-                    <div>
-                        <span class="{{ $todo->is_done ? 'text-decoration-line-through opacity-75' : '' }}">
-                            {{ $todo->title }}
-                        </span>
-                        @if($todo->due_date)
-                            <span class="badge bg-light text-dark ms-2">
-                                {{ \Carbon\Carbon::parse($todo->due_date)->format('d M') }}
+                        <!-- Project -->
+                        <td>
+                            {{ $task->project->nama_project ?? 'Tanpa Project' }}
+                        </td>
+
+                        <!-- Task Title -->
+                        <td>
+                            {{ $task->judul_task }}
+                        </td>
+
+                        <!-- Status -->
+                        <td class="text-center">
+                            <span class="badge 
+                                @if($task->status == 'ongoing') bg-warning text-dark
+                                @elseif($task->status == 'completed') bg-success
+                                @elseif($task->status == 'revisi') bg-danger
+                                @else bg-secondary
+                                @endif
+                            ">
+                                {{ strtoupper($task->status) }}
                             </span>
-                        @endif
-                    </div>
-                </div>
+                        </td>
 
-                <!-- DELETE BUTTON -->
-                <form action="{{ route('admin.todo.delete', $todo->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger" style="border-radius: 10px;">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>
-            </li>
-            @empty
-            <li class="list-group-item text-center text-muted" style="background: rgba(122,193,255,0.05); border-radius:10px;">
-                Belum ada todo
-            </li>
-            @endforelse
-        </ul>
+                        <!-- Deadline -->
+                        <td class="text-center">
+                            @if ($task->tanggal_tenggat)
+                                <span class="badge bg-secondary">
+                                    {{ \Carbon\Carbon::parse($task->tanggal_tenggat)->format('d M Y') }}
+                                </span>
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
+
+                    </tr>
+                    @empty
+
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">
+                            Tidak ada task.
+                        </td>
+                    </tr>
+
+                    @endforelse
+                </tbody>
+
+            </table>
+        </div>
     </div>
 </div>
+
 @endsection
