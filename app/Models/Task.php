@@ -35,6 +35,12 @@ class Task extends Model
         return $this->belongsTo(Project::class, 'project_id');
     }
 
+
+    public function developer()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+
     /**
      * Relasi:
      * Task dikerjakan oleh 1 Developer (PIC)

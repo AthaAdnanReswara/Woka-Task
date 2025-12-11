@@ -21,7 +21,6 @@
                 ['label' => 'Developers', 'value' => $totalDeveloper, 'color' => 'linear-gradient(135deg,#ff7eb9,#b1bccfff)'],
             ];
         @endphp
-
         @foreach ($stats as $stat)
         <div class="col-md-3 mb-3">
             <div class="p-4 text-center text-white" style="border-radius:18px; background: {{ $stat['color'] }}; box-shadow:0 4px 14px rgba(0,0,0,0.15);">
@@ -246,7 +245,91 @@
                 }
             }
         };
-
         new Chart(document.getElementById('totalChart'), config);
     </script>
+<!-- LIST TASK -->
+<div class="card shadow-sm border-0 rounded-3 overflow-hidden mb-4">
+    <div class="card-header fw-bold" 
+         style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
+        <i class="bi bi-kanban"></i> Daftar Task Developer
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-primary small text-uppercase">
+                    <tr>
+                        <th class="text-center">✓</th>
+                        <th>No</th>
+                        <th>Developer</th>
+                        <th>Project</th>
+                        <th>Task</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Deadline</th>
+                    </tr>
+                </thead>
+
+                <tbody class="small">
+                    @forelse ($tasks as $index => $task)
+                    <tr class="table-row-hover">
+
+                        <!-- Checkbox UI only -->
+                        <td class="text-center">
+                            <input type="checkbox" class="task-check" 
+                                   data-id="{{ $task->id }}">
+                        </td>
+
+                        <!-- No -->
+                        <td>{{ $index + 1 }}</td>
+
+                        <!-- Developer -->
+                        <td class="fw-semibold text-dark">
+                            {{ $task->developer->name ?? 'Belum ada developer' }}
+                        </td>
+
+                        <!-- Project -->
+                        <td>
+                            {{ $task->project->nama_project ?? 'Tanpa Project' }}
+                        </td>
+
+                        <!-- Task Title -->
+                        <td>
+                            {{ $task->judul_task }}
+                        </td>
+
+                        <!-- Status -->
+                        <td class="text-center">
+                            <span class="badge 
+                                @if($task->status == 'ongoing') bg-warning text-dark
+                                @elseif($task->status == 'completed') bg-success
+                                @elseif($task->status == 'revisi') bg-danger
+                                @else bg-secondary
+                                @endif
+                            ">
+                                {{ strtoupper($task->status) }}
+                            </span>
+                        </td>
+                        <!-- Deadline -->
+                        <td class="text-center">
+                            @if ($task->tanggal_tenggat)
+                                <span class="badge bg-secondary">
+                                    {{ \Carbon\Carbon::parse($task->tanggal_tenggat)->format('d M Y') }}
+                                </span>
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">
+                            Tidak ada task.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection

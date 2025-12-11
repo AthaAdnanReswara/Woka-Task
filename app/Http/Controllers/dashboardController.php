@@ -45,6 +45,12 @@ class dashboardController extends Controller
 
             $tasks = Task::with(['user.profile', 'project'])->get();
 
+            // TASK LIST (ganti todo)
+            $tasks = Task::with([
+                'developer.profile',   // orang yang mengerjakan task
+                'project'              // project task berada
+            ])->orderBy('created_at', 'desc')->get();
+
 
             return view('admin.dashboard', compact(
                 'user',
@@ -55,9 +61,9 @@ class dashboardController extends Controller
                 'totalDeveloper',
                 'recentUsers',
                 'totalll',
-                'totalAdmin',     
-                'tasks',     
-                'totalPM'          
+                'totalAdmin',
+                'tasks',
+                'totalPM'
             ));
         }elseif ($user->role === 'PM') {
             $pmId = $user->id;
