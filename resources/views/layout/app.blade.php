@@ -219,13 +219,8 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           @if(auth()->user()->role == 'admin')
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route( 'admin.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
@@ -368,27 +363,146 @@
       <!-- partial -->
       @yield('content')
       <!-- main-panel ends -->
-      <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
+     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 shadow" style="border-radius: 18px; overflow:hidden;">
 
-            <div class="modal-header">
-              <h5 class="modal-title" id="profileLabel">My Profile</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+      @php
+        $profile = Auth::user()->profile;
+      @endphp
 
-            <div class="modal-body">
-              <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
-              <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
-            </div>
+      <!-- Header -->
+      <div 
+        style="
+          background: linear-gradient(135deg, #4f46e5, #6366f1);
+          padding: 30px 20px 50px;
+          text-align: center;
+          color: white;
+          position: relative;
+        ">
+        
+        <!-- Foto Profil + Input File -->
+        <label for="fotoInput" style="cursor:pointer; position: relative; display:inline-block;">
+          <img 
+            id="previewFoto"
+            src="{{ optional($profile)->foto ? asset('storage/' . $profile->foto) : asset('assets/images/faces/default.png') }}"
+            class="rounded-circle shadow"
+            width="100" height="100"
+            style="object-fit: cover; border: 3px solid white;"
+          >
+          <span 
+            style="
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              background: #ffffffcc;
+              width: 28px;
+              height: 28px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 50%;
+              font-size: 12px;
+            ">
+            <i class="mdi mdi-camera"></i>
+          </span>
+        </label>
 
-            <div class="modal-footer">
-              <a href="" class="btn btn-primary">Go to Profile Page</a>
-            </div>
+        <input type="file" id="fotoInput" name="foto" class="d-none" accept="image/*">
 
-          </div>
-        </div>
+        <h5 class="mt-3 mb-0 fw-bold">{{ Auth::user()->name }}</h5>
+        <small class="opacity-75">{{ Auth::user()->email }}</small>
       </div>
+
+      <!-- Body -->
+      <form action="" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        <div class="modal-body px-4 py-3">
+
+          <div class="mb-3">
+            <label class="text-muted small">No. HP</label>
+            <input 
+              type="text"
+              name="no_hp"
+              class="form-control"
+              value="{{ optional($profile)->no_hp }}"
+              placeholder="Masukkan nomor HP">
+          </div>
+
+          <div class="mb-3">
+            <label class="text-muted small">Jenis Kelamin</label>
+            <select class="form-control" name="gender">
+              <option value="">Pilih</option>
+              <option value="laki-laki" {{ optional($profile)->gender == 'laki-laki' ? 'selected' : '' }}>Laki-Laki</option>
+              <option value="perempuan" {{ optional($profile)->gender == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="text-muted small">Tempat Lahir</label>
+            <input 
+              type="text"
+              name="tempat_lahir"
+              class="form-control"
+              value="{{ optional($profile)->tempat_lahir }}"
+              placeholder="Masukkan tempat lahir">
+          </div>
+
+          <div class="mb-3">
+            <label class="text-muted small">Tanggal Lahir</label>
+            <input 
+              type="date"
+              name="tanggal_lahir"
+              class="form-control"
+              value="{{ optional($profile)->tanggal_lahir }}"
+            >
+          </div>
+
+          <div class="mb-3">
+            <label class="text-muted small">Alamat</label>
+            <textarea 
+              name="alamat"
+              class="form-control"
+              rows="2"
+              placeholder="Masukkan alamat">{{ optional($profile)->alamat }}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="text-muted small">Bio</label>
+            <textarea 
+              name="bio"
+              class="form-control"
+              rows="2"
+              placeholder="Masukkan bio">{{ optional($profile)->bio }}</textarea>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0 px-4 pb-3">
+          <button type="submit" class="btn btn-primary w-100" style="border-radius: 10px;">
+            Simpan Perubahan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- Preview Foto Script -->
+<script>
+  document.getElementById('fotoInput').addEventListener('change', function(e){
+    const file = e.target.files[0];
+    if(file){
+      document.getElementById('previewFoto').src = URL.createObjectURL(file);
+    }
+  });
+</script>
+
 
     </div>
     <!-- page-body-wrapper ends -->

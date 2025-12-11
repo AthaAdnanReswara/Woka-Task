@@ -6,7 +6,6 @@ use App\Models\Developer;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
-use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -86,7 +85,6 @@ class dashboardController extends Controller
                 'tasks' => Task::all(),
             ]);
         }
-
         abort(403, 'Role tidak dikenali.');
     }
 
