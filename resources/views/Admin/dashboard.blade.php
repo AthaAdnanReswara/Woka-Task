@@ -21,7 +21,6 @@
                 ['label' => 'Developers', 'value' => $totalDeveloper, 'color' => 'linear-gradient(135deg,#ff7eb9,#b1bccfff)'],
             ];
         @endphp
-
         @foreach ($stats as $stat)
         <div class="col-md-3 mb-3">
             <div class="p-4 text-center text-white" style="border-radius:18px; background: {{ $stat['color'] }}; box-shadow:0 4px 14px rgba(0,0,0,0.15);">
@@ -246,7 +245,6 @@
                 }
             }
         };
-
         new Chart(document.getElementById('totalChart'), config);
     </script>
 <!-- LIST TASK -->
@@ -261,6 +259,7 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light text-primary small text-uppercase">
                     <tr>
+                        <th class="text-center">✓</th>
                         <th>No</th>
                         <th>Developer</th>
                         <th>Project</th>
@@ -273,6 +272,12 @@
                 <tbody class="small">
                     @forelse ($tasks as $index => $task)
                     <tr class="table-row-hover">
+
+                        <!-- Checkbox UI only -->
+                        <td class="text-center">
+                            <input type="checkbox" class="task-check" 
+                                   data-id="{{ $task->id }}">
+                        </td>
 
                         <!-- No -->
                         <td>{{ $index + 1 }}</td>
@@ -304,7 +309,6 @@
                                 {{ strtoupper($task->status) }}
                             </span>
                         </td>
-
                         <!-- Deadline -->
                         <td class="text-center">
                             @if ($task->tanggal_tenggat)
@@ -315,22 +319,17 @@
                                 <span class="text-muted">-</span>
                             @endif
                         </td>
-
                     </tr>
                     @empty
-
                     <tr>
-                        <td colspan="6" class="text-center text-muted">
+                        <td colspan="7" class="text-center text-muted">
                             Tidak ada task.
                         </td>
                     </tr>
-
                     @endforelse
                 </tbody>
-
             </table>
         </div>
     </div>
 </div>
-
 @endsection

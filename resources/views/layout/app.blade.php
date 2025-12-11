@@ -219,13 +219,8 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           @if(auth()->user()->role == 'admin')
-<<<<<<< HEAD
           <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} ">
             <a class="nav-link"
-=======
-          <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-dark text-white' : 'text-dark' }} "
->>>>>>> 1921f700ffb93e3e650668555b865dca5e142117
               href=" {{ route( 'admin.dashboard') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>

@@ -50,6 +50,7 @@ class Project extends Model
         return $this->hasMany(Task::class, 'project_id');
     }
 
+
     /**
      * Relasi:
      * Banyak user dapat menjadi anggota dalam 1 project
