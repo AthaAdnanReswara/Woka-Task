@@ -408,18 +408,19 @@
           </span>
         </label>
 
-        <input type="file" id="fotoInput" name="foto" class="d-none" accept="image/*">
+        
 
         <h5 class="mt-3 mb-0 fw-bold">{{ Auth::user()->name }}</h5>
         <small class="opacity-75">{{ Auth::user()->email }}</small>
       </div>
 
       <!-- Body -->
-      <form action="" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <div class="modal-body px-4 py-3">
+          <input type="file" id="fotoInput" name="foto" class="d-none" accept="image/*">
 
           <div class="mb-3">
             <label class="text-muted small">No. HP</label>

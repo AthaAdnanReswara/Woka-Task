@@ -16,6 +16,7 @@ use App\Http\Controllers\PM\pengembangController;
 use App\Http\Controllers\PM\ProfileController;
 use App\Http\Controllers\PM\ProyekController;
 use App\Http\Controllers\PM\TugasController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,7 +30,7 @@ Route::middleware('guest')->group(function () {
 });
 //Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-
+//profile
 //prefik untuk admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     //tampilan dashboard
@@ -47,9 +48,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     //CRUD TaskColaborator
     Route::resource('collaborator', taskCollaboratorController::class);
     Route::post('/todo/store', [dashboardController::class, 'todoStore'])->name('todo.store');
-Route::patch('/todo/toggle/{id}', [dashboardController::class, 'todoToggle'])->name('todo.toggle');
-Route::delete('/todo/delete/{id}', [dashboardController::class, 'todoDelete'])->name('todo.delete');
-
+    Route::patch('/todo/toggle/{id}', [dashboardController::class, 'todoToggle'])->name('todo.toggle');
+    Route::delete('/todo/delete/{id}', [dashboardController::class, 'todoDelete'])->name('todo.delete');
+    //profile admin
+    Route::put('/profile/update', [UserProfileController::class, 'update'])
+        ->name('profile.update');
 });
 //Prefik untuk PM
 Route::prefix('PM')->name('PM.')->middleware(['auth', 'role:PM'])->group(function () {
@@ -67,6 +70,9 @@ Route::prefix('PM')->name('PM.')->middleware(['auth', 'role:PM'])->group(functio
     Route::resource('kelompok', KelompokController::class);
     //profile PM
     Route::resource('profile', ProfileController::class);
+    //profile admin
+    Route::put('/profile/update', [UserProfileController::class, 'update'])
+        ->name('profile.update');
 });
 //Prefik untuk Developer
 Route::prefix('developer')->name('developer.')->middleware(['auth', 'role:developer'])->group(function () {
@@ -76,6 +82,9 @@ Route::prefix('developer')->name('developer.')->middleware(['auth', 'role:develo
     Route::resource('pekerjaan', PekerjaanController::class)->parameters(['pekerjaan' => 'task']);
     //profile developer
     Route::resource('biodata', BiodataController::class);
+    //profile admin
+    Route::put('/profile/update', [UserProfileController::class, 'update'])
+        ->name('profile.update');
 });
 
 Route::get('/notifications', function () {
