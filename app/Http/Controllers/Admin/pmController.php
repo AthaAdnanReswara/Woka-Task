@@ -60,12 +60,12 @@ class PmController extends Controller
         UserProfile::create([
             'user_id' => $PM->id,
             'foto' => $fotoPath,
-            'no_hp' => $request->no_hp,
-            'alamat' => $request->alamat,
-            'bio' => $request->bio,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'gender' => $request->gender,
+            // 'no_hp' => $request->no_hp,
+            // 'alamat' => $request->alamat,
+            // 'bio' => $request->bio,
+            // 'tempat_lahir' => $request->tempat_lahir,
+            // 'tanggal_lahir' => $request->tanggal_lahir,
+            // 'gender' => $request->gender,
         ]);
 
         return redirect()->route('admin.PM.index')

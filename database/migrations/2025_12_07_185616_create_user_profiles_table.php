@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('no_hp')->nullable();
             $table->text('alamat')->nullable();
             $table->text('bio')->nullable();
-            $table->string('tempat_lahir', 255);
-            $table->date('tanggal_lahir');
+            $table->string('tempat_lahir', 255)->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->enum('gender', ['laki-laki', 'perempuan', 'tidak diketaui'])->nullable();
             $table->timestamps();
         });
