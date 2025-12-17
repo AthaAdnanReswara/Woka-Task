@@ -189,4 +189,6 @@ Terima kasih — jika Anda mau, saya bisa:
 - Menambahkan badge CI, coverage, atau contoh screenshot UI.
 - Membuat template `CONTRIBUTING.md`.
 
-Mau saya langsung tulis `README.md` di repo Anda sekarang? Jika ya, konfirmasi dan saya akan menambahkan filenya.
+Mau saya langsung tulis `README.md` di repo Anda sekarang? Jika ya, konfirmasi dan saya akan menambahkan filenya.      
+
+
