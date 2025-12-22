@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PM;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\Project_member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,12 +18,10 @@ class pengembangController extends Controller
     {
         $user = Auth::user();
 
-        // Tampilkan developer milik semua PM (bisa ditambah filter created_by bila perlu)
-        $pengembang = User::where('role', 'developer')
-                          ->with('profile')
-                          ->get();
+        // SESUAI BLADE: $members as $member
+        $members = Project_member::with(['user', 'project'])->get();
 
-        return view('PM.pengembang.index', compact('user', 'pengembang'));
+        return view('PM.pengembang.index', compact('user', 'members'));
     }
 
     /** ================== FORM TAMBAH ================== */
@@ -42,7 +41,6 @@ class pengembangController extends Controller
             'foto'     => 'nullable|image|max:2048',
         ]);
 
-        /** === SIMPAN USER === */
         $pengembang = User::create([
             'name'       => $request->name,
             'email'      => $request->email,
@@ -51,29 +49,24 @@ class pengembangController extends Controller
             'created_by' => Auth::id(),
         ]);
 
-        /** === UPLOAD FOTO === */
         $fotoPath = null;
-
         if ($request->hasFile('foto')) {
             $fotoPath = $request->file('foto')->store('user_photos', 'public');
         }
 
-        /** === SIMPAN PROFIL === */
         UserProfile::create([
             'user_id' => $pengembang->id,
             'foto'    => $fotoPath,
         ]);
 
         return redirect()->route('PM.pengembang.index')
-                         ->with('success', 'Developer berhasil ditambahkan');
+            ->with('success', 'Developer berhasil ditambahkan');
     }
 
     /** ================== FORM EDIT ================== */
     public function edit(User $pengembang)
     {
         $user = Auth::user();
-
-        // load profile
         $pengembang->load('profile');
 
         return view('PM.pengembang.edit', compact('user', 'pengembang'));
@@ -89,7 +82,6 @@ class pengembangController extends Controller
             'foto'     => 'nullable|image|max:2048'
         ]);
 
-        /** === UPDATE USER === */
         $pengembang->name = $request->name;
         $pengembang->email = $request->email;
 
@@ -99,35 +91,26 @@ class pengembangController extends Controller
 
         $pengembang->save();
 
-        /** === UPDATE PROFIL === */
-        $profile = $pengembang->profile;
+        $profile = $pengembang->profile ?? UserProfile::create([
+            'user_id' => $pengembang->id
+        ]);
 
-        if (!$profile) {
-            $profile = UserProfile::create(['user_id' => $pengembang->id]);
-        }
-
-        // Jika upload foto baru
         if ($request->hasFile('foto')) {
-
-            // Hapus foto lama jika ada
             if ($profile->foto) {
                 Storage::disk('public')->delete($profile->foto);
             }
-
-            // Simpan foto baru
             $profile->foto = $request->file('foto')->store('user_photos', 'public');
         }
 
         $profile->save();
 
         return redirect()->route('PM.pengembang.index')
-                         ->with('success','Data developer berhasil diperbarui');
+            ->with('success', 'Data developer berhasil diperbarui');
     }
 
     /** ================== HAPUS ================== */
     public function destroy(User $pengembang)
     {
-        // hapus foto
         if ($pengembang->profile && $pengembang->profile->foto) {
             Storage::disk('public')->delete($pengembang->profile->foto);
         }
@@ -135,6 +118,6 @@ class pengembangController extends Controller
         $pengembang->delete();
 
         return redirect()->route('PM.pengembang.index')
-                         ->with('success','Developer berhasil dihapus');
+            ->with('success', 'Developer berhasil dihapus');
     }
 }

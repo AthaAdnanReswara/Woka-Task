@@ -58,17 +58,17 @@
                         @forelse($members as $member)
                         <tr class="table-row-hover">
                             <td>{{ $loop->iteration }}</td>
-                            <td class="fw-semibold text-dark">{{ $m->project->name }}</td>
-                            <td>{{ $m->user->name }}</td>
-                            <td>{{ $m->user->email }}</td>
+                            <td class="fw-semibold text-dark">{{ $member->project->name }}</td>
+                            <td>{{ $member->user->name }}</td>
+                            <td>{{ $member->user->email }}</td>
 
                             <td class="text-center">
-                                <a href="{{ route('PM.anggota.edit',$m->id) }}"
+                                <a href="{{ route('PM.anggota.edit',$member->id) }}"
                                    class="btn btn-sm btn-outline-warning me-1">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
 
-                                <form action="{{ route('PM.anggota.destroy',$m->id) }}"
+                                <form action="{{ route('PM.anggota.destroy',$member->id) }}"
                                       method="POST" class="d-inline">
                                     @csrf @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger"
