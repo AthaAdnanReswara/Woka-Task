@@ -53,7 +53,7 @@ class TugasController extends Controller
                             'tanggal_selesai' => optional($t->tanggal_tenggat)->format('d M Y'),
 
                             'estimasi' => $t->estimasi ?? '-',
-                            'progres' => ($t->progress ?? 0) . '%',
+                            'progres' => $t->progress ?? 0,
                             'pembuat' => $t->creator?->name ?? '-',
                         ];
                     })->values(),
@@ -109,14 +109,6 @@ class TugasController extends Controller
             'progress' => $request->progress ?? 0,
             'created_by' => Auth::id(),
         ]);
-
-        // === KIRIM NOTIF SETELAH TASK DIBUAT ===
-        sendNotif(
-            $request->assigned_to,
-            "Task Baru",
-            "Kamu mendapat task baru: $task->judul_task"
-        );
-
         return redirect()->route('PM.tugas.index')
             ->with('success', 'Task berhasil ditambahkan.');
     }
@@ -138,6 +130,11 @@ class TugasController extends Controller
      */
     public function edit(Task $task)
     {
+        if ($task->status === 'selesai' && $task->progress == 100) {
+            return redirect()->back()
+                ->with('error', 'Task selesai 100% tidak bisa diubah');
+        }
+
         $projects = Project::all();
         // ambil user yang berperan developer & terdaftar dalam project
         $developers = User::where('role', 'developer')
@@ -152,6 +149,10 @@ class TugasController extends Controller
      */
     public function update(Request $request, Task $task)
     {
+        if ($task->status === 'selesai' && $task->progress == 100) {
+            return redirect()->back()
+                ->with('error', 'Task selesai 100% tidak bisa diubah');
+        }
 
         $request->validate([
             'project_id' => 'required|exists:projects,id',
@@ -188,6 +189,11 @@ class TugasController extends Controller
      */
     public function destroy(Task $task)
     {
+        if ($task->status === 'selesai' && $task->progress == 100) {
+            return redirect()->back()
+                ->with('error', 'Task selesai 100% tidak bisa dihapus');
+        }
+        
         $task->delete();
 
         return redirect()->route('PM.tugas.index')->with('success', 'Task berhasil dihapus.');

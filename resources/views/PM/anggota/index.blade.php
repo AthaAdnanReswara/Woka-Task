@@ -55,7 +55,7 @@
                     </thead>
 
                     <tbody class="small">
-                        @forelse($members as $m)
+                        @forelse($members as $member)
                         <tr class="table-row-hover">
                             <td>{{ $loop->iteration }}</td>
                             <td class="fw-semibold text-dark">{{ $m->project->name }}</td>

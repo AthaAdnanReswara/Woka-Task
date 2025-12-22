@@ -51,13 +51,6 @@ class ProyekController extends Controller
         'created_by' => Auth::user()->id,
     ]);
 
-    // === KIRIM NOTIF PROJECT BARU ===
-    sendNotif(
-        null, 
-        "Project Baru", 
-        "PM telah menambahkan project baru: $project->name"
-    );
-
     return redirect()->route('PM.proyek.index')
         ->with('success', 'Selamat berhasil menambah project');
 }

@@ -53,7 +53,7 @@ class TaskController extends Controller
                             'tanggal_selesai' => optional($t->tanggal_tenggat)->format('d M Y'),
 
                             'estimasi' => $t->estimasi ?? '-',
-                            'progres' => ($t->progress ?? 0) . '%',
+                            'progres' => $t->progress ?? 0,
                             'pembuat' => $t->creator?->name ?? '-',
                         ];
                     })->values(),
@@ -129,12 +129,14 @@ class TaskController extends Controller
     // TAMPILKAN FORM EDIT
     public function edit(Task $task)
     {
+        if ($task->status === 'selesai' && $task->progress == 100) {
+            return redirect()->back()
+                ->with('error', 'Task selesai 100% tidak bisa diubah');
+        }
+
         $user = Auth::user();
         $projects = Project::all();
-        // ambil user yang berperan developer & terdaftar dalam project
-        $developers = User::where('role', 'developer')
-            ->whereHas('projects')
-            ->get();
+        $developers = User::where('role', 'developer')->whereHas('projects')->get();
 
         return view('admin.task.edit', compact('task', 'user', 'projects', 'developers'));
     }
@@ -143,6 +145,11 @@ class TaskController extends Controller
     // UPDATE DATA TASK
     public function update(Request $request, Task $task)
     {
+        if ($task->status === 'selesai' && $task->progress == 100) {
+            return redirect()->back()
+                ->with('error', 'Task selesai 100% tidak bisa diubah');
+        }
+
         $request->validate([
             'project_id' => 'required|exists:projects,id',
             'assigned_to' => 'required|exists:users,id',
@@ -156,7 +163,6 @@ class TaskController extends Controller
             'progress' => 'required|integer|min:0|max:100',
         ]);
 
-        // 🔥 Jika progress 100 → status otomatis selesai
         $status = $request->progress == 100 ? 'selesai' : $request->status;
 
         $task->update([
@@ -170,17 +176,21 @@ class TaskController extends Controller
             'tanggal_tenggat' => $request->tanggal_tenggat,
             'estimasi' => $request->estimasi,
             'progress' => $request->progress,
-            'updated_by' => Auth::id()
+            'updated_by' => Auth::id(),
         ]);
 
-        return redirect()->route('admin.task.index')->with('success', 'Task berhasil diperbarui.');
+        return redirect()->route('admin.task.index')
+            ->with('success', 'Task berhasil diperbarui.');
     }
-
-
 
     // HAPUS DATA TASK
     public function destroy(Task $task)
     {
+        if ($task->status === 'selesai' && $task->progress == 100) {
+            return redirect()->back()
+                ->with('error', 'Task selesai 100% tidak bisa dihapus');
+        }
+
         $task->delete();
 
         return redirect()->route('admin.task.index')->with('success', 'Task berhasil dihapus.');

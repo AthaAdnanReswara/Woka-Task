@@ -73,7 +73,30 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    
+    public function update(Request $request, Project $project)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'required|in:draft,ongoing,hold,done,cancelled',
+        ]);
+
+        $project->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'status' => $request->status,
+        ]);
+
+        return redirect()
+            ->route('admin.project.index')
+            ->with('success', 'Project berhasil diperbarui');
+    }
+
+
 
     /**
      * Remove the specified resource from storage.
