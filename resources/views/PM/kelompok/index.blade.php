@@ -77,7 +77,7 @@
                             <td class="text-center">
                                 <a href="{{ route('PM.kelompok.edit', $c->id) }}" 
                                    class="btn btn-sm btn-warning shadow-sm me-1">
-                                    <i class="bi bi-pencil-square"></i>
+                                    <i class="mdi mdi-pencil"></i>
                                 </a>
 
                                 <form action="{{ route('PM.kelompok.destroy', $c->id) }}" 

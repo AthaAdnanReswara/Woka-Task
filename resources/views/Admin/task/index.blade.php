@@ -75,11 +75,13 @@
                             <td>
                                 @php
                                     $statusClass = match($item["status"] ?? '-') {
-                                        'On Progress' => 'warning',
-                                        'Completed'   => 'success',
-                                        'Pending'     => 'secondary',
-                                        default       => 'dark'
-                                    };
+                                    'rencana' => 'secondary',
+                                    'sedang_dikerjakan' => 'warning',
+                                    'tinjauan' => 'info',
+                                    'selesai' => 'success',
+                                    'dibatalkan' => 'danger',
+                                    default => 'dark'
+                                };
                                 @endphp
                                 <span class="badge bg-{{ $statusClass }}">
                                     {{ $item["status"] }}
@@ -180,22 +182,30 @@ div.dataTables_wrapper {
                 <td>${r.progres ?? '-'}</td>
                 <td>${r.pembuat ?? '-'}</td>
                 <td class="text-center">
-                    <a href="${editUrl}" class="btn btn-sm btn-warning">
-                        <i class="mdi mdi-pencil"></i>
-                    </a>
+                    ${
+                        !(r.status === 'selesai' && parseInt(r.progres) === 100)
+                        ? `<a href="${editUrl}" class="btn btn-sm btn-warning">
+                                <i class="mdi mdi-pencil"></i>
+                        </a>`
+                        : ''
+                    }
 
                     <a href="${showtUrl}" class="btn btn-sm btn-secondary" target="_blank">
                         <i class="mdi mdi-eye"></i>
                     </a>
 
-                    <form action="/admin/task/${r.id}" method="POST" style="display:inline;" 
-                        onsubmit="return confirm('Yakin ingin menghapus?')" >
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="mdi mdi-trash-can-outline"></i>
-                        </button>
-                    </form>
+                    ${
+                        !(r.status === 'selesai' && parseInt(r.progres) === 100)
+                        ? `<form action="/admin/task/${r.id}" method="POST" style="display:inline;"
+                                onsubmit="return confirm('Yakin ingin menghapus?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="mdi mdi-trash-can-outline"></i>
+                                </button>
+                        </form>`
+                        : ''
+                    }
                 </td>
             </tr>
         `;

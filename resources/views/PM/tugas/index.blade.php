@@ -70,7 +70,19 @@
                             <td class="text-success fw-semibold">{{ $item["start_date"] }}</td>
                             <td class="text-danger fw-semibold">{{ $item["end_date"] }}</td>
                             <td>
-                                <span class="badge bg-info text-dark">{{ $item["status"] }}</span>
+                                @php
+                                    $statusClass = match($item["status"] ?? '-') {
+                                    'rencana' => 'secondary',
+                                    'sedang_dikerjakan' => 'warning',
+                                    'tinjauan' => 'info',
+                                    'selesai' => 'success',
+                                    'dibatalkan' => 'danger',
+                                    default => 'dark'
+                                };
+                                @endphp
+                                <span class="badge bg-{{ $statusClass }}">
+                                    {{ $item["status"] }}
+                                </span>
                             </td>
                             <td>{{ $item["created_by"] }}</td>
                             <td class="fw-bold text-primary">{{ $item["jumlah_task"] }}</td>
@@ -149,22 +161,30 @@
                 <td>${r.progres ?? '-'}</td>
                 <td>${r.pembuat ?? '-'}</td>
                 <td class="text-center">
-                    <a href="${editUrl}" class="btn btn-sm btn-warning">
-                        <i class="mdi mdi-pencil"></i>
-                    </a>
+                    ${
+                        !(r.status === 'selesai' && parseInt(r.progres) === 100)
+                        ? `<a href="${editUrl}" class="btn btn-sm btn-warning">
+                                <i class="mdi mdi-pencil"></i>
+                        </a>`
+                        : ''
+                    }
 
                     <a href="${showtUrl}" class="btn btn-sm btn-secondary" target="_blank">
                         <i class="mdi mdi-eye"></i>
                     </a>
 
-                    <form action="/PM/tugas/${r.id}" method="POST" style="display:inline;" 
-                        onsubmit="return confirm('Yakin ingin menghapus?')" >
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="mdi mdi-trash-can-outline"></i>
-                        </button>
-                    </form>
+                    ${
+                        !(r.status === 'selesai' && parseInt(r.progres) === 100)
+                        ? `<form action="/admin/task/${r.id}" method="POST" style="display:inline;"
+                                onsubmit="return confirm('Yakin ingin menghapus?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="mdi mdi-trash-can-outline"></i>
+                                </button>
+                        </form>`
+                        : ''
+                    }
                 </td>
             </tr>
         `;
