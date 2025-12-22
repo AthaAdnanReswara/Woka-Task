@@ -19,9 +19,10 @@ class pengembangController extends Controller
         $user = Auth::user();
 
         // SESUAI BLADE: $members as $member
-        $members = Project_member::with(['user', 'project'])->get();
+        $pengembang = User::where('role', 'developer')
+            ->with('profile')->get();
 
-        return view('PM.pengembang.index', compact('user', 'members'));
+        return view('PM.pengembang.index', compact('user', 'pengembang'));
     }
 
     /** ================== FORM TAMBAH ================== */
@@ -34,6 +35,7 @@ class pengembangController extends Controller
     /** ================== SIMPAN DATA ================== */
     public function store(Request $request)
     {
+        $user = Auth::user();
         $request->validate([
             'name'     => 'required',
             'email'    => 'required|email|unique:users,email',
@@ -46,7 +48,7 @@ class pengembangController extends Controller
             'email'      => $request->email,
             'password'   => Hash::make($request->password),
             'role'       => 'developer',
-            'created_by' => Auth::id(),
+            'created_by' => $user->id,
         ]);
 
         $fotoPath = null;
@@ -79,10 +81,11 @@ class pengembangController extends Controller
             'name'     => 'required',
             'email'    => 'required|email|unique:users,email,' . $pengembang->id,
             'password' => 'nullable|min:3',
-            'foto'     => 'nullable|image|max:2048'
+            'foto'     => 'nullable|image|max:2048',
         ]);
 
-        $pengembang->name = $request->name;
+        /** ================= UPDATE DATA USER ================= **/
+        $pengembang->name  = $request->name;
         $pengembang->email = $request->email;
 
         if ($request->filled('password')) {
@@ -91,21 +94,43 @@ class pengembangController extends Controller
 
         $pengembang->save();
 
-        $profile = $pengembang->profile ?? UserProfile::create([
-            'user_id' => $pengembang->id
-        ]);
 
+        /** ================= UPDATE DATA PROFILE ================= **/
+
+        // Ambil profile
+        $profile = $pengembang->profile;
+
+        // Jika profile tidak ada → buat baru
+        if (!$profile) {
+            $profile = UserProfile::create([
+                'user_id' => $pengembang->id
+            ]);
+        }
+
+        // Upload foto baru
         if ($request->hasFile('foto')) {
+
+            // Hapus foto lama jika ada
             if ($profile->foto) {
                 Storage::disk('public')->delete($profile->foto);
             }
+
             $profile->foto = $request->file('foto')->store('user_photos', 'public');
         }
 
+        // // Update data lain
+        // $profile->no_hp         = $request->no_hp;
+        // $profile->alamat        = $request->alamat;
+        // $profile->bio           = $request->bio;
+        // $profile->tempat_lahir  = $request->tempat_lahir;
+        // $profile->tanggal_lahir = $request->tanggal_lahir;
+        // $profile->gender        = $request->gender;
+
         $profile->save();
 
+
         return redirect()->route('PM.pengembang.index')
-            ->with('success', 'Data developer berhasil diperbarui');
+            ->with('success', 'Developer berhasil diperbarui!');
     }
 
     /** ================== HAPUS ================== */

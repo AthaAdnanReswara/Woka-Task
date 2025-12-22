@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'developer ')
+@section('title', 'developer')
 @section('content')
 <div class="container-fluid py-4">
 
@@ -9,14 +9,13 @@
                 border-radius:12px; padding:20px; color:white;">
         <div>
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-people-fill"></i> Project Members
+                <i class="bi bi-person-badge-fill"></i> Developer
             </h3>
-            <small>Kelola anggota dari setiap project</small>
+            <small>Kelola akun Developer pada sistem proyek</small>
         </div>
-
-        <a href="{{ route('PM.anggota.create') }}" 
+        <a href="{{ route('PM.pengembang.create') }}" 
            class="btn btn-light fw-semibold shadow-sm">
-            <i class="bi bi-person-plus-fill"></i> Tambah Member
+            <i class="bi bi-person-plus"></i> Tambah Developer
         </a>
     </div>
 
@@ -35,44 +34,45 @@
     <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
         <div class="card-header fw-bold" 
              style="background:#1e3c72; color:white; border-radius:8px 8px 0 0;">
-            <i class="bi bi-table"></i> Daftar Project Members
+            <i class="bi bi-people"></i> Daftar Developer
         </div>
-
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" id="memberTable">
-
-                    <!-- HEADER TABEL -->
-                    <thead class="text-white small text-uppercase" 
-                           style="background: linear-gradient(135deg,#1e3c72,#7ac1ff);">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-primary small text-uppercase">
                         <tr>
                             <th>No</th>
-                            <th>Project</th>
-                            <th>Nama Member</th>
+                            <th>Nama</th>
                             <th>Email</th>
+                            <th class="text-center">Creator</th>
+                            <th class="text-center">Ditambahkan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
-
                     <tbody class="small">
-                        @forelse($members as $member)
+                        @forelse ($pengembang as $mm)
                         <tr class="table-row-hover">
                             <td>{{ $loop->iteration }}</td>
-                            <td class="fw-semibold text-dark">{{ $member->project->name }}</td>
-                            <td>{{ $member->user->name }}</td>
-                            <td>{{ $member->user->email }}</td>
-
+                            <td class="fw-semibold text-dark">{{ $mm->name }}</td>
+                            <td>{{ $mm->email }}</td>
+                            <td>{{ $mm->creator->name ?? '-' }}</td>
                             <td class="text-center">
-                                <a href="{{ route('PM.anggota.edit',$member->id) }}"
+                                <span class="badge bg-secondary">
+                                    {{ $mm->created_at->format('d M Y') }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ route('PM.pengembang.edit', $mm->id) }}" 
                                    class="btn btn-sm btn-outline-warning me-1">
-                                    <i class="bi bi-pencil-square"></i> Edit
+                                    <i class="bi bi-pencil-square"></i> Update
                                 </a>
-
-                                <form action="{{ route('PM.anggota.destroy',$member->id) }}"
+                                <form action="{{ route('PM.pengembang.destroy', $mm->id) }}" 
                                       method="POST" class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger"
-                                            onclick="return confirm('Hapus member ini?')">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Yakin hapus Developer ini?')">
                                         <i class="bi bi-trash"></i> Delete
                                     </button>
                                 </form>
@@ -80,26 +80,25 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-3 fw-semibold">
-                                Belum ada anggota terdaftar
+                            <td colspan="6" class="text-center text-muted">
+                                Tidak ada Developer.
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
-
                 </table>
             </div>
         </div>
     </div>
+
 </div>
 
-<!-- STYLE -->
+<!-- HOVER + STYLING -->
 <style>
 .table-row-hover:hover {
-    background: rgba(0,0,0,0.04);
+    background: rgba(0,0,0,0.05);
     transform: scale(1.005);
-    transition: .15s;
-    cursor: pointer;
+    transition: 0.15s;
 }
 .btn-outline-warning:hover {
     background-color: #ffc107;
@@ -110,21 +109,5 @@
     color: white;
 }
 </style>
-
-<!-- DATATABLE -->
-<script>
-$(document).ready(function() {
-    $('#memberTable').DataTable({
-        ordering: true,
-        paging: false,          // hilangkan pagination
-        searching: false,       // hilangkan search bar
-        info: false,            // hilangkan info jumlah data
-        lengthChange: false,    // hilangkan "Tampilkan _MENU_"
-        language: {
-            zeroRecords: "Tidak ada data member ditemukan"
-        }
-    });
-});
-</script>
 
 @endsection
