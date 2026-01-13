@@ -122,8 +122,8 @@ class PekerjaanController extends Controller
         // $pmId = $task->project->created_by;
         // sendNotif($pmId, "Progress Update", "Task '$task->judul_task' telah diupdate.");
 
-        // return redirect()->route('developer.pekerjaan.index')
-        //     ->with('success', 'Task berhasil diperbarui');
+        return redirect()->route('developer.pekerjaan.index')
+            ->with('success', 'Task berhasil diperbarui');
     }
 
     /**
